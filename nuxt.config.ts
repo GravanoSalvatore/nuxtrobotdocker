@@ -73,5 +73,8 @@ export default defineNuxtConfig({
       ['defineStore', 'definePiniaStore'],  
     ],  
   },  
-  
+  plugins: [
+    '~/plugins/axios.ts'
+  ]
+
 })

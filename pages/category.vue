@@ -135,7 +135,7 @@
 </template>
 
 <script>
-;
+
 import axios from "axios";
 
  import SavedTagsMenu from "../components/SavedTagsMenu.vue";
