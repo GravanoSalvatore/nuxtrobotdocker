@@ -11,8 +11,8 @@
 
     <!-- Список тегов -->
     <div class="tags-list">
-      <div class="tags-lis" v-if="tags.length > 0">
-        <div style="margin-left: " class=" fw-bold ">
+ <div class="tags-lis" v-if="tags && tags.length > 0">
+        <div class="fw-bold">
           <!-- Total: {{ tags.length }} -->
         </div>
         <div class="scrollable-tags-list rounded" ref="tagsList">
@@ -28,9 +28,6 @@
             </span>
           </button>
         </div>
-        <div style="margin-left: " class="mb-1 fw-bold pt-4">
-          <!-- Total: {{ tags.length }} -->
-        </div>
       </div>
       <div v-else-if="loadingTags">
         <v-progress-circular
@@ -38,9 +35,6 @@
           color="primary"
           size="50"
         ></v-progress-circular>
-      </div>
-      <div v-else>
-        <!-- <p>Теги не найдены или загрузка не удалась.</p> -->
       </div>
     </div>
 
@@ -52,267 +46,245 @@
         size="50"
       ></v-progress-circular>
     </div>
-    <div v-if="news.length > 0" class="news-list">
-    <div style="position: relative;">
-      <button
-        class="btn-danger1 me-2"
-        :class="{ 'btn-primary': isTagSaved }"
-        @click="toggleSaveTag(currentTag)"
-      >
-        {{ isTagSaved ? "Delete" : "Save" }}
-      </button>
 
-      <button
+    <div v-if="news.length > 0" class="news-list">
+      <div style="position: relative;">
+        <!-- Сохранённые теги -->
+        <div class="saved-tags">
+          <span
+            v-for="tag in savedTags"
+            :key="tag"
+            class="badge bg-success saved-tag"
+            @click="fetchNews(tag)"
+          >
+            {{ tag }}
+            <i @click.stop="removeSavedTag(tag)" class="bi bi-x-circle pointer text-white"></i>
+          </span>
+        </div>
+
+        <!-- Кнопка сохранения текущего тега -->
+        <button
+          class="btn-danger1 me-2"
+          :class="{ 'btn-danger': isTagSaved }"
+          @click="toggleSaveTag(currentTag)"
+        >
+          {{ isTagSaved ? "Delete" : "Save" }}
+        </button>
+
+        <!-- Другие кнопки -->
+        <button
           @click="toggleAutopilot"
           :class="['btn-danger1 fw-bold me-2', { 'btn-primary': autopilotActive }]"
         >
           {{ autopilotActive ? "Stop Autopilot" : "Start Autopilot" }}
         </button>
-<!-- Button trigger modal -->
-<button type="button" class="btn-danger1" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-  Setting
-</button>
+        <button type="button" class="btn-danger1" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+          Setting
+        </button>
 
-<!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <!-- <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div> -->
-      <div class="modal-body">
-        <setting/>
+        <!-- Модальное окно -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-body">
+                <setting />
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn-danger1" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <i style="position: absolute; right: 0; top: -25px" @click="clearNews" class="bi bi-x-circle pointer"></i>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn-danger1" data-bs-dismiss="modal">Close</button>
-        <!-- <button type="button" class="btn btn-primary">Understood</button> -->
-      </div>
-    </div>
-  </div>
-</div>
-      <i style="position: absolute;right: 0;top:-25px" @click="clearNews" class="bi bi-x-circle pointer"></i>
-    </div>
-      <!-- Индикатор загрузки -->
-<div v-if="loading" class="text-center">
-      <div class="spinner-border text-primary" role="status">
-        <!-- <span class="visually-hidden">Loading...</span> -->
-      </div>
-    </div>
+
+      <!-- Список новостей -->
       <div class="row row-cols-1 row-cols-md-3 g-3 mt-3">
         <div v-for="item in news" :key="item.id" class="col">
-          <div class="car ">
+          <div class="card">
             <img
               v-if="item.tempImageUrl || item.urlToImage"
               :src="item.tempImageUrl || item.urlToImage"
-              class="card-img-top c"
+              class="card-img-top"
             />
-            <img v-else :src="image" class="card-img-top c" />
+            <img v-else :src="image" class="card-img-top" />
 
             <div class="card-body">
               <div class="overlay">
               <h5 class="card-title">
-                <a :href="item.url" target="_blank">{{ item.sourceName }}</a>
+                <a style="font-size: 12px;" :href="item.url" target="_blank">{{ item.sourceName }}</a>
               </h5>
               <p class="card-text">
-                <small class="text-muted">{{
-                  formatDateTime(item.publishedAt)
-                }}</small>
+                <small class="text-muted">{{ formatDateTime(item.publishedAt) }}</small>
               </p>
               <p v-if="item.author" class="badge bg-primary" :style="{ 'max-width': '200px', 'white-space': 'nowrap', 'overflow': 'hidden', 'text-overflow': 'ellipsis' }">  
   {{ item.author }}  
 </p>
               <p v-else class="badge bg-secondary">Unknown</p>
-             <div class="over">
-              <p style="color:cornflowerblue" class="fw-bold">{{ item.title }}</p>
+              <p style="color: cornflowerblue;" class="fw-bold">{{ item.title }}</p>
               <p>{{ item.description }}</p>
               <p v-html="item.content"></p>
             </div>
-          </div>
               <button @click="openEditModal(item)" class="btn-danger1 mt-2">
                 Edit
               </button>
               <button @click="sendToTelegram(item)" class="btn-danger1 mt-2">
                 Send to Telegram
-                <i style="color: cornflowerblue" class="bi bi-telegram"></i>
+                <i class="bi bi-telegram"></i>
               </button>
             </div>
-          
-          
           </div>
         </div>
       </div>
     </div>
-    
-    <!-- Список новостей -->
-    <!-- <div v-if="news.length > 0" class="news-list">
-      <div style="position: relative;">
-      <button
-        v-if="news.length > 0"
-        :class="[' btn-danger1 me-2', { active: isTagSaved }]"
-        @click="toggleSaveTag(currentTag)"
-      >
-        {{ isTagSaved ? "Delete tags" : "Save tags" }}
-      </button>
-
-      <button
-        v-if="news.length > 0"
-        @click="sendChatIdAndTagId"
-        class="btn-danger1 mt-1 fw-bold me-2"
-      >
-        Autopilot
-      </button>
-      <button type="button" class="btn-danger1" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-  Setting
-</button>
-
-
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-     
-      <div class="modal-body">
-        <setting/>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn-danger1" data-bs-dismiss="modal">Close</button>
-
-      </div>
-    </div>
-  </div>
-</div>
-      <i style="position: absolute;right: 0;top:-25px" @click="clearNews" class="bi bi-x-circle pointer"></i>
-  </div>
-
-      <div class="row row-cols-1 row-cols-md-4 g-3 mx-auto m-1">
-        <div v-for="item in localNews" :key="item.id" class="col">
-          <div class="card-body">
-
-            <img
-              v-if="item.urlToImage"
-              :src="item.urlToImage"
-              class="card-img-top mb-2"
-            />
-            <img v-else :src="image" class="card-img-top mb-2" />
-
-           
-            <input
-              v-model="item.title"
-              class="form-control mb-2"
-              placeholder="Редактировать заголовок"
-            />
-
-
-            <textarea
-              v-model="item.description"
-              class="form-control mb-2"
-              placeholder="Редактировать описание"
-            ></textarea>
-
-            
-            <textarea
-              v-model="item.content"
-              class="form-control mb-2"
-              placeholder="Редактировать содержимое"
-            ></textarea>
-            <p v-if="item.author" class="badge bg-primary" :style="{ 'max-width': '200px', 'white-space': 'nowrap', 'overflow': 'hidden', 'text-overflow': 'ellipsis' }">  
-  {{ item.author }}  
-</p>
-           
-            <span style="font-size: 10px" class="fw-bold ml-2">{{
-              formatDateTime(item.publishedAt)
-            }}</span>
-            <br /><br />
-            
-            <button
-              @click="sendToTelegram(item)"
-              class="btn-danger1 mt m-1 fw-bold"
-            >
-              Send to telegram
-              <i style="color: cornflowerblue" class="bi bi-telegram"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div> -->
   </div>
 </template>
+
+
+
+
+
 <script>
 import { useTopTagsStore } from "../stores/popular";
 import { computed, onMounted, ref } from "vue";
-import { useChannelStore } from '@/stores/channelStore';
-export default {
-  // props: {
-  //   chatId: {
-  //     type: String,
-  //     required: true,
-  //   },
-  // },
-  setup() {
-    const store = useTopTagsStore();
-    const tagsList = ref(null);
-    const localNews = ref([]);
-    const channelStore = useChannelStore();
-    // Действия
-    const activeChannelId = computed(() => channelStore.activeChannelId); // Достаём ID активного канала
+import { useChannelStore } from "@/stores/channelStore";
 
+export default {
+  methods: {
+    formatDateTime(dateTime) {
+      const options = {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+      };
+      return new Date(dateTime).toLocaleString("en-US", options);
+    },
+  },
+  setup() {
+    const store = useTopTagsStore(); // Использование store
+    const channelStore = useChannelStore(); // Store для работы с каналами
+
+    // Локальные переменные и данные
+    const tagsList = ref(null); // Список тегов
+    const localNews = ref([]); // Локальная копия новостей для редактирования
+
+    // Геттеры для computed свойств
+    const savedTags = computed(() => store.savedTags);
+    const tags = computed(() => store.tags);
+    const news = computed(() => store.news);
+    const loadingTags = computed(() => store.loadingTags);
+    const loadingNews = computed(() => store.loadingNews);
+    const loading = computed(() => store.loading);
+    const sortedTags = computed(() => store.sortedTags);
+    const currentTag = computed(() => store.currentTag);
+    const isTagSaved = computed(() => store.isTagSaved);
+    const activeChannelId = computed(() => channelStore.activeChannelId);
+
+    // Методы
     const fetchTags = () => store.fetchTags();
+
     const fetchNews = async (tagName) => {
       await store.fetchNews(tagName);
-      localNews.value = store.news.map((item) => ({ ...item })); // Локальная копия для редактирования
+      localNews.value = store.news.map((item) => ({ ...item })); // Локальная копия новостей
     };
+
     const clearNews = () => {
       store.clearNews();
       localNews.value = [];
     };
+
+    const toggleSaveTag = (tag) => {
+      store.toggleSaveTag(tag);
+    };
+
+    const removeSavedTag = (tag) => {
+      store.savedTags = store.savedTags.filter((savedTag) => savedTag !== tag); // Удаляем тег
+      localStorage.setItem("savedTags", JSON.stringify(store.savedTags)); // Сохраняем изменения в localStorage
+      console.log("Тег удалён:", tag);
+    };
+
     const sendToTelegram = (item) => {
-  if (!activeChannelId.value) {
-    alert('Выберите канал для отправки новостей!');
-    return;
-  }
+      if (!activeChannelId.value) {
+        alert("Выберите канал для отправки новостей!");
+        return;
+      }
 
-  // Безопасная обработка полей перед отправкой
-  const editedItem = {
-    ...item,
-    title: item.title?.trim() || "", // Если title null или undefined, используем пустую строку
-    description: item.description?.trim() || "",
-    content: item.content?.trim() || "",
-  };
+      const editedItem = {
+        ...item,
+        title: item.title?.trim() || "", // Если title null или undefined, используем пустую строку
+        description: item.description?.trim() || "",
+        content: item.content?.trim() || "",
+      };
 
-  // Отправляем сообщение
-  store.sendToTelegram(editedItem, activeChannelId.value);
-};
+      // Отправляем сообщение
+      store.sendToTelegram(editedItem, activeChannelId.value);
+    };
 
-
+    // Инициализация при загрузке компонента
     onMounted(() => {
-      store.loadSavedTags();
-      fetchTags();
+      store.loadSavedTags(); // Загружаем сохранённые теги
+      fetchTags(); // Загружаем теги
     });
 
     return {
-      tags: computed(() => store.tags),
-      news: computed(() => store.news),
-      loadingTags: computed(() => store.loadingTags),
-      loadingNews: computed(() => store.loadingNews),
-      loading: computed(() => store.loading),
-      sortedTags: computed(() => store.sortedTags),
-      currentTag: computed(() => store.currentTag),
-      isTagSaved: computed(() => store.isTagSaved),
-      formatDateTime: store.formatDateTime,
+      // Данные и методы для использования в шаблоне
+      savedTags,
+      tags,
+      news,
+      loadingTags,
+      loadingNews,
+      loading,
+      sortedTags,
+      currentTag,
+      isTagSaved,
       localNews,
+      activeChannelId,
       fetchTags,
       fetchNews,
       clearNews,
+      toggleSaveTag,
+      removeSavedTag,
       sendToTelegram,
-      activeChannelId,
-      toggleSaveTag: store.toggleSaveTag,
-      sendChatIdAndTagId: () => {},
     };
   },
 };
 </script>
 
 <style scoped>
+.overlay{
+
+overflow-x: hidden;
+overflow-y: auto;
+height: 250px;
+}
+
+.saved-tags {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.saved-tag {
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+}
+
+.saved-tag .bi-x-circle {
+  margin-left: 5px;
+  color: red;
+}
+.saved-tag:hover {
+  background-color: #dc3545;
+  color: white;
+}
 .tags-lis {
   box-shadow: 0px 8px 16px rgba(19, 93, 147, 0.3);
  border-radius: 20px;

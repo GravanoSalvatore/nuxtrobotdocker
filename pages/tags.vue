@@ -34,92 +34,13 @@
     />  
   </svg>  
 </div>
-    <!-- <div class="search-container">
-      <input
-        type="text"
-        v-model="query"
-        class="form-control mb-3"
-        placeholder="Search..."
-        style="
-        max-width: 300px; 
-        display: inline-block;
-        border: none !important;
-        "
-      />
-      <svg
-        @click="searchTags"
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        fill="currentColor"
-        class="bi bi-search pointer"
-        viewBox="0 0 16 16"
-        style="cursor: pointer; margin-left: 10px"
-      >
-        <path
-          d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"
-        />
-      </svg>
-    </div> -->
-
-    <!-- <div class="search-container">  
-  <div class="input-group">  
-    <input  
-      type="text"  
-      v-model="query"  
-      class="form-control mb-3"  
-      placeholder="Search..."  
-      style="max-width: 300px; display: inline-block; border: none !important;"  
-    >  
-    <button  
-      class="btn btn-outline-secondary btn-sm"  
-      type="button"  
-      v-if="query"  
-      @click="query = ''"  
-      style="margin-left: -40px;"  
-    >  
-      <i class="bi bi-x-lg"></i>  
-    </button>  
-  </div>  
-</div> -->
     
-
-
-
 
 
 <!-- Список тегов -->
     <div class="tags-list">
       <div class="tags-lis" v-if="tags.length > 0">
-        <!-- <div class="">
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="radio"
-              name="sortOptions"
-              id="sortPopularity"
-              value="popularity"
-              v-model="sortOption"
-              @change="updateSortOption($event.target.value)"
-            />
-            <label class="form-check-label" for="sortPopularity">Popular</label>
-          </div>
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="radio"
-              name="sortOptions"
-              id="sortAlphabet"
-              value="alphabet"
-              v-model="sortOption"
-              @change="updateSortOption($event.target.value)"
-            />
-            <label class="form-check-label" for="sortAlphabet"
-              >Alphabetical</label
-            >
-          </div>
-        </div> -->
-
+      
         <div style="margin-left: 23px" class="mb-1 fw-bold pt-4">
           Total: {{ tags.length }}
         </div>
@@ -141,17 +62,23 @@
         <div style="margin-left: 23px" class="mb-1 fw-bold pt-4">
           <!-- Total: {{ tags.length }} -->
         </div>
-        <!-- <img
-            class="pointer mt-3"
-            @click="scrollToTop"
-            style="width: 50px; cursor: pointer;"
-            src="https://cdn3d.iconscout.com/3d/premium/thumb/top-arrow-3d-icon-download-in-png-blend-fbx-gltf-file-formats--up-direction-arrows-universal-3-pack-icons-6138447.png?f=webp"
-          /> -->
+       
       </div>
     </div>
  
     <!-- Список новостей -->
     <div v-if="news.length > 0" class="news-list">
+      <div class="saved-tags">
+      <span
+        v-for="tag in savedTags"
+        :key="tag"
+        class="badge bg-success saved-tag"
+        @click="fetchNews(tag)"
+      >
+        {{ tag }}
+        <i @click.stop="removeSavedTag(tag)" class="bi bi-x-circle pointer text-white"></i>
+      </span>
+    </div>
     <div style="position: relative;">
       <button
         class="btn-danger1 me-2"
@@ -176,10 +103,7 @@
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <!-- <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div> -->
+      
       <div class="modal-body">
         <setting/>
       </div>
@@ -240,8 +164,7 @@
         </div>
       </div>
     </div>
-
-    <!-- Модальное окно для редактирования -->
+ <!-- Модальное окно для редактирования -->
    
    
    
@@ -362,7 +285,11 @@ export default {
   //   },
   // },
   setup(props) {
-    
+    const currentTag = ref("");
+
+    // Сохранённые теги
+    const savedTags = computed(() => store.savedTags);
+
     const autopilotInterval = ref(null);
     const autopilotActive = ref(false);
     
@@ -446,12 +373,17 @@ export default {
     const sendChatIdAndTagId = () => {
       // Реализуйте логику автоматической отправки данных
     };
-
+    const removeSavedTag = (tag) => {
+      store.savedTags = store.savedTags.filter((savedTag) => savedTag !== tag);
+      localStorage.setItem("savedTags", JSON.stringify(store.savedTags));
+    };
     onMounted(() => {
       store.loadSavedTags();
     });
 
     return {
+      removeSavedTag,
+      savedTags,
       autopilotActive,
       toggleAutopilot,
       query,
@@ -487,7 +419,33 @@ export default {
 
 
 <style lang="css" scoped>
+.saved-tags {
+  margin: 10px 0;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.saved-tag {
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  background-color: #6c757d;
+  color: white;
+}
+
+.saved-tag:hover {
+  background-color: #f93402;
+  color: white;
+}
+
+.saved-tag .bi-x-circle {
+  margin-left: 5px;
+  color: red;
+}
 .overlay{
+
   overflow-x: hidden;
   overflow-y: auto;
   height: 250px;

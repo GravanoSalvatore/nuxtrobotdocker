@@ -11,7 +11,12 @@
             style="width: 50px"
           /> -->
           4VROBOT<i class="bi bi-telegram"></i>N
+
         </h5>
+        
+        <!-- <Icon name="svg-spinners:wind-toy" style="font-size:30px;margin-left:20px" />
+        <Icon name="svg-spinners:blocks-scale" style="font-size:30px;margin-left:20px" /> -->
+       
       </NuxtLink>
     </div>
     <button
@@ -23,7 +28,9 @@
           : 'Переключить на тёмную тему'
       "
     >
-      <svg
+    <Icon  v-if="!themeStore.isDark" name="meteocons:clear-day-fill"  style="font-size:30px;margin-left:20px" />
+        
+      <!-- <svg
         v-if="!themeStore.isDark"
         xmlns="http://www.w3.org/2000/svg"
         width="18"
@@ -60,7 +67,9 @@
         class="theme-icon"
       >
         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-      </svg>
+      </svg> -->
+      <Icon  v-else name="meteocons:clear-night-fill"  style="font-size:30px;margin-left:20px" />
+    
     </button>
 
     <div class="row">

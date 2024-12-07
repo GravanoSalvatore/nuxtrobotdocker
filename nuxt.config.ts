@@ -4,6 +4,7 @@ export default defineNuxtConfig({
     /* Configuration */
 },
   modules: [
+    '@nuxt/icon',
     // "@prisma/nuxt",
     '@vueuse/nuxt',
     '@nuxt/fonts',
@@ -75,6 +76,11 @@ export default defineNuxtConfig({
   },  
   plugins: [
     '~/plugins/axios.ts'
-  ]
+  ],
+  // icon: {
+  //   serverBundle: {
+  //     collections: ['uil', 'mdi'] // <!--- this
+  //   }
+  // }
 
 })

@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="container">
     <div class="row" v-for="(cardGroup, index) in cardGroups" :key="index">
       <div class="col-md-4" v-for="card in cardGroup" :key="card.title">
@@ -16,7 +16,32 @@
       </div>
     </div>
   </div>
+</template> -->
+
+<template>
+  <div class="container">
+    <div class="row" v-for="(cardGroup, index) in cardGroups" :key="index">
+      <div class="col-md-4" v-for="card in cardGroup" :key="card.title">
+        <div
+          class="card mb-4 pointer"
+          @click="navigateToRoute(card.route)"
+          :class="['hover-card', `hover-card-${index}`]"
+        >
+          <div class="card-body hover-content">
+            <!-- Рендеринг иконки -->
+            <div class="card-icon mb-3">
+              <Icon v-if="card.icon === 'blocks-scale'" :name="`svg-spinners:${card.icon}`" />
+              <div v-else v-html="card.icon"></div>
+            </div>
+            <h5 class="card-title fw-bold text-center">{{ card.title }}</h5>
+            <!-- <p class="card-text text-center">{{ card.description }}</p> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
+
 <script>
 export default {
   computed: {
@@ -41,14 +66,20 @@ export default {
           description: "4V.COIN",
           icon: '<i class="bi bi-robot"></i>',
         },
+        // {
+        //   title: "Categories",
+        //   description: "4V.WEB 3.0",
+        //   icon: '<i class="bi bi-tags"></i>',
+        //   route: "/category",
+        // },
         {
-          title: "Categories & tags",
+          title: "Categories",
           description: "4V.WEB 3.0",
-          icon: '<i class="bi bi-tags"></i>',
+          icon: "blocks-scale", // Уникальный идентификатор для иконки <Icon>
           route: "/category",
         },
         {
-          title: "Popular tags",
+          title: "Popular",
           description: "4V.DEX",
           icon: '<i class="bi bi-star"></i>',
           route: "/popular",
@@ -162,6 +193,7 @@ export default {
 
 <style scoped>
 .card {
+  /* border: 2px solid rgb(15, 43, 58); */
   border-radius: 15px;
   transition: transform 0.3s ease, box-shadow 0.3s ease; /* Плавный переход для изменения размеров и тени */
   /* box-shadow: inset 15px 15px 30px -10px rgb(1, 114, 180); */
