@@ -11,7 +11,7 @@
 
     <!-- Список тегов -->
     <div class="tags-list">
- <div class="tags-lis" v-if="tags && tags.length > 0">
+      <div class="tags-lis" v-if="tags.length > 0">
         <div class="fw-bold">
           <!-- Total: {{ tags.length }} -->
         </div>
@@ -141,12 +141,8 @@
   </div>
 </template>
 
-
-
-
-
 <script>
-import { useTopTagsStore } from "../stores/popular";
+import { useTopPopularStore } from "../stores/popular";
 import { computed, onMounted, ref } from "vue";
 import { useChannelStore } from "@/stores/channelStore";
 
@@ -166,7 +162,7 @@ export default {
     },
   },
   setup() {
-    const store = useTopTagsStore(); // Использование store
+    const store = useTopPopularStore(); // Использование store
     const channelStore = useChannelStore(); // Store для работы с каналами
 
     // Локальные переменные и данные

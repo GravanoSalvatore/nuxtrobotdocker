@@ -1,6 +1,6 @@
 <template lang="">
-  <div class="">
-    <div class="containe">
+  <div class="container">
+    <div class="">
       <NuxtLink style="text-decoration: none; margin-left:" to="/">
         <h5
           style="color: cornflowerblue; padding-left: 20px"
@@ -10,7 +10,8 @@
             src="https://cdn.pixabay.com/photo/2016/12/13/21/20/alien-1905155_640.png"
             style="width: 50px"
           /> -->
-          4VROBOT<i class="bi bi-telegram"></i>N
+          4V.ROBOT
+          <!-- <i class="bi bi-telegram"></i>N -->
 
         </h5>
         

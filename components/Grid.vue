@@ -30,7 +30,9 @@
           <div class="card-body hover-content">
             <!-- Рендеринг иконки -->
             <div class="card-icon mb-3">
-              <Icon v-if="card.icon === 'blocks-scale'" :name="`svg-spinners:${card.icon}`" />
+              <Icon v-if="customIconList.includes(card.icon)" :name="`svg-spinners:${card.icon}`" />
+
+
               <div v-else v-html="card.icon"></div>
             </div>
             <h5 class="card-title fw-bold text-center">{{ card.title }}</h5>
@@ -60,11 +62,12 @@ export default {
       intervalId: null,
       // isMobile: window.innerWidth < 992,
       scrollPosition: 0,
+      customIconList: ["blocks-wave","3-dots-move","blocks-shuffle-3","blocks-scale", "wind-toy", "pulse", "rotate-cube","pulse-3"], // Добавьте сюда новые идентификаторы
       cards: [
         {
-          title: "ROBOTON",
+          title: "4V.ROBOT",
           description: "4V.COIN",
-          icon: '<i class="bi bi-robot"></i>',
+          icon: 'blocks-shuffle-3',
         },
         // {
         //   title: "Categories",
@@ -81,64 +84,64 @@ export default {
         {
           title: "Popular",
           description: "4V.DEX",
-          icon: '<i class="bi bi-star"></i>',
+          icon: "wind-toy",
           route: "/popular",
         },
         {
           title: "Search tags",
           description: "4V.ROBOT",
-          icon: '<i class="bi bi-search"></i>',
+          icon: 'pulse-3',
           route: "/tags",
         },
-        {
-          title: "Editor",
-          description: "4V.CRYPTO",
-          icon: '<i class="bi bi-pencil"></i>',
-          route: "/editor",
-        },
+        // {
+        //   title: "Editor",
+        //   description: "4V.CRYPTO",
+        //   icon: '<i class="bi bi-pencil"></i>',
+        //   route: "/editor",
+        // },
 
-        {
-          title: "Created & selected",
-          description: "DISTRIBUTOR (Automatic Content Distributor)",
-          icon: '<i class="bi bi-tags-fill"></i>',
-          route: "/selected",
-        },
+        // {
+        //   title: "Created & selected",
+        //   description: "DISTRIBUTOR (Automatic Content Distributor)",
+        //   icon: '<i class="bi bi-tags-fill"></i>',
+        //   route: "/selected",
+        // },
         {
           title: "Setting",
           description: "CONTENTWISE (Content Wise Engine)",
-          icon: '<i class="bi bi-sliders"></i>',
+          icon: '3-dots-move',
           route: "/setting",
         },
         {
           title: "Create tag",
           description: "4V.COIN",
-          icon: '<i class="bi bi-bookmark-plus-fill"></i>',
+          icon: 'blocks-wave',
           route: "/create",
         },
-        {
-          title: "Payment",
-          description: "Payment",
-          icon: '<i class="bi bi-wallet2"></i>',
-          route: "/pay",
-        },
-        {
-          title: "Documentation",
-          description: "CONTENTWISE (Content Wise Engine)",
-          icon: '<i class="bi bi-filetype-doc"></i>',
-          route: "/doc",
-        },
-        {
-          title: "Invite friends",
-          description: "4V.COIN",
-          icon: '<i class="bi bi-people-fill"></i>',
-          route: "/ref",
-        },
-        {
-          title: "Feedback",
-          description: "Payment",
-          icon: '<i class="bi bi-chat-text-fill"></i>',
-          route: "/feedback",
-        },
+        // {
+        //   title: "Payment",
+        //   description: "Payment",
+        //   icon: '<i class="bi bi-wallet2"></i>',
+        //   route: "/pay",
+        // },
+        // {
+        //   title: "Documentation",
+        //   description: "CONTENTWISE (Content Wise Engine)",
+        //   icon: '<i class="bi bi-filetype-doc"></i>',
+        //   route: "/doc",
+        // },
+        // {
+        //   title: "Invite friends",
+        //   description: "4V.COIN",
+        //   icon: '<i class="bi bi-people-fill"></i>',
+        //   route: "/ref",
+        // },
+        // {
+        //   title: "Feedback",
+        //   description: "Payment",
+        //   icon: '<i class="bi bi-chat-text-fill"></i>',
+        //   route: "/feedback",
+        // },
         // { title: 'SMARTSHARE (Intelligent Sharing Protocol)', description: 'SMARTSHARE (Intelligent Sharing Protocol)' },
         // { title: '4V.DEFI', description: '4V.DEFI' },
         // { title: 'GLIDE(Global Localized Intelligent Dynamic Engine)', description: 'GLIDE(Global Localized Intelligent Dynamic Engine)' },

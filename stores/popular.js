@@ -1,7 +1,8 @@
+//popular.js
 import { defineStore } from "pinia";
 import axios from "axios";
 
-export const useTopTagsStore = defineStore("topTagsStore", {
+export const useTopPopularStore = defineStore("topPopularStore", {
   state: () => ({
     tags: [],
     news: [],
@@ -51,11 +52,7 @@ export const useTopTagsStore = defineStore("topTagsStore", {
       }
     },
     async fetchTags() {
-      // if (this.query.trim() === "") {
-      //   this.tags = [];
-      //   this.news = [];
-      //   return;
-      // }
+      
 
       this.loading = true;
       this.tags = [];
