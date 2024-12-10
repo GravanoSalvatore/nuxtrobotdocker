@@ -138,6 +138,54 @@
         </div>
       </div>
     </div>
+    <footer class=" py-4">
+    <div class="container">
+      <div class="row align-items-center">
+        <!-- Социальные иконки -->
+        <div class="col-md-4 text-center text-md-start mb-3 mb-md-0">
+          <div class="d-flex justify-content-center justify-content-md-start">
+            <a href="#" class="me-3  fs-4" aria-label="Facebook">
+              <i class="bi bi-facebook"></i>
+            </a>
+            <a href="#" class="me-3  fs-4" aria-label="Twitter">
+              <i class="bi bi-twitter"></i>
+            </a>
+            <a href="#" class="me-3  fs-4" aria-label="Instagram">
+              <i class="bi bi-instagram"></i>
+            </a>
+            <a href="#" class="me-3  fs-4" aria-label="LinkedIn">
+              <i class="bi bi-linkedin"></i>
+            </a>
+            <a href="#" class=" fs-4" aria-label="YouTube">
+              <i class="bi bi-youtube"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Поле для обратной связи -->
+        <div class="col-md-4 mb-3 mb-md-0">
+          <form @submit.prevent="sendFeedback">
+            <div class="input-group">
+              <input
+                type="email"
+                class="form-control"
+                placeholder="Ваш email"
+                aria-label="Email"
+                v-model="email"
+                required
+              />
+              <button class="btn-danger1" type="submit">feedback</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Адрес -->
+        <div class="col-md-4 text-center text-md-end">
+          <p class="mb-0">1234 Main Street, City, Country</p>
+        </div>
+      </div>
+    </div>
+  </footer>
   </div>
 </template>
 
@@ -146,6 +194,20 @@ import { useRouter } from "vue-router";
 import { ref } from "vue";
 import { useThemeStore } from "~/stores/useThemeStore";
 export default {
+  data() {
+    return {
+      email: "",
+    };
+  },
+  methods: {
+    sendFeedback() {
+      if (this.email) {
+        alert(`Ваш email (${this.email}) принят. Спасибо за обратную связь!`);
+        this.email = "";
+      }
+    },
+  },
+
   setup() {
     const router = useRouter();
     const accordionItems = ref([
@@ -225,12 +287,12 @@ export default {
         icon: '<i class="bi bi-exclamation-triangle-fill"></i>',
         route: "/disclaimer",
       },
-      {
-        title: "Feedback",
-        content: "Content for item #10.",
-        icon: '<i class="bi bi-chat-text-fill"></i>',
-        route: "/feedback",
-      },
+      // {
+      //   title: "Feedback",
+      //   content: "Content for item #10.",
+      //   icon: '<i class="bi bi-chat-text-fill"></i>',
+      //   route: "/feedback",
+      // },
     ]);
     const handleItemClick = (item, index) => {
       // Для Channels и Posting не выполнять навигацию
@@ -262,6 +324,20 @@ export default {
 };
 </script>
 <style lang="css" scoped>
+input {
+ border:none !important;
+ box-shadow:none !important;
+ 
+
+}
+
+footer a {
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
 .p {
   padding-right: 0px !important;
 }
