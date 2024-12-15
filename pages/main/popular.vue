@@ -142,7 +142,7 @@
 </template>
 
 <script>
-import { useTopPopularStore } from "../stores/popular";
+import { useTopPopularStore } from "../../stores/popular";
 import { computed, onMounted, ref } from "vue";
 import { useChannelStore } from "@/stores/channelStore";
 

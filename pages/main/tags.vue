@@ -354,10 +354,10 @@
 </template>
 
 <script>
-import { useTagStore } from "../stores/tags";
+import { useTagStore } from "../../stores/tags";
 import { useChannelStore } from '@/stores/channelStore';
 import { computed, onMounted, ref } from "vue";
-import setting from '../components/Setting.vue'
+import setting from '../../components/Setting.vue'
 export default {
   methods:{
  

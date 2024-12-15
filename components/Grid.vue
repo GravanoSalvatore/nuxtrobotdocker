@@ -1,22 +1,4 @@
-<!-- <template>
-  <div class="container">
-    <div class="row" v-for="(cardGroup, index) in cardGroups" :key="index">
-      <div class="col-md-4" v-for="card in cardGroup" :key="card.title">
-        <div
-          class="card mb-4 pointer"
-          @click="navigateToRoute(card.route)"
-          :class="['hover-card', `hover-card-${index}`]"
-        >
-          <div class="card-body hover-content">
-            <div class="card-icon mb-3" v-html="card.icon"></div>
-            <h5 class="card-title fw-bold text-center">{{ card.title }}</h5>
-            <p class="card-text"></p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template> -->
+
 
 <template>
   <div class="container">
@@ -65,9 +47,10 @@ export default {
       customIconList: ["blocks-wave","3-dots-move","blocks-shuffle-3","blocks-scale", "wind-toy", "pulse", "rotate-cube","pulse-3"], // Добавьте сюда новые идентификаторы
       cards: [
         {
-          title: "4V.ROBOT",
+          title: "EDITOR",
           description: "4V.COIN",
           icon: 'blocks-shuffle-3',
+          route: "/editor",
         },
         // {
         //   title: "Categories",

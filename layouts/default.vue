@@ -1,23 +1,50 @@
 <template lang="">
-  <div class="container">
+  
+    <nav class="navbar navbar-expand-lg  mb-4">
+      <div class="container-fluid">
+        <NuxtLink class="navbar-brand" to="/"><img style="max-width:200px" src="@/assets/img/4vrobot.png" ></NuxtLink>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <NuxtLink class="nav-link" to="/">Home</NuxtLink>
+            </li>
+            <li class="nav-item">
+              <NuxtLink class="nav-link" to="/aboutUs">About Us</NuxtLink>
+            </li>
+            <li class="nav-item">
+              <NuxtLink class="nav-link" to="/privacy">Privacy Policy</NuxtLink>
+            </li>
+            <li class="nav-item">
+              <NuxtLink class="nav-link" to="/terms">Terms of Services</NuxtLink>
+            </li>
+            <li class="nav-item">
+              <NuxtLink class="nav-link" to="/ref">Invite Friends</NuxtLink>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
     <div class="">
       <NuxtLink style="text-decoration: none; margin-left:" to="/">
-        <h5
+        <!-- <h5
           style="color: cornflowerblue; padding-left: 20px"
           class="fw-bold pointer my-4"
         >
-          <!-- <img
-            src="https://cdn.pixabay.com/photo/2016/12/13/21/20/alien-1905155_640.png"
-            style="width: 50px"
-          /> -->
           4V.ROBOT
-          <!-- <i class="bi bi-telegram"></i>N -->
-
-        </h5>
+        </h5> -->
         
-        <!-- <Icon name="svg-spinners:wind-toy" style="font-size:30px;margin-left:20px" />
-        <Icon name="svg-spinners:blocks-scale" style="font-size:30px;margin-left:20px" /> -->
-       
       </NuxtLink>
     </div>
     <button
@@ -29,48 +56,18 @@
           : 'Переключить на тёмную тему'
       "
     >
-    <Icon  v-if="!themeStore.isDark" name="meteocons:clear-day-fill"  style="font-size:30px;margin-left:20px" />
-        
-      <!-- <svg
+      <Icon
         v-if="!themeStore.isDark"
-        xmlns="http://www.w3.org/2000/svg"
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="yellow"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        class="theme-icon"
-      >
-        <circle cx="12" cy="12" r="5"></circle>
-        <line x1="12" y1="1" x2="12" y2="3"></line>
-        <line x1="12" y1="21" x2="12" y2="23"></line>
-        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-        <line x1="1" y1="12" x2="3" y2="12"></line>
-        <line x1="21" y1="12" x2="23" y2="12"></line>
-        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-      </svg>
-      <svg
+        name="meteocons:clear-day-fill"
+        style="font-size: 30px; margin-left: 20px"
+      />
+
+      
+      <Icon
         v-else
-        xmlns="http://www.w3.org/2000/svg"
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        class="theme-icon"
-      >
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-      </svg> -->
-      <Icon  v-else name="meteocons:clear-night-fill"  style="font-size:30px;margin-left:20px" />
-    
+        name="meteocons:clear-night-fill"
+        style="font-size: 30px; margin-left: 20px"
+      />
     </button>
 
     <div class="row">
@@ -85,47 +82,15 @@
             >
               <h2 class="accordion-header">
                 <button
+                :class="{ 'active-item': activeIndex === index }"
+
                   @click="handleItemClick(item, index)"
                   class="accordion-button pointer"
-                  :class="{
-                    collapsed:
-                      item.title === 'Channels' || item.title === 'Posting',
-                    'no-arrow': !(
-                      item.title === 'Channels' || item.title === 'Posting'
-                    ),
-                  }"
-                  type="button"
-                  :data-bs-toggle="
-                    item.title === 'Channels' || item.title === 'Posting'
-                      ? 'collapse'
-                      : ''
-                  "
-                  :data-bs-target="
-                    item.title === 'Channels' || item.title === 'Posting'
-                      ? '#flush-collapse' + index
-                      : ''
-                  "
-                  :aria-controls="
-                    item.title === 'Channels' || item.title === 'Posting'
-                      ? 'flush-collapse' + index
-                      : ''
-                  "
                 >
                   <div class="card-icon me-2" v-html="item.icon"></div>
                   <span>{{ item.title }}</span>
                 </button>
               </h2>
-              <!-- Контент только для "Channels" и "Posting" -->
-              <div
-                v-if="item.title === 'Channels' || item.title === 'Posting'"
-                :id="'flush-collapse' + index"
-                class="accordion-collapse collapse"
-                data-bs-parent="#accordionFlushExample"
-              >
-                <div class="accordion-body">
-                  {{ item.content}}
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -138,54 +103,54 @@
         </div>
       </div>
     </div>
-    <footer class=" py-4">
-    <div class="container">
-      <div class="row align-items-center">
-        <!-- Социальные иконки -->
-        <div class="col-md-4 text-center text-md-start mb-3 mb-md-0">
-          <div class="d-flex justify-content-center justify-content-md-start">
-            <a href="#" class="me-3  fs-4" aria-label="Facebook">
-              <i class="bi bi-facebook"></i>
-            </a>
-            <a href="#" class="me-3  fs-4" aria-label="Twitter">
-              <i class="bi bi-twitter"></i>
-            </a>
-            <a href="#" class="me-3  fs-4" aria-label="Instagram">
-              <i class="bi bi-instagram"></i>
-            </a>
-            <a href="#" class="me-3  fs-4" aria-label="LinkedIn">
-              <i class="bi bi-linkedin"></i>
-            </a>
-            <a href="#" class=" fs-4" aria-label="YouTube">
-              <i class="bi bi-youtube"></i>
-            </a>
+    <footer class="py-4">
+      <div class="container">
+        <div class="row align-items-center">
+          <!-- Социальные иконки -->
+          <div class="col-md-4 text-center text-md-start mb-3 mb-md-0">
+            <div class="d-flex justify-content-center justify-content-md-start">
+              <a href="#" class="me-3 fs-4" aria-label="Facebook">
+                <i class="bi bi-facebook"></i>
+              </a>
+              <a href="#" class="me-3 fs-4" aria-label="Twitter">
+                <i class="bi bi-twitter"></i>
+              </a>
+              <a href="#" class="me-3 fs-4" aria-label="Instagram">
+                <i class="bi bi-instagram"></i>
+              </a>
+              <a href="#" class="me-3 fs-4" aria-label="LinkedIn">
+                <i class="bi bi-linkedin"></i>
+              </a>
+              <a href="#" class="fs-4" aria-label="YouTube">
+                <i class="bi bi-youtube"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Поле для обратной связи -->
+          <div class="col-md-4 mb-3 mb-md-0">
+            <form @submit.prevent="sendFeedback">
+              <div class="input-group">
+                <input
+                  type="email"
+                  class="form-control"
+                  placeholder="Ваш email"
+                  aria-label="Email"
+                  v-model="email"
+                  required
+                />
+                <button class="btn-danger1" type="submit">feedback</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Адрес -->
+          <div class="col-md-4 text-center text-md-end">
+            <p class="mb-0">4V company. fourv@gmail.com</p>
           </div>
         </div>
-
-        <!-- Поле для обратной связи -->
-        <div class="col-md-4 mb-3 mb-md-0">
-          <form @submit.prevent="sendFeedback">
-            <div class="input-group">
-              <input
-                type="email"
-                class="form-control"
-                placeholder="Ваш email"
-                aria-label="Email"
-                v-model="email"
-                required
-              />
-              <button class="btn-danger1" type="submit">feedback</button>
-            </div>
-          </form>
-        </div>
-
-        <!-- Адрес -->
-        <div class="col-md-4 text-center text-md-end">
-          <p class="mb-0">1234 Main Street, City, Country</p>
-        </div>
       </div>
-    </div>
-  </footer>
+    </footer>
   </div>
 </template>
 
@@ -209,50 +174,26 @@ export default {
   },
 
   setup() {
+    const activeIndex = ref(null);
     const router = useRouter();
     const accordionItems = ref([
       {
         title: "Personal account",
-       
+
         icon: '<i class="bi bi-person-check-fill"></i>',
       },
-     
+
       {
         title: "Setting",
         icon: '<i class="bi bi-sliders"></i>',
         route: "/setting",
       },
       {
-        title: "Category",
+        title: "Posting",
         icon: '<i class="bi bi-tags"></i>',
-        route: "/category",
+        route: "/main",
       },
-      {
-        title: "Popular",
-        icon: '<i class="bi bi-star"></i>',
-        route: "/popular",
-      },
-      {
-        title: "Search",
-        icon: '<i class="bi bi-search"></i>',
-        route: "/tags",
-      },
-      {
-        title: "Editor",
-        icon: '<i class="bi bi-pencil"></i>',
-        route: "/editor",
-      },
-      // {
-      //   title: "Channels",
-      //   content: "Content for item #4.",
-      //   icon: '<i class="bi bi-chat-square-text"></i>',
-      // },
-      // {
-      //   title: "Posting",
-      //   icon: '<i class="bi bi-stickies"></i>',
-        
-      
-      // },
+
       {
         title: "Payments",
         content: "Content for item #4.",
@@ -268,6 +209,11 @@ export default {
         title: "Privacy policy",
         icon: '<i class="bi bi-shield-check"></i>',
         route: "/privacy",
+      },
+      {
+        title: "Terms of servises",
+        icon: '<i class="bi bi-file-earmark-text-fill"></i>',
+        route: "/terms",
       },
       {
         title: "Documentation",
@@ -287,22 +233,17 @@ export default {
         icon: '<i class="bi bi-exclamation-triangle-fill"></i>',
         route: "/disclaimer",
       },
-      // {
-      //   title: "Feedback",
-      //   content: "Content for item #10.",
-      //   icon: '<i class="bi bi-chat-text-fill"></i>',
-      //   route: "/feedback",
-      // },
+      
     ]);
     const handleItemClick = (item, index) => {
       // Для Channels и Posting не выполнять навигацию
-      if (item.title !== "Channels" && item.title !== "Posting") {
-        if (item.route) {
-          router.push(item.route);
-        } else {
-          console.warn(`No route defined for ${item.title}`);
-        }
+
+      if (item.route) {
+        router.push(item.route);
+      } else {
+        console.warn(`No route defined for ${item.title}`);
       }
+      activeIndex.value = index;
     };
     const themeStore = useThemeStore();
 
@@ -316,6 +257,7 @@ export default {
     // Данные для аккордеона
 
     return {
+      activeIndex,
       handleItemClick,
       accordionItems,
       themeStore,
@@ -324,11 +266,43 @@ export default {
 };
 </script>
 <style lang="css" scoped>
-input {
- border:none !important;
- box-shadow:none !important;
- 
+.navbar {
+  /* background-color: #ffffff; */
+  border-bottom: 1px solid #e5e5e5;
+}
 
+.navbar-brand {
+  font-weight: bold;
+  color: cornflowerblue;
+}
+
+.navbar-brand:hover {
+  color: #0056b3;
+}
+
+.nav-link {
+  /* color: #34495e; */
+}
+
+.nav-link:hover {
+  color: cornflowerblue;
+  text-decoration: underline;
+}
+.accordion-button.active-item {
+  background-color: rgba(0, 123, 255, 0.1) !important; /* Светло-синий фон */
+  color: cornflowerblue !important; /* Цвет текста */
+  font-weight: bold; /* Жирный текст */
+  border-left: 4px solid cornflowerblue !important; /* Линия слева */
+}
+
+
+.accordion-button.active-item:hover {
+  background-color: rgba(0, 123, 255, 0.2); /* Изменение фона при наведении */
+}
+
+input {
+  border: none !important;
+  box-shadow: none !important;
 }
 
 footer a {
@@ -370,6 +344,7 @@ footer a:hover {
 .card-icon {
   margin-right: 10px;
 }
+
 .theme-toggle-btn {
   background: none;
   border: none;
@@ -381,8 +356,8 @@ footer a:hover {
   justify-content: center;
   transition: background-color 0.3s ease;
   position: absolute; /* Абсолютное позиционирование */
-  top: 2px; /* Отступ сверху */
-  right: 10px; /* Отступ справа */
+  top: 10px; /* Отступ сверху */
+  right: 20px; /* Отступ справа */
   z-index: 1000; /* Убедитесь, что кнопка поверх контента */
 }
 
@@ -394,6 +369,15 @@ footer a:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
+/* Настройка для мобильных устройств */
+@media (max-width: 767px) {
+  .theme-toggle-btn {
+    top: 60px; /* Отступ ниже кнопки тоггл-меню */
+    right: 10px; /* Меньший отступ справа */
+  }
+}
+
+
 .theme-icon {
   transition: transform 0.3s ease;
   caret-color: yellow;
@@ -401,5 +385,8 @@ footer a:hover {
 
 .theme-toggle-btn:hover .theme-icon {
   transform: rotate(30deg);
+}
+.accordion-button::after {
+  display: none !important;
 }
 </style>

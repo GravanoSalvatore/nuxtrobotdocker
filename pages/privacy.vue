@@ -1,118 +1,109 @@
 <template>
-    <div class="privacy-policy container my-4">
-      <h1 class="text-center mb-4">Политика конфиденциальности</h1>
-      <p>
-        Ваша конфиденциальность важна для нас. Настоящая Политика конфиденциальности объясняет, как мы собираем, используем, храним и защищаем ваши персональные данные, а также ваши права в отношении этих данных.
-      </p>
-  
-      <h2>1. Сбор информации</h2>
-      <p>
-        Мы собираем информацию, когда вы взаимодействуете с нашим сайтом. Это может включать:
-      </p>
-      <ul>
-        <li>Информацию, которую вы предоставляете, заполняя формы, включая имя, адрес электронной почты и номер телефона.</li>
-        <li>Данные об использовании, такие как IP-адрес, тип браузера, время посещения и просмотренные страницы.</li>
-        <li>Информацию, которую вы предоставляете, связываясь с нами через службу поддержки или другие каналы.</li>
-      </ul>
-  
-      <h2>2. Использование информации</h2>
-      <p>
-        Мы используем собранную информацию для различных целей, включая:
-      </p>
-      <ul>
-        <li>Предоставление и улучшение наших услуг.</li>
-        <li>Обеспечение безопасности и предотвращение мошенничества.</li>
-        <li>Персонализацию вашего опыта на сайте.</li>
-        <li>Связь с вами, включая ответы на запросы и уведомления.</li>
-        <li>Соблюдение юридических требований.</li>
-      </ul>
-  
-      <h2>3. Передача информации третьим лицам</h2>
-      <p>
-        Мы можем передавать ваши данные третьим лицам в следующих случаях:
-      </p>
-      <ul>
-        <li>С вашего согласия или по вашему запросу.</li>
-        <li>Для соблюдения юридических обязательств или защиты наших прав и интересов.</li>
-        <li>С поставщиками услуг, которые помогают в работе нашего сайта и предоставлении услуг.</li>
-        <li>В случае слияния, продажи или реорганизации ваши данные могут быть переданы новому владельцу.</li>
-      </ul>
-  
-      <h2>4. Хранение данных</h2>
-      <p>
-        Мы храним ваши персональные данные в течение времени, необходимого для выполнения целей, описанных в настоящей Политике конфиденциальности, за исключением случаев, предусмотренных законом.
-      </p>
-  
-      <h2>5. Безопасность данных</h2>
-      <p>
-        Мы принимаем соответствующие меры безопасности для защиты ваших данных от несанкционированного доступа, использования или раскрытия, включая шифрование, брандмауэры и другие технологии.
-      </p>
-  
-      <h2>6. Ваши права</h2>
-      <p>
-        Вы имеете право:
-      </p>
-      <ul>
-        <li>Запросить доступ к вашим данным и получить их копию.</li>
-        <li>Исправить ваши данные, если они неточны или неполны.</li>
-        <li>Удалить ваши данные, когда они больше не нужны для целей, для которых были собраны.</li>
-        <li>Ограничить обработку ваших данных при определенных обстоятельствах.</li>
-        <li>Возражать против обработки ваших данных для прямого маркетинга или на основании наших законных интересов.</li>
-      </ul>
-  
-      <h2>7. Использование файлов cookie</h2>
-      <p>
-        Мы используем файлы cookie и аналогичные технологии для улучшения вашего опыта на нашем сайте. Файлы cookie помогают нам анализировать использование сайта, предоставлять персонализированный контент и обеспечивать безопасность.
-      </p>
-  
-      <h2>8. Внешние ссылки</h2>
-      <p>
-        На нашем сайте могут быть ссылки на другие сайты. Мы не несем ответственности за политику конфиденциальности или содержание этих сайтов. Мы рекомендуем ознакомиться с политикой конфиденциальности любых посещаемых вами сайтов.
-      </p>
-  
-      <h2>9. Обновления политики</h2>
-      <p>
-        Мы можем обновлять настоящую Политику конфиденциальности, чтобы отразить изменения в нашей практике или юридических требованиях. Любые изменения будут размещены на этой странице. Пожалуйста, регулярно проверяйте эту страницу для ознакомления с обновлениями.
-      </p>
-  
-      <h2>10. Контактная информация</h2>
-      <p>
-        Если у вас есть вопросы или комментарии по поводу настоящей Политики конфиденциальности, пожалуйста, свяжитесь с нами по адресу: <a href="mailto:4VROBOT.com">fourvrobot.com</a>.
-      </p>
-    </div>
-  </template>
-  
-  <script>
-  export default {
-    name: "PrivacyPolicy",
-  };
-  </script>
-  
-  <style scoped>
-  .privacy-policy {
-    /* background-color: #f8f9fa;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
-  }
-  
-  h1, h2 {
-    /* color: #333; */
-    margin-bottom: 20px;
-  }
-  
-  p, ul {
-    line-height: 1.8;
-    /* color: #555; */
-  }
-  
-  a {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  a:hover {
-    text-decoration: underline;
-  }
-  </style>
-  
+  <div class="privacy-policy container my-4">
+    <h1 class="text-center mb-4">Privacy Policy</h1>
+    <p>
+      Your privacy is important to us. This Privacy Policy explains how we collect, use, store, and protect your personal data, as well as your rights regarding this data.
+    </p>
+
+    <h2>1. Information Collection</h2>
+    <p>
+      We collect information when you interact with our site. This may include:
+    </p>
+    <ul>
+      <li>Information you provide by filling out forms, including your name, email address, and phone number.</li>
+      <li>Usage data, such as IP address, browser type, visit time, and pages viewed.</li>
+      <li>Information you provide when contacting us through support or other channels.</li>
+    </ul>
+
+    <h2>2. Use of Information</h2>
+    <p>
+      We use the collected information for various purposes, including:
+    </p>
+    <ul>
+      <li>Providing and improving our services.</li>
+      <li>Ensuring security and preventing fraud.</li>
+      <li>Personalizing your experience on the site.</li>
+      <li>Communicating with you, including responding to inquiries and notifications.</li>
+      <li>Complying with legal requirements.</li>
+    </ul>
+
+    <h2>3. Sharing Information with Third Parties</h2>
+    <p>
+      We may share your data with third parties in the following cases:
+    </p>
+    <ul>
+      <li>With your consent or at your request.</li>
+      <li>To comply with legal obligations or protect our rights and interests.</li>
+      <li>With service providers who assist in operating our site and providing services.</li>
+      <li>In case of merger, sale, or reorganization, your data may be transferred to a new owner.
+      </li>
+    </ul>
+
+    <h2>4. Data Retention</h2>
+    <p>
+      We retain your personal data for the period necessary to fulfill the purposes described in this Privacy Policy, except as required by law.
+    </p>
+
+    <h2>5. Data Security</h2>
+    <p>
+      We take appropriate security measures to protect your data from unauthorized access, use, or disclosure, including encryption, firewalls, and other technologies.
+    </p>
+
+    <h2>6. Your Rights</h2>
+    <p>
+      You have the right to:
+    </p>
+    <ul>
+      <li>Request access to your data and obtain a copy of it.</li>
+      <li>Correct your data if it is inaccurate or incomplete.</li>
+      <li>Delete your data when it is no longer needed for the purposes for which it was collected.</li>
+      <li>Restrict the processing of your data under certain circumstances.</li>
+      <li>Object to the processing of your data for direct marketing or based on our legitimate interests.</li>
+    </ul>
+
+    <h2>7. Use of Cookies</h2>
+    <p>
+      We use cookies and similar technologies to improve your experience on our site. Cookies help us analyze site usage, provide personalized content, and ensure security.
+    </p>
+
+    <h2>8. External Links</h2>
+    <p>
+      Our site may contain links to other websites. We are not responsible for the privacy policies or content of these websites. We recommend reviewing the privacy policies of any sites you visit.
+    </p>
+
+    <h2>9. Policy Updates</h2>
+    <p>
+      We may update this Privacy Policy to reflect changes in our practices or legal requirements. Any changes will be posted on this page. Please check this page regularly to stay informed about updates.
+    </p>
+
+    <h2>10. Contact Information</h2>
+    <p>
+      If you have any questions or comments regarding this Privacy Policy, please contact us at: <a href="mailto:4VROBOT.com">fourvrobot.com</a>.
+    </p>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "PrivacyPolicy",
+};
+</script>
+
+<style scoped>
+h1, h2 {
+  margin-bottom: 20px;
+}
+
+p, ul {
+  line-height: 1.8;
+}
+
+a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+</style>

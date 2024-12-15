@@ -1,88 +1,90 @@
 <template>
-    <div class="terms-of-service container my-4">
-      <h1 class="text-center mb-4">Условия использования</h1>
+  <div class="news-aggregator-container">
+    <div class="header">
+      <h1 class="title text-danger">Disclaimer</h1>
+    </div>
+    <div class="content">
       <p>
-        Добро пожаловать на наш сайт. Пожалуйста, внимательно ознакомьтесь с настоящими Условиями использования перед использованием нашего сайта. Используя наш сайт, вы соглашаетесь с этими условиями.
+        This Telegram bot is an aggregator of news from around the world. We provide the
+        information “as is” and are not responsible for its accuracy, completeness or
+        currency. We do not provide opinions or assessments of news, especially regarding
+        political events. Our goal is to provide you with diverse and objective information.
       </p>
-  
-      <h2>1. Принятие условий</h2>
       <p>
-        Используя наш сайт, вы подтверждаете, что принимаете и соглашаетесь с настоящими Условиями использования. Если вы не согласны, пожалуйста, прекратите использование нашего сайта.
+        In addition, it is important to note that the user independently selects the news
+        that interests him for publication in our bot. We do not interfere in this process
+        and do not influence the choice of information provided. Our goal is simply to
+        provide a platform where users can access a wide range of news and draw their own
+        conclusions based on the data provided.
       </p>
-  
-      <h2>2. Изменения условий</h2>
       <p>
-        Мы оставляем за собой право изменять настоящие Условия использования в любое время. Обновления будут размещены на этой странице. Продолжение использования сайта после любых изменений означает ваше согласие с новыми условиями.
+        We value diversity of viewpoints and try to cover as many different topics and
+        sources of information as possible to provide our users with a comprehensive
+        understanding of current events in the world. Our goal is to promote information
+        literacy and stimulate dialogue based on facts and objective information.
       </p>
-  
-      <h2>3. Использование сайта</h2>
       <p>
-        Вы соглашаетесь использовать сайт в соответствии с законодательством и не нарушать права других лиц. Запрещается использовать сайт для распространения вредоносного контента или дезинформации.
-      </p>
-  
-      <h2>4. Интеллектуальная собственность</h2>
-      <p>
-        Весь контент на сайте, включая текст, изображения, логотипы и программное обеспечение, является нашей собственностью или собственностью наших партнеров и защищен авторским правом и другими законами. Вы не можете использовать этот контент без нашего предварительного письменного согласия.
-      </p>
-  
-      <h2>5. Ограничение ответственности</h2>
-      <p>
-        Мы не несем ответственности за любые убытки или ущерб, возникающие в результате использования или невозможности использования сайта. Мы не гарантируем точность или полноту информации на сайте.
-      </p>
-  
-      <h2>6. Внешние ссылки</h2>
-      <p>
-        На нашем сайте могут быть ссылки на внешние ресурсы. Мы не несем ответственности за контент или политику конфиденциальности этих сайтов. Использование этих ресурсов осуществляется на ваш собственный риск.
-      </p>
-  
-      <h2>7. Прекращение использования</h2>
-      <p>
-        Мы оставляем за собой право прекратить или ограничить ваш доступ к сайту в любое время без предварительного уведомления, если вы нарушаете настоящие Условия использования.
-      </p>
-  
-      <h2>8. Применимое право</h2>
-      <p>
-        Настоящие Условия использования регулируются законодательством [вашей страны]. Все споры, связанные с сайтом, будут решаться в компетентных судах [вашей страны].
-      </p>
-  
-      <h2>9. Контактная информация</h2>
-      <p>
-        Если у вас есть вопросы или комментарии по поводу настоящих Условий использования, пожалуйста, свяжитесь с нами по адресу: <a href="mailto:4VROBOT.com">fourvrobot.com</a>.
+        In addition, we regularly update our database and news selection algorithms to
+        improve the quality of information provided and provide our users with a better
+        experience using our service.
       </p>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    name: "TermsOfService",
-  };
-  </script>
-  
-  <style scoped>
-  .terms-of-service {
-    /* background-color: #f8f9fa; */
-    /* padding: 30px; */
-    /* border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
-  }
-  
-  h1, h2 {
-    /* color: #333; */
-    margin-bottom: 20px;
-  }
-  
-  p, ul {
-    line-height: 1.8;
-    /* color: #555; */
-  }
-  
-  a {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  a:hover {
-    text-decoration: underline;
-  }
-  </style>
-  
+    <div class="footer">
+      <p>Thank you for using our service!</p>
+      <p>Best regards, <strong>team</strong>.</p>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "NewsAggregator",
+};
+</script>
+
+<style scoped>
+.news-aggregator-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 12px;
+  /* background: linear-gradient(135deg, #f9f9f9, #ffffff); */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: bold;
+  /* color: #2c3e50; */
+  margin: 0;
+  padding: 10px;
+  border-bottom: 2px solid #2980b9;
+}
+
+.content {
+  font-size: 16px;
+  line-height: 1.6;
+  /* color: #34495e; */
+}
+
+.content p {
+  margin-bottom: 15px;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 16px;
+  /* color: #2c3e50; */
+  font-weight: 500;
+}
+
+.footer strong {
+  /* color: #2980b9; */
+}
+</style>

@@ -1,49 +1,44 @@
 <template>
-    <div class="about-us container my-4">
-      <h1 class="text-center mb-4">О нас</h1>
-     
-      <p>
-        <strong>4VROBOT</strong> — это инновационная платформа для распространения новостей о блокчейне, криптовалютах и IT-технологиях со всего мира. Мы специализируемся на предоставлении актуальной и качественной информации и контента.
-      </p>
-      <p>
-        Наша цель — быть надежным источником информации для всех, кто интересуется криптовалютами и технологиями. Мы стремимся держать наших пользователей в курсе последних событий и трендов в мире криптовалют.
-      </p>
-      <p>
-        <strong>4VROBOT</strong> — это не просто платформа, а полноценный сайт криптовалютных новостей, где каждый может найти полезную информацию, аналитические статьи и экспертные мнения.
-      </p>
-      <p>
-        Спасибо за доверие и выбор <strong>4VROBOT</strong> в качестве источника новостей о криптовалютах.
-      </p>
-    </div>
-  </template>
-  
-  <script>
-  export default {
-    name: "AboutUs",
-    mounted() {
-    
-    },
-    methods: {
-      
-    }
-  };
-  </script>
-  
-  <style scoped>
-  
-  
-  h1 {
-    /* color: #333; */
-    margin-bottom: 20px;
+  <div class="about-us container my-4">
+    <h1 class="text-center mb-4">About Us</h1>
+
+    <p>
+      <strong>4VROBOT</strong> is an innovative platform for spreading news about blockchain, cryptocurrencies, and IT technologies from around the world. We specialize in providing up-to-date and high-quality information and content.
+    </p>
+    <p>
+      Our goal is to be a reliable source of information for everyone interested in cryptocurrencies and technologies. We strive to keep our users informed about the latest events and trends in the world of cryptocurrencies.
+    </p>
+    <p>
+      <strong>4VROBOT</strong> is not just a platform but a full-fledged cryptocurrency news website where anyone can find useful information, analytical articles, and expert opinions.
+    </p>
+    <p>
+      Thank you for trusting and choosing <strong>4VROBOT</strong> as your source for cryptocurrency news.
+    </p>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "AboutUs",
+  mounted() {
+
+  },
+  methods: {
+
   }
-  
-  p {
-    line-height: 1.8;
-    /* color: #555; */
-  }
-  
-  strong {
-    color: cornflowerblue;
-  }
-  </style>
-  
+};
+</script>
+
+<style scoped>
+h1 {
+  margin-bottom: 20px;
+}
+
+p {
+  line-height: 1.8;
+}
+
+strong {
+  color: cornflowerblue;
+}
+</style>

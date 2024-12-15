@@ -138,14 +138,15 @@
 
 import axios from "axios";
 
- import SavedTagsMenu from "../components/SavedTagsMenu.vue";
-import NewsList from "../components/NewsList.vue";
-import { useCategoryStore } from '../stores/categories'; // Импортируем созданный магазин
-import { useChannelStore } from '../stores/channelStore';
+ import SavedTagsMenu from "../../components/SavedTagsMenu.vue";
+import NewsList from "../../components/NewsList.vue";
+import { useCategoryStore } from '../../stores/categories'; // Импортируем созданный магазин
+import { useChannelStore } from '../../stores/channelStore';
 import { mapState, mapActions } from 'pinia';
 
 export default {
   setup(){
+    
     const channelStore = useChannelStore();  
   channelStore.loadChannels(); // Вызовите метод, который загружает данные из localStorage  
   return { channelStore }; 
