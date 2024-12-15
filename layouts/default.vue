@@ -20,9 +20,9 @@
               <NuxtLink class="nav-link" to="/">Home</NuxtLink>
             </li>
             <li class="nav-item">
-              <NuxtLink class="nav-link" to="/aboutUs">About Us</NuxtLink>
+              <NuxtLink class="nav-link" to="/doc">Documentation</NuxtLink>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <NuxtLink class="nav-link" to="/privacy">Privacy Policy</NuxtLink>
             </li>
             <li class="nav-item">
@@ -30,7 +30,7 @@
             </li>
             <li class="nav-item">
               <NuxtLink class="nav-link" to="/ref">Invite Friends</NuxtLink>
-            </li>
+            </li> -->
           </ul>
         </div>
       </div>
@@ -119,12 +119,13 @@
                 <i class="bi bi-instagram"></i>
               </a>
               <a href="#" class="me-3 fs-4" aria-label="LinkedIn">
-                <i class="bi bi-linkedin"></i>
+                <i class="bi bi-telegram"></i>
               </a>
-              <a href="#" class="fs-4" aria-label="YouTube">
+              <a href="#" class="fs-4 me" aria-label="YouTube">
                 <i class="bi bi-youtube"></i>
               </a>
-            </div>
+              
+                </div>
           </div>
 
           <!-- Поле для обратной связи -->
@@ -146,7 +147,7 @@
 
           <!-- Адрес -->
           <div class="col-md-4 text-center text-md-end">
-            <p class="mb-0">4V company. fourv@gmail.com</p>
+            <p class="mb-0"> fourv@gmail.com  4V company.</p>
           </div>
         </div>
       </div>
@@ -193,18 +194,23 @@ export default {
         icon: '<i class="bi bi-tags"></i>',
         route: "/main",
       },
-
+      {
+        title: "Invite friends",
+        content: "Content for item #7.",
+        icon: '<i class="bi bi-people-fill"></i>',
+        route: "/ref",
+      },
       {
         title: "Payments",
         content: "Content for item #4.",
         icon: '<i class="bi bi-wallet2"></i>',
         route: "/pay",
       },
-      {
-        title: "About us",
-        icon: '<i class="bi bi-file-earmark-text"></i>',
-        route: "/aboutUs",
-      },
+      // {
+      //   title: "About us",
+      //   icon: '<i class="bi bi-file-earmark-text"></i>',
+      //   route: "/aboutUs",
+      // },
       {
         title: "Privacy policy",
         icon: '<i class="bi bi-shield-check"></i>',
@@ -215,18 +221,13 @@ export default {
         icon: '<i class="bi bi-file-earmark-text-fill"></i>',
         route: "/terms",
       },
-      {
-        title: "Documentation",
-        content: "Content for item #6.",
-        icon: '<i class="bi bi-filetype-doc"></i>',
-        route: "/doc",
-      },
-      {
-        title: "Invite friends",
-        content: "Content for item #7.",
-        icon: '<i class="bi bi-people-fill"></i>',
-        route: "/ref",
-      },
+      // {
+      //   title: "Documentation",
+      //   content: "Content for item #6.",
+      //   icon: '<i class="bi bi-filetype-doc"></i>',
+      //   route: "/doc",
+      // },
+      
       {
         title: "Disclaimer",
         content: "Content for item #9.",
@@ -266,6 +267,29 @@ export default {
 };
 </script>
 <style lang="css" scoped>
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.col-12.col-md-9 {
+  order: 2; /* На десктопах содержимое второе */
+}
+
+.col-12.col-md-3 {
+  order: 1; /* На десктопах сайдбар первый */
+}
+
+@media (max-width: 767px) {
+  .col-12.col-md-9 {
+    order: 1; /* На мобильных содержимое первое */
+  }
+
+  .col-12.col-md-3 {
+    order: 2; /* На мобильных сайдбар второй */
+  }
+}
+
 .navbar {
   /* background-color: #ffffff; */
   border-bottom: 1px solid #e5e5e5;
@@ -357,7 +381,7 @@ footer a:hover {
   transition: background-color 0.3s ease;
   position: absolute; /* Абсолютное позиционирование */
   top: 10px; /* Отступ сверху */
-  right: 20px; /* Отступ справа */
+  right: 0px; /* Отступ справа */
   z-index: 1000; /* Убедитесь, что кнопка поверх контента */
 }
 
@@ -372,16 +396,16 @@ footer a:hover {
 /* Настройка для мобильных устройств */
 @media (max-width: 767px) {
   .theme-toggle-btn {
-    top: 60px; /* Отступ ниже кнопки тоггл-меню */
-    right: 10px; /* Меньший отступ справа */
+    top: 63px; /* Отступ ниже кнопки тоггл-меню */
+    right: 0px; /* Меньший отступ справа */
   }
 }
 
 
-.theme-icon {
+/* .theme-icon {
   transition: transform 0.3s ease;
   caret-color: yellow;
-}
+} */
 
 .theme-toggle-btn:hover .theme-icon {
   transform: rotate(30deg);

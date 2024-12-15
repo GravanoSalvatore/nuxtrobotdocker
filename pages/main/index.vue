@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="">
       <div class="row" v-for="(cardGroup, index) in cardGroups" :key="index">
         <div class="col-md-4" v-for="card in cardGroup" :key="card.title">
           <div
@@ -43,7 +43,7 @@
         intervalId: null,
         // isMobile: window.innerWidth < 992,
         scrollPosition: 0,
-        customIconList: ["blocks-wave","3-dots-move","blocks-shuffle-3","blocks-scale", "wind-toy", "pulse", "rotate-cube","pulse-3"], // Добавьте сюда новые идентификаторы
+        customIconList: ["blocks-wave","3-dots-move","blocks-shuffle-3","blocks-scale", "wind-toy", "pulse", "rotate-cube","pulse-3","tadpole","clock"], // Добавьте сюда новые идентификаторы
         // cards: [
         //   {
         //     title: "EDITOR",
@@ -131,9 +131,16 @@
         // ],
         cards: [
         { title: "EDITOR", description: "4V.COIN", icon: "blocks-shuffle-3", route: "/main/editor" },
-        { title: "Categories", description: "4V.WEB 3.0", icon: "blocks-scale", route: "/main/category" },
-        { title: "Popular", description: "4V.DEX", icon: "wind-toy", route: "/main/popular" },
-        { title: "Search tags", description: "4V.ROBOT", icon: "pulse-3", route: "/main/tags" },
+        { title: "CATEGORIES", description: "4V.WEB 3.0", icon: "blocks-scale", route: "/main/category" },
+        { title: "POPULAR", description: "4V.DEX", icon: "wind-toy", route: "/main/popular" },
+        { title: "SEARCH TAG", description: "4V.ROBOT", icon: "pulse-3", route: "/main/tags" },
+
+        { title: "CREATE TAG", description: "4V.COIN", icon: "tadpole", route: "/main/editor" },
+        { title: "HISTORY", description: "4V.WEB 3.0", icon: "clock", route: "/main/category" },
+        
+        
+        // { title: "Popular", description: "4V.DEX", icon: "wind-toy", route: "/main/popular" },
+        // { title: "Search tags", description: "4V.ROBOT", icon: "pulse-3", route: "/main/tags" },
         // { title: "Setting", description: "CONTENTWISE", icon: "3-dots-move", route: "/main/setting" },
         // { title: "Create tag", description: "4V.COIN", icon: "blocks-wave", route: "/main/create" },
       ],

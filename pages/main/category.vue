@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="">
     <!-- Active channel ID: {{ activeChannelId }}   -->
     <div class="categories">
       <crypto v-if="selectedCategory === 'Криптовалюты'" />
