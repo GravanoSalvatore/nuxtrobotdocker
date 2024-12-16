@@ -58,14 +58,14 @@
     >
       <Icon
         v-if="!themeStore.isDark"
-        name="meteocons:clear-day-fill"
+        name="meteocons:clear-day"
         style="font-size: 30px; margin-left: 20px"
       />
 
       
       <Icon
         v-else
-        name="meteocons:clear-night-fill"
+        name="meteocons:clear-night"
         style="font-size: 30px; margin-left: 20px"
       />
     </button>
@@ -94,20 +94,11 @@
             </div>
           </div>
         </div>
-      </div>
-
-      <!-- Правая колонка -->
-      <div class="col-12 col-md-9 p" ref="newsContainer">
-        <div class="row container p">
-          <NuxtPage />
-        </div>
-      </div>
-    </div>
-    <footer class="py-4">
+        <footer class="py-4">
       <div class="container">
         <div class="row align-items-center">
           <!-- Социальные иконки -->
-          <div class="col-md-4 text-center text-md-start mb-3 mb-md-0">
+          <div class="col-md-12 text-center text-md-start mb-3 mb-md-0 mt-4">
             <div class="d-flex justify-content-center justify-content-md-start">
               <a href="#" class="me-3 fs-4" aria-label="Facebook">
                 <i class="bi bi-facebook"></i>
@@ -121,15 +112,17 @@
               <a href="#" class="me-3 fs-4" aria-label="LinkedIn">
                 <i class="bi bi-telegram"></i>
               </a>
-              <a href="#" class="fs-4 me" aria-label="YouTube">
+              <a href="#" class="fs-4 me-3" aria-label="YouTube">
                 <i class="bi bi-youtube"></i>
               </a>
-              
+              <a href="#" class="fs-4 me-3" aria-label="YouTube">
+                <i class="bi bi-reddit"></i>
+              </a>
                 </div>
           </div>
 
           <!-- Поле для обратной связи -->
-          <div class="col-md-4 mb-3 mb-md-0">
+          <div class="col-md-12 mb-3 mb-md-0 mt-4">
             <form @submit.prevent="sendFeedback">
               <div class="input-group">
                 <input
@@ -146,13 +139,23 @@
           </div>
 
           <!-- Адрес -->
-          <div class="col-md-4 text-center text-md-end">
-            <p class="mb-0"> fourv@gmail.com  4V company.</p>
+          <div class="col-md-12 text-center text-md-end mt-4">
+            <p class="mb-0 fw-bold"> fourv@gmail.com  4V company.</p>
           </div>
         </div>
       </div>
     </footer>
-  </div>
+
+      </div>
+
+      <!-- Правая колонка -->
+      <div class="col-12 col-md-9 p" ref="newsContainer">
+        <div class="row container p">
+          <NuxtPage />
+        </div>
+      </div>
+    </div>
+     </div>
 </template>
 
 <script>
@@ -292,7 +295,7 @@ export default {
 
 .navbar {
   /* background-color: #ffffff; */
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid cornflowerblue;
 }
 
 .navbar-brand {
