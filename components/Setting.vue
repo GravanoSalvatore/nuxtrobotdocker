@@ -1,6 +1,6 @@
 <template>
     <div class="">
-      <h3 class="">Manage Channels</h3>
+      <!-- <h3 class="">Manage Channels</h3> -->
   
       <!-- Форма для добавления канала -->
       <form @submit.prevent="handleAddChannel" class="mb-4">

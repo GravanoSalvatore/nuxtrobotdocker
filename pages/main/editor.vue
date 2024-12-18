@@ -496,7 +496,7 @@ export default {
       <textarea 
         v-model="message" 
         class="form-control message-textarea mt-2" 
-        placeholder="Напишите сообщение для Telegram канала..."
+        placeholder="Write a message for the Telegram channel..."
         rows="6"
       ></textarea>
       <input
@@ -579,7 +579,7 @@ style="display: none"
           class="btn-danger1 ms-2"
           :disabled="!message && !uploadedFiles.length"
         >
-          <i class="bi bi-send"></i> Отправить
+          <i class="bi bi-send"></i> 
         </button>
       </div>
       <!-- Превью загруженных медиафайлов -->
@@ -869,8 +869,8 @@ export default {
 
 .media-item {
   position: relative;
-  width: 150px;
-  height: 150px;
+  width: 120px;
+  height: 120px;
   overflow: hidden;
   border-radius: 8px;
   display: flex;
