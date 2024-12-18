@@ -34,92 +34,14 @@
     />  
   </svg>  
 </div>
-    <!-- <div class="search-container">
-      <input
-        type="text"
-        v-model="query"
-        class="form-control mb-3"
-        placeholder="Search..."
-        style="
-        max-width: 300px; 
-        display: inline-block;
-        border: none !important;
-        "
-      />
-      <svg
-        @click="searchTags"
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        fill="currentColor"
-        class="bi bi-search pointer"
-        viewBox="0 0 16 16"
-        style="cursor: pointer; margin-left: 10px"
-      >
-        <path
-          d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"
-        />
-      </svg>
-    </div> -->
-
-    <!-- <div class="search-container">  
-  <div class="input-group">  
-    <input  
-      type="text"  
-      v-model="query"  
-      class="form-control mb-3"  
-      placeholder="Search..."  
-      style="max-width: 300px; display: inline-block; border: none !important;"  
-    >  
-    <button  
-      class="btn btn-outline-secondary btn-sm"  
-      type="button"  
-      v-if="query"  
-      @click="query = ''"  
-      style="margin-left: -40px;"  
-    >  
-      <i class="bi bi-x-lg"></i>  
-    </button>  
-  </div>  
-</div> -->
-    
-
-
+   
 
 
 
 <!-- Список тегов -->
     <div class="tags-list">
       <div class="tags-lis" v-if="tags.length > 0">
-        <!-- <div class="">
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="radio"
-              name="sortOptions"
-              id="sortPopularity"
-              value="popularity"
-              v-model="sortOption"
-              @change="updateSortOption($event.target.value)"
-            />
-            <label class="form-check-label" for="sortPopularity">Popular</label>
-          </div>
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="radio"
-              name="sortOptions"
-              id="sortAlphabet"
-              value="alphabet"
-              v-model="sortOption"
-              @change="updateSortOption($event.target.value)"
-            />
-            <label class="form-check-label" for="sortAlphabet"
-              >Alphabetical</label
-            >
-          </div>
-        </div> -->
-
+       
         <div style="margin-left: 23px" class="mb-1 fw-bold pt-4">
           Total: {{ tags.length }}
         </div>
@@ -138,15 +60,8 @@
             <span class="badge">{{ tag.popularity }}</span>
           </button>
         </div>
-        <div style="margin-left: 23px" class="mb-1 fw-bold pt-4">
-          <!-- Total: {{ tags.length }} -->
-        </div>
-        <!-- <img
-            class="pointer mt-3"
-            @click="scrollToTop"
-            style="width: 50px; cursor: pointer;"
-            src="https://cdn3d.iconscout.com/3d/premium/thumb/top-arrow-3d-icon-download-in-png-blend-fbx-gltf-file-formats--up-direction-arrows-universal-3-pack-icons-6138447.png?f=webp"
-          /> -->
+       
+        
       </div>
     </div>
  
@@ -154,23 +69,30 @@
     <div v-if="news.length > 0" class="news-list">
     <div style="position: relative;">
       <div class="saved-tags">
+      
+      <div class="saved-tags">
           <span
             v-for="tag in savedTags"
             :key="tag"
-            class="badge bg-success saved-tag"
+            class="badge bg-success saved-tag pointer"
             @click="fetchNews(tag)"
           >
             {{ tag }}
             <i @click.stop="removeSavedTag(tag)" class="bi bi-x-circle pointer text-white"></i>
           </span>
         </div>
-      <button
-        class="btn-danger1 me-2"
-        :class="{ 'btn-primary': isTagSaved }"
-        @click="toggleSaveTag(currentTag)"
-      >
-        {{ isTagSaved ? "Delete" : "Save" }}
-      </button>
+
+        
+        </div>
+       
+        <button
+          class="btn-danger1 me-2"
+          :class="{ 'btn-danger': isTagSaved }"
+          @click="toggleSaveTag(currentTag)"
+        >
+          {{ isTagSaved ? "Delete" : "Save" }}
+        </button>
+     
 
       <button
           @click="toggleAutopilot"
@@ -354,6 +276,7 @@
 </template>
 
 <script>
+import { useTopPopularStore } from "../../stores/popular";
 import { useTagStore } from "../../stores/tags";
 import { useChannelStore } from '@/stores/channelStore';
 import { computed, onMounted, ref } from "vue";
@@ -365,10 +288,30 @@ export default {
   components: { setting},
   
   setup(props) {
-    
+    const store = useTagStore();
+    const channelStore = useChannelStore();
+    const popularStore = useTopPopularStore();
+   
     const autopilotInterval = ref(null);
     const autopilotActive = ref(false);
     
+//getters
+const savedTags = computed(() => popularStore.savedTags);
+const sortedTags = computed(() => store.sortedTags);
+const isTagSaved = computed(() => popularStore.isTagSaved);
+const currentTag = computed(() => popularStore.currentTag);
+// const tags = computed(() => popularStore.tags);
+const toggleSaveTag = (tag) => {
+  popularStore.toggleSaveTag(tag);
+    };
+    const removeSavedTag = (tag) => {
+      popularStore.savedTags = popularStore.savedTags.filter((savedTag) => savedTag !== tag); // Удаляем тег
+      localStorage.setItem("savedTags", JSON.stringify(popularStore.savedTags)); // Сохраняем изменения в localStorage
+      console.log("Тег удалён:", tag);
+    };
+
+
+
     const toggleAutopilot = () => {
       if (autopilotActive.value) {
         clearInterval(autopilotInterval.value);
@@ -386,8 +329,7 @@ export default {
       }
     };
 
-    const store = useTagStore();
-    const channelStore = useChannelStore();
+   
     // Действия
     const activeChannelId = computed(() => channelStore.activeChannelId); // Достаём ID активного канала
 
@@ -432,7 +374,8 @@ export default {
     };
 
     const searchTags = () => store.searchTags();
-    const fetchNews = (tagName) => store.fetchNews(tagName);
+    
+     const fetchNews = (tagName) => store.fetchNews(tagName);
     const clearNews = () => store.clearNews();
    
     const sendToTelegram = (item) => {
@@ -444,35 +387,43 @@ export default {
     };
 
     // const sendToTelegram = (item) => store.sendToTelegram(item, activeChannelId.value);
-    const toggleSaveTag = (tag) => store.toggleSaveTag(tag);
+    // const toggleSaveTag = (tag) => store.toggleSaveTag(tag);
     const scrollToTop = () => store.scrollToTop(tagsList.value);
     const sendChatIdAndTagId = () => {
       // Реализуйте логику автоматической отправки данных
     };
 
     onMounted(() => {
-      // store.loadSavedTags();
+      popularStore.loadSavedTags();
     });
 
     return {
+      savedTags,
+      toggleSaveTag,
+      removeSavedTag,
+      sortedTags,
+      isTagSaved,
+      currentTag,
+      // tags,
       autopilotActive,
       toggleAutopilot,
       query,
-      tags: computed(() => store.tags),
+     tags: computed(() => store.tags),
       news: computed(() => store.news),
       loading: computed(() => store.loading),
       sortOption,
       totalTags: computed(() => store.totalTags),
       progress: computed(() => store.progress),
       image: computed(() => store.image),
-      sortedTags: computed(() => store.sortedTags),
-      currentTag: computed(() => store.currentTag),
-      isTagSaved: computed(() => store.isTagSaved),
+      // sortedTags: computed(() => store.sortedTags),
+      // currentTag: computed(() => store.currentTag),
+      // isTagSaved: computed(() => store.isTagSaved),
       searchTags,
       fetchNews,
       clearNews,
       sendToTelegram,
-      toggleSaveTag,
+      // toggleSaveTag,
+      
       scrollToTop,
       tagsList,
       sendChatIdAndTagId,
