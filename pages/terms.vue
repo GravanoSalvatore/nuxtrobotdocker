@@ -47,7 +47,7 @@
   
       <h2>9. Contact Information</h2>
       <p>
-        If you have questions or comments regarding these Terms of Service, please contact us at: <a href="mailto:4VROBOT.com">fourvrobot.com</a>.
+        If you have questions or comments regarding these Terms of Service, please contact us at: <a href="mailto:4VROBOT">fourvrobot</a>.
       </p>
     </div>
   </template>

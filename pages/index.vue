@@ -6,7 +6,7 @@
         
       <div class="video-wrapper">
         <video controls class="video-player" @play="isVideoPlaying = true" @pause="isVideoPlaying = false">
-          <source src="../assets/video.mp4" type="video/mp4" />
+          <source src="../public/video.mp4" type="video/mp4" />
           Ваш браузер не поддерживает тег видео.
         </video>
         <div v-if="!isVideoPlaying" class="overlay-text text-center">Video guide for using </div>
@@ -16,7 +16,7 @@
     <h4 style="color: cornflowerblue"  v-if="isDesktop" class="fw-bold">4V.ROBOT<span style="font-size: 16px;"> is an indispensable assistant for channel administration. Create channels on popular social media platforms and automate the process with our bot.
         4V.ROBOT integrates elements of artificial intelligence to optimize bot performance and provides integration with various social networks such as Telegram, Twitter*, and Facebook*. These bots allow users to receive instant news updates and automate social media content management.
     </span>
-    <p style="color: cornflowerblue">* Under development</p></h4>
+    <p style="color: cornflowerblue;font-size: 18px;">* Under development</p></h4>
    
     </div>
 </div>
