@@ -14,7 +14,7 @@
     </div>
     <div class="container ">
     <h4 style="color: cornflowerblue"  v-if="isDesktop" class="fw-bold">4V.ROBOT<span style="font-size: 16px;"> is an indispensable assistant for channel administration. Create channels on popular social media platforms and automate the process with our bot.
-        4V.ROBOT integrates elements of artificial intelligence to optimize bot performance and provides integration with various social networks such as Telegram, Twitter*, and Facebook*. These bots allow users to receive instant news updates and automate social media content management.
+      <br/>  4V.ROBOT integrates elements of artificial intelligence to optimize bot performance and provides integration with various social networks such as Telegram, Twitter*, and Facebook*. These bots allow users to receive instant news updates and automate social media content management.
     </span>
     <p style="color: cornflowerblue;font-size: 18px;">* Under development</p></h4>
    
@@ -28,6 +28,7 @@
   export default {
     name: 'ResponsiveVideo',
     setup() {
+      
       const isDesktop = ref(true);
       const isVideoPlaying = ref(false);
   

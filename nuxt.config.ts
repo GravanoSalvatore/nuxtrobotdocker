@@ -32,6 +32,9 @@ export default defineNuxtConfig({
   css: ['@/assets/scss/global.scss'], // Глобальные стили
   vite: {
     css: {
+      optimizeDeps: {
+        include: ['emoji-picker-element'],
+      },
       preprocessorOptions: {
         scss: {
           additionalData: `
@@ -82,5 +85,5 @@ export default defineNuxtConfig({
   //     collections: ['uil', 'mdi'] // <!--- this
   //   }
   // }
-
+  
 })

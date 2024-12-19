@@ -8,14 +8,27 @@
         placeholder="Write a message for the Telegram channel..."
         rows="6"
       ></textarea>
+     
       <input
         type="text"
         v-model="gifSearchQuery"
         class="form-control mt-2"
-        placeholder="Поиск GIF..."
+        placeholder="Search GIF..."
       />
 
-          
+        <!-- Кнопка отображения Emoji Picker -->
+ <client-only>
+        <button class="btn-danger1 mt-2" @click="toggleEmojiPicker">
+          <i class="bi" :class="showEmojiPicker ? 'bi-x-circle' : 'bi-emoji-smile'"></i>
+        </button>
+
+        <!-- Emoji Picker -->
+        <div v-if="showEmojiPicker" class="emoji-picker-container mt-2">
+          <emoji-picker @emoji-click="addEmoji"></emoji-picker>
+        </div>
+      </client-only>
+ 
+ 
 <!-- Панель управления медиа -->
 <div class="media-controls mt-3">
         <!-- Кнопки загрузки медиа -->
@@ -82,8 +95,7 @@ style="display: none"
           </ul>
         </div>
 
-
-
+ 
 
 
       
@@ -194,277 +206,49 @@ style="display: none"
   </div>
 </template>
 
-<!-- <script>
-import { ref, reactive, watch } from 'vue';
-import axios from 'axios';
-import { useChannelStore } from '@/stores/channelStore';
-
-export default {
-  setup() {
-    const channelStore = useChannelStore();
-    const botToken = "6903896787:AAG-rPGukp422cw17k4y17UsJUiDMl5tdbc";
-    const message = ref('');
-    const uploadedFiles = ref([]);
-    const gifSearchQuery = ref('');
-    const searchResults = ref([]);
-    const selectedGif = ref(null);
-    const options = reactive({
-      spoilerMode: false,
-      sendWithPreview: true
-    });
-
-    const isRecording = ref(false);
-    const recordedAudio = ref(null);
-    let mediaRecorder;
-    let audioChunks = [];
-
-    const startRecording = () => {
-      console.log('Начало записи аудио');
-      navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
-        mediaRecorder = new MediaRecorder(stream);
-        mediaRecorder.start();
-        isRecording.value = true;
-        audioChunks = [];
-
-        mediaRecorder.ondataavailable = (event) => {
-          audioChunks.push(event.data);
-        };
-
-        mediaRecorder.onstop = () => {
-          console.log('Запись остановлена');
-          const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-          recordedAudio.value = URL.createObjectURL(audioBlob);
-          uploadedFiles.value.push({
-            file: audioBlob,
-            preview: recordedAudio.value,
-            type: 'audio/wav'
-          });
-        };
-      }).catch((error) => {
-        console.error('Ошибка доступа к микрофону:', error);
-      });
-    };
-
-    const stopRecording = () => {
-      if (mediaRecorder) {
-        console.log('Остановка записи аудио');
-        mediaRecorder.stop();
-        isRecording.value = false;
-      }
-    };
-
-    const pauseRecording = () => {
-      if (mediaRecorder && isRecording.value) {
-        console.log('Пауза записи аудио');
-        mediaRecorder.pause();
-        isRecording.value = false;
-      }
-    };
-
-
-
-
-    const handleFileUpload = (event) => {
-      const files = Array.from(event.target.files);
-      files.forEach((file) => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          uploadedFiles.value.push({
-            file,
-            preview: e.target.result,
-            type: file.type
-          });
-        };
-        reader.readAsDataURL(file);
-      });
-    };
-
-    const searchGifs = async () => {
-      console.log("Поиск GIF начался с запросом:", gifSearchQuery.value);
-      if (!gifSearchQuery.value.trim()) {
-        console.warn("Пустой поисковый запрос!");
-        searchResults.value = [];
-        return;
-      }
-
-      try {
-        const response = await axios.get(
-          `https://api.giphy.com/v1/gifs/search`,
-          {
-            params: {
-              api_key: 'fADq5TfaTTfCcdSmI7jd3znNii8C1SqA',
-              q: gifSearchQuery.value,
-              limit: 50
-            }
-          }
-        );
-        searchResults.value = response.data.data.map((gif) => ({
-          ...gif,
-          isSelected: false
-        }));
-        console.log("Найдено GIF:", searchResults.value.length);
-      } catch (error) {
-        console.error('Ошибка поиска GIF:', error);
-      }
-    };
-
-    const selectGif = (gif) => {
-      console.log("GIF выбран:", gif.images.original.url);
-      selectedGif.value = gif.images.original.url;
-      searchResults.value = searchResults.value.map((g) => ({
-        ...g,
-        isSelected: g.images.original.url === gif.images.original.url
-      }));
-    };
-
-    watch(gifSearchQuery, searchGifs);
-
-    const sendMedia = async () => {
-      try {
-        const media = uploadedFiles.value.map((file, index) => ({
-          type: file.type.startsWith('image/') ? 'photo' : 'video',
-          media: `attach://${file.file.name}`,
-          caption: index === 0 ? message.value || ' ' : undefined,
-          has_spoiler: options.spoilerMode
-        }));
-
-        const formData = new FormData();
-        formData.append('chat_id', channelStore.activeChannelId);
-        formData.append('media', JSON.stringify(media));
-
-        uploadedFiles.value.forEach((file) => {
-          formData.append(file.file.name, file.file);
-        });
-
-        const response = await axios.post(
-          `https://api.telegram.org/bot${botToken}/sendMediaGroup`,
-          formData,
-          { headers: { 'Content-Type': 'multipart/form-data' } }
-        );
-
-        console.log('Ответ Telegram API (sendMediaGroup):', response.data);
-
-        uploadedFiles.value = [];
-        message.value = '';
-        alert('Медиа успешно отправлено!');
-      } catch (error) {
-        console.error('Ошибка при отправке медиа:', error.response?.data || error.message);
-      }
-    };
-
-    const sendMessage = async () => {
-      if (uploadedFiles.value.length > 0) {
-        await sendMedia();
-      } else if (selectedGif.value) {
-        try {
-          const caption = message.value.trim() || ' '; // Пробел если текста нет
-          console.log("Подставленный caption:", caption);
-          const payload = {
-            chat_id: channelStore.activeChannelId,
-            animation: selectedGif.value,
-            caption,
-            disable_web_page_preview: !options.sendWithPreview
-          };
-          console.log("Отправка GIF с данными:", payload);
-          await axios.post(
-            `https://api.telegram.org/bot${botToken}/sendAnimation`,
-            payload
-          );
-          alert('GIF успешно отправлен!');
-          selectedGif.value = null;
-          message.value = '';
-        } catch (error) {
-          console.error('Ошибка отправки GIF:', error.response?.data || error.message);
-        }
-      } else if (recordedAudio.value) {
-        try {
-          console.log('Отправка аудио в Telegram');
-          const formData = new FormData();
-          formData.append('chat_id', channelStore.activeChannelId);
-          formData.append('audio', uploadedFiles.value[0].file);
-
-          const response = await axios.post(
-            `https://api.telegram.org/bot${botToken}/sendAudio`,
-            formData,
-            { headers: { 'Content-Type': 'multipart/form-data' } }
-          );
-          console.log('Аудио успешно отправлено:', response.data);
-          recordedAudio.value = null;
-        } catch (error) {
-          console.error('Ошибка отправки аудио:', error.response?.data || error.message);
-        }
-      } else if (message.value.trim()) {
-        try {
-          const payload = {
-            chat_id: channelStore.activeChannelId,
-            text: message.value,
-            disable_web_page_preview: !options.sendWithPreview
-          };
-          console.log('Отправка текста в Telegram', payload);
-          await axios.post(
-            `https://api.telegram.org/bot${botToken}/sendMessage`,
-            payload
-          );
-          alert('Сообщение успешно отправлено!');
-          message.value = '';
-        } catch (error) {
-          console.error('Ошибка отправки сообщения:', error.response?.data || error.message);
-        }
-      } else {
-        console.warn("Нечего отправлять!");
-      }
-    };
-
-    const removeFile = (index) => {
-      uploadedFiles.value.splice(index, 1);
-    };
-
-    const resetAllFields = () => {
-      message.value = '';
-      uploadedFiles.value = [];
-      gifSearchQuery.value = '';
-      searchResults.value = [];
-      selectedGif.value = null;
-    };
-
-    const closeGifResults = () => {
-      console.log("Закрытие списка GIF");
-      searchResults.value = [];
-    };
-
-    return {
-      isRecording,
-      recordedAudio,
-      startRecording,
-      stopRecording,
-      pauseRecording,
-      message,
-      uploadedFiles,
-      gifSearchQuery,
-      searchResults,
-      selectedGif,
-      options,
-      handleFileUpload,
-      searchGifs,
-      selectGif,
-      sendMessage,
-      removeFile,
-      resetAllFields,
-      closeGifResults
-    };
-  }
-};
-</script> -->
 
 <script>
 import { ref, reactive, watch } from 'vue';
 import axios from 'axios';
 import { useChannelStore } from '@/stores/channelStore';
-
+import "emoji-picker-element";
 export default {
   setup() {
     const channelStore = useChannelStore();
-    const botToken = "6903896787:AAG-rPGukp422cw17k4y17UsJUiDMl5tdbc";
+    const botToken = channelStore.botToken
+    const showEmojiPicker = ref(false);
+    // Переключение видимости Emoji Picker
+    const toggleEmojiPicker = () => {
+      console.log("Текущий статус showEmojiPicker:", showEmojiPicker.value);
+      showEmojiPicker.value = !showEmojiPicker.value;
+      console.log("Новый статус showEmojiPicker:", showEmojiPicker.value);
+    };
+
+    // Добавление эмодзи в текст
+    const addEmoji = (event) => {
+      console.log("Событие выбора эмодзи:", event);
+      if (event?.detail?.unicode) {
+        message.value += event.detail.unicode;
+        console.log("Эмодзи добавлено в сообщение:", message.value);
+      } else {
+        console.warn("Ошибка: Unicode эмодзи не найден!");
+      }
+    };
+
+    // Импорт emoji-picker-element
+    if (typeof window !== 'undefined') {
+      import('emoji-picker-element')
+        .then(() => console.log("Emoji Picker успешно загружен"))
+        .catch((error) => console.error("Ошибка загрузки Emoji Picker:", error));
+    } else {
+      console.warn("Серверное окружение: emoji-picker не загружен.");
+    }
+
+
+
+
+
+
     const message = ref('');
     const uploadedFiles = ref([]);
     const gifSearchQuery = ref('');
@@ -529,66 +313,291 @@ export default {
         isRecording.value = false;
       }
     };
+//     const sendMessage = async () => {
+//   if (uploadedFiles.value.length > 0) {
+//     try {
+//       console.log("Отправка медиафайлов в Telegram");
+//       const media = uploadedFiles.value.map((file, index) => ({
+//         type: file.type.startsWith('image/') ? 'photo' : 'video',
+//         media: `attach://${file.file.name}`,
+//         caption: index === 0 ? message.value || ' ' : undefined,
+//         has_spoiler: options.spoilerMode
+//       }));
 
+//       const formData = new FormData();
+//       formData.append('chat_id', channelStore.activeChannelId);
+//       formData.append('media', JSON.stringify(media));
+
+//       uploadedFiles.value.forEach((file) => {
+//         formData.append(file.file.name, file.file);
+//       });
+
+//       const response = await axios.post(
+//         `https://api.telegram.org/bot${botToken}/sendMediaGroup`,
+//         formData,
+//         { headers: { 'Content-Type': 'multipart/form-data' } }
+//       );
+
+//       console.log('Медиа успешно отправлено:', response.data);
+//       uploadedFiles.value = [];
+//       message.value = '';
+//       alert('Медиа успешно отправлено!');
+//     } catch (error) {
+//       console.error('Ошибка отправки медиа:', error.response?.data || error.message);
+//     }
+//   } else if (selectedGif.value) {
+//     try {
+//       const caption = message.value.trim() || ' ';
+//       const payload = {
+//         chat_id: channelStore.activeChannelId,
+//         animation: selectedGif.value,
+//         caption,
+//         disable_web_page_preview: !options.sendWithPreview
+//       };
+//       console.log("Отправка GIF с данными:", payload);
+//       await axios.post(
+//         `https://api.telegram.org/bot${botToken}/sendAnimation`,
+//         payload
+//       );
+//       alert('GIF успешно отправлен!');
+//       selectedGif.value = null;
+//       message.value = '';
+//     } catch (error) {
+//       console.error('Ошибка отправки GIF:', error.response?.data || error.message);
+//     }
+//   } else if (recordedAudio.value) {
+//     try {
+//       console.log('Отправка аудио в Telegram');
+//       const formData = new FormData();
+//       formData.append('chat_id', channelStore.activeChannelId);
+
+//       // Настройка аудиофайла
+//       const audioFile = uploadedFiles.value[0].file;
+//       formData.append('audio', audioFile, 'recorded-audio.mp3');
+
+//       // Указываем название и исполнителя
+//       formData.append('performer', 'Voice Recorder'); // Исполнитель
+//       formData.append('title', 'Запись с диктофона'); // Название аудиофайла
+
+//       // Заголовок (описание)
+//       formData.append('caption', message.value || 'Аудиозапись');
+
+//       // Добавление превью
+//       try {
+//         const thumbnailBlob = await fetch('/audio-thumbnail.png').then((res) =>
+//           res.blob()
+//         );
+//         formData.append('thumb', thumbnailBlob, 'thumbnail.jpg');
+//       } catch (error) {
+//         console.warn("Ошибка загрузки превью:", error.message);
+//       }
+
+//       const response = await axios.post(
+//         `https://api.telegram.org/bot${botToken}/sendAudio`,
+//         formData,
+//         { headers: { 'Content-Type': 'multipart/form-data' } }
+//       );
+
+//       console.log('Аудио успешно отправлено:', response.data);
+//       recordedAudio.value = null;
+//       alert('Аудио успешно отправлено!');
+//     } catch (error) {
+//       console.error('Ошибка отправки аудио:', error.response?.data || error.message);
+//     }
+//   } else if (message.value.trim()) {
+//     try {
+//       const payload = {
+//         chat_id: channelStore.activeChannelId,
+//         text: message.value,
+//         disable_web_page_preview: !options.sendWithPreview
+//       };
+//       await axios.post(
+//         `https://api.telegram.org/bot${botToken}/sendMessage`,
+//         payload
+//       );
+//       alert('Сообщение успешно отправлено!');
+//       message.value = '';
+//     } catch (error) {
+//       console.error('Ошибка отправки сообщения:', error.response?.data || error.message);
+//     }
+//   } else {
+//     console.warn("Нечего отправлять!");
+//   }
+// };
+
+
+
+
+    // const sendMessage = async () => {
+    //   if (uploadedFiles.value.length > 0) {
+    //     await sendMedia();
+    //   } else if (selectedGif.value) {
+    //     try {
+    //       const caption = message.value.trim() || ' ';
+    //       const payload = {
+    //         chat_id: channelStore.activeChannelId,
+    //         animation: selectedGif.value,
+    //         caption,
+    //         disable_web_page_preview: !options.sendWithPreview
+    //       };
+    //       console.log("Отправка GIF с данными:", payload);
+    //       await axios.post(
+    //         `https://api.telegram.org/bot${botToken}/sendAnimation`,
+    //         payload
+    //       );
+    //       alert('GIF успешно отправлен!');
+    //       selectedGif.value = null;
+    //       message.value = '';
+    //     } catch (error) {
+    //       console.error('Ошибка отправки GIF:', error.response?.data || error.message);
+    //     }
+    //   } else if (recordedAudio.value) {
+    //     try {
+    //       const formData = new FormData();
+    //       formData.append('chat_id', channelStore.activeChannelId);
+    //       formData.append('audio', uploadedFiles.value[0].file);
+
+    //       const response = await axios.post(
+    //         `https://api.telegram.org/bot${botToken}/sendAudio`,
+    //         formData,
+    //         { headers: { 'Content-Type': 'multipart/form-data' } }
+    //       );
+    //       console.log('Аудио успешно отправлено:', response.data);
+    //       recordedAudio.value = null;
+    //     } catch (error) {
+    //       console.error('Ошибка отправки аудио:', error.response?.data || error.message);
+    //     }
+    //   } else if (message.value.trim()) {
+    //     try {
+    //       const payload = {
+    //         chat_id: channelStore.activeChannelId,
+    //         text: message.value,
+    //         disable_web_page_preview: !options.sendWithPreview
+    //       };
+    //       await axios.post(
+    //         `https://api.telegram.org/bot${botToken}/sendMessage`,
+    //         payload
+    //       );
+    //       alert('Сообщение успешно отправлено!');
+    //       message.value = '';
+    //     } catch (error) {
+    //       console.error('Ошибка отправки сообщения:', error.response?.data || error.message);
+    //     }
+    //   } else {
+    //     console.warn("Нечего отправлять!");
+    //   }
+    // };
     const sendMessage = async () => {
-      if (uploadedFiles.value.length > 0) {
-        await sendMedia();
-      } else if (selectedGif.value) {
-        try {
-          const caption = message.value.trim() || ' ';
-          const payload = {
-            chat_id: channelStore.activeChannelId,
-            animation: selectedGif.value,
-            caption,
-            disable_web_page_preview: !options.sendWithPreview
-          };
-          console.log("Отправка GIF с данными:", payload);
-          await axios.post(
-            `https://api.telegram.org/bot${botToken}/sendAnimation`,
-            payload
-          );
-          alert('GIF успешно отправлен!');
-          selectedGif.value = null;
-          message.value = '';
-        } catch (error) {
-          console.error('Ошибка отправки GIF:', error.response?.data || error.message);
-        }
-      } else if (recordedAudio.value) {
-        try {
-          const formData = new FormData();
-          formData.append('chat_id', channelStore.activeChannelId);
-          formData.append('audio', uploadedFiles.value[0].file);
+  if (uploadedFiles.value.length > 0) {
+    try {
+      console.log("Отправка медиафайлов в Telegram");
+      const media = uploadedFiles.value.map((file, index) => ({
+        type: file.type.startsWith('image/') ? 'photo' : 'video',
+        media: `attach://${file.file.name}`,
+        caption: index === 0 ? message.value || ' ' : undefined,
+        has_spoiler: options.spoilerMode
+      }));
 
-          const response = await axios.post(
-            `https://api.telegram.org/bot${botToken}/sendAudio`,
-            formData,
-            { headers: { 'Content-Type': 'multipart/form-data' } }
-          );
-          console.log('Аудио успешно отправлено:', response.data);
-          recordedAudio.value = null;
-        } catch (error) {
-          console.error('Ошибка отправки аудио:', error.response?.data || error.message);
-        }
-      } else if (message.value.trim()) {
-        try {
-          const payload = {
-            chat_id: channelStore.activeChannelId,
-            text: message.value,
-            disable_web_page_preview: !options.sendWithPreview
-          };
-          await axios.post(
-            `https://api.telegram.org/bot${botToken}/sendMessage`,
-            payload
-          );
-          alert('Сообщение успешно отправлено!');
-          message.value = '';
-        } catch (error) {
-          console.error('Ошибка отправки сообщения:', error.response?.data || error.message);
-        }
-      } else {
-        console.warn("Нечего отправлять!");
+      const formData = new FormData();
+      formData.append('chat_id', channelStore.activeChannelId);
+      formData.append('media', JSON.stringify(media));
+
+      uploadedFiles.value.forEach((file) => {
+        formData.append(file.file.name, file.file);
+      });
+
+      const response = await axios.post(
+        `https://api.telegram.org/bot${botToken}/sendMediaGroup`,
+        formData,
+        { headers: { 'Content-Type': 'multipart/form-data' } }
+      );
+
+      console.log('Медиа успешно отправлено:', response.data);
+      uploadedFiles.value = [];
+      message.value = '';
+      alert('Медиа успешно отправлено!');
+    } catch (error) {
+      console.error('Ошибка отправки медиа:', error.response?.data || error.message);
+    }
+  } else if (selectedGif.value) {
+    try {
+      const caption = message.value.trim() || ' ';
+      const payload = {
+        chat_id: channelStore.activeChannelId,
+        animation: selectedGif.value,
+        caption,
+        disable_web_page_preview: !options.sendWithPreview
+      };
+      console.log("Отправка GIF с данными:", payload);
+      await axios.post(
+        `https://api.telegram.org/bot${botToken}/sendAnimation`,
+        payload
+      );
+      alert('GIF успешно отправлен!');
+      selectedGif.value = null;
+      message.value = '';
+    } catch (error) {
+      console.error('Ошибка отправки GIF:', error.response?.data || error.message);
+    }
+  } else if (recordedAudio.value) {
+    try {
+      console.log('Отправка аудио в Telegram');
+      const formData = new FormData();
+      formData.append('chat_id', channelStore.activeChannelId);
+
+      // Настройка аудиофайла
+      const audioFile = uploadedFiles.value[0].file;
+      formData.append('audio', audioFile, 'recorded-audio.mp3');
+
+      // Указываем название и исполнителя
+      formData.append('performer', 'Voice Recorder'); // Исполнитель
+      formData.append('title', 'Запись с диктофона'); // Название аудиофайла
+
+      // Заголовок (описание)
+      formData.append('caption', message.value || 'Аудиозапись');
+
+      // Добавление превью
+      try {
+        const thumbnailBlob = await fetch('../assets/img/4vrobot.png').then((res) =>
+          res.blob()
+        );
+        formData.append('thumb', thumbnailBlob, 'thumbnail.jpg'); // Добавляем превью
+      } catch (error) {
+        console.warn("Ошибка загрузки превью:", error.message);
       }
-    };
+
+      const response = await axios.post(
+        `https://api.telegram.org/bot${botToken}/sendAudio`,
+        formData,
+        { headers: { 'Content-Type': 'multipart/form-data' } }
+      );
+
+      console.log('Аудио успешно отправлено:', response.data);
+      recordedAudio.value = null;
+      alert('Аудио успешно отправлено!');
+    } catch (error) {
+      console.error('Ошибка отправки аудио:', error.response?.data || error.message);
+    }
+  } else if (message.value.trim()) {
+    try {
+      const payload = {
+        chat_id: channelStore.activeChannelId,
+        text: message.value,
+        disable_web_page_preview: !options.sendWithPreview
+      };
+      await axios.post(
+        `https://api.telegram.org/bot${botToken}/sendMessage`,
+        payload
+      );
+      alert('Сообщение успешно отправлено!');
+      message.value = '';
+    } catch (error) {
+      console.error('Ошибка отправки сообщения:', error.response?.data || error.message);
+    }
+  } else {
+    console.warn("Нечего отправлять!");
+  }
+};
 
     const sendMedia = async () => {
       try {
@@ -686,6 +695,10 @@ const selectGif = (gif) => {
       selectedGif.value = gif.images.original.url;
     };
     return {
+      toggleEmojiPicker,
+      showEmojiPicker,
+
+      addEmoji,
       selectGif, // Добавил метод selectGif
       clearRecordedAudio,
       isRecording,
@@ -712,6 +725,23 @@ const selectGif = (gif) => {
 </script>
 
   <style scoped>
+
+
+
+
+
+
+  .emoji-picker-container {
+    background-color: transparent !important;
+  /* max-width: 300px; */
+  max-height: 400px;
+  overflow-y: auto;
+  /* border: 1px solid #ccc; */
+  /* border-radius: 8px; */
+  /* background-color: #fff; */
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+  z-index: 1000;
+}
 .audio-preview-container {
   display: flex;
   justify-content: center;
