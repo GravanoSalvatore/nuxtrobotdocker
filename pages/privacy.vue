@@ -80,7 +80,10 @@
     <p>
       If you have any questions or comments regarding this Privacy Policy, please contact us at: <a href="mailto:4VROBOT">fourvrobot</a>.
     </p>
+   
+
   </div>
+  
 </template>
 
 <script>
