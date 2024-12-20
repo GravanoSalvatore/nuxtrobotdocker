@@ -1,10 +1,11 @@
 <template lang="">
+  <!-- <TonConnectUIProvider :options="options"> -->
   <nav class="navbar navbar-expand-lg mb-4">
     <div class="container-fluid">
       <NuxtLink class="navbar-brand" to="/"
         ><img style="max-width: 200px" src="@/assets/img/4vrobot.png"
       /></NuxtLink>
-      <button
+      <!-- <button
         class="navbar-toggler"
         type="button"
         data-bs-toggle="collapse"
@@ -12,9 +13,23 @@
         aria-controls="navbarNav"
         aria-expanded="false"
         aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      > -->
+      <svg 
+       class="navbar-toggler"
+      xmlns="http://www.w3.org/2000/svg"
+       width="52" 
+       height="52" 
+       viewBox="0 0 2048 2048"
+       data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+       style="border:none !important"
+       >
+       
+        <path fill="cornflowerblue" d="M2048 128v128H0V128zM0 1664h2048v128H0zm0-768h2048v128H0zm0-384h2048v128H0zm0 768h2048v128H0z"/></svg>
+       <!-- <span class="navbar-toggler-icon"></span>
+      </button> -->
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
@@ -25,8 +40,10 @@
           </li>
           <li class="nav-item">
             <NuxtLink class="nav-link" to="/"
-              >Personal account <i class="bi bi-person-check-fill"></i
-            ></NuxtLink>
+              >Personal account 
+              <!-- <i class="bi bi-person-check-fill"></i
+            > -->
+          </NuxtLink>
           </li>
           <!-- <li class="nav-item">
             <NuxtLink class="nav-link" to="/terms">Terms of Services</NuxtLink>
@@ -92,6 +109,8 @@
                 </button>
               </h2>
             </div>
+          <br/>
+            <Pay/>
           </div>
         </div>
         <footer class="py-4">
@@ -190,15 +209,16 @@
       </div>
     </div>
   </div>
+<!-- </TonConnectUIProvider> -->
 </template>
 
 <script>
-
+import Pay from '@/components/Pay.vue'
 import { useRouter } from "vue-router";
 import { ref } from "vue";
 import { useThemeStore } from "~/stores/useThemeStore";
 export default {
-  
+  components:{Pay},
   data() {
     return {
       email: "",
@@ -235,12 +255,12 @@ export default {
         icon: '<i class="bi bi-people-fill"></i>',
         route: "/ref",
       },
-      {
-        title: "Payments",
-        content: "Content for item #4.",
-        icon: '<i class="bi bi-wallet2"></i>',
-        route: "/pay",
-      },
+      // {
+      //   title: "Payments",
+      //   content: "Content for item #4.",
+      //   icon: '<i class="bi bi-wallet2"></i>',
+      //   route: "/pay",
+      // },
       // {
       //   title: "About us",
       //   icon: '<i class="bi bi-file-earmark-text"></i>',
@@ -317,6 +337,8 @@ export default {
   },
 };
 </script>
+
+
 <style lang="css" scoped>
 .modal-dialog {
   max-width: 600px;

@@ -9,13 +9,6 @@
         rows="6"
       ></textarea>
      
-      <input
-        type="text"
-        v-model="gifSearchQuery"
-        class="form-control mt-2"
-        placeholder="Search GIF..."
-      />
-
         <!-- Кнопка отображения Emoji Picker -->
  <client-only>
         <button class="btn-danger3 mt-2" @click="toggleEmojiPicker">
@@ -243,6 +236,7 @@ import axios from 'axios';
 import { useChannelStore } from '@/stores/channelStore';
 import "emoji-picker-element";
 export default {
+  
   setup() {
     const channelStore = useChannelStore();
     const botToken = channelStore.botToken
@@ -962,7 +956,29 @@ const selectGif = (gif) => {
       console.log('GIF выбран:', gif);
       selectedGif.value = gif.images.original.url;
     };
+     // Метод генерации текста через OpenAI
+     const generateContent = async () => {
+      if (loading.value) return;
+
+      loading.value = true; // Устанавливаем состояние загрузки
+
+      try {
+        const response = await $nuxt.$openai.createCompletion({
+          model: "text-davinci-003", // Выбор модели
+          prompt: "Сгенерируй сообщение для Telegram канала на тему технологий.", // Ваш запрос
+          max_tokens: 100, // Ограничение длины текста
+        });
+
+        message.value = response.data.choices[0].text.trim(); // Добавляем результат в поле
+      } catch (error) {
+        console.error("Ошибка генерации текста:", error.message);
+        alert("Ошибка при работе с OpenAI. Проверьте настройки.");
+      } finally {
+        loading.value = false; // Сбрасываем состояние загрузки
+      }
+    };
     return {
+      generateContent,
       canSendNow,
       toggleEmojiPicker,
       showEmojiPicker,
@@ -999,6 +1015,19 @@ const selectGif = (gif) => {
   <style scoped>
 
 
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 0.5em 1em;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-primary:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
 
 
 

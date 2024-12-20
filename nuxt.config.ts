@@ -85,5 +85,10 @@ export default defineNuxtConfig({
   //     collections: ['uil', 'mdi'] // <!--- this
   //   }
   // }
-  
+  runtimeConfig: {
+    public: {
+      tonManifestUrl: '/tonconnect-manifest.json',
+    },
+   
+  },
 })
