@@ -98,6 +98,8 @@
 import axios from "axios";
 import { mapState, mapActions } from "pinia";  
 import { useChannelStore } from "@/stores/channelStore";  
+import { useCategoryStore } from "../stores/categories"; // Импорт хранилища категорий
+
 
 export default {
   mounted(){
@@ -106,9 +108,10 @@ export default {
 
   },
   setup(){
+    const categoryStore = useCategoryStore();
     const channelStore = useChannelStore();  
   channelStore.loadChannels(); // Вызовите метод, который загружает данные из localStorage  
-  return { channelStore }; 
+  return {categoryStore, channelStore }; 
 
   },
   watch: {  
@@ -140,10 +143,7 @@ export default {
       type: String,
       required: true,
     },
-    // chatId: {
-    //   type: String,
-    //   required: true,
-    // },
+   
     closed: {
       type: Function,
       required: true,
@@ -151,19 +151,13 @@ export default {
   },
   data() {
     return {
+      
       activeChannelId: null,
       currentTag: "",
       localArticles: [...this.articles], // Локальная копия статей для редактирования
     };
   },
-  // watch: {
-  //   articles: {
-  //     handler(newArticles) {
-  //       this.localArticles = [...newArticles];
-  //     },
-  //     deep: true,
-  //   },
-  // },
+  
   computed: {
     activeChannelId() {  
       return this.channelStore.activeChannelId;  

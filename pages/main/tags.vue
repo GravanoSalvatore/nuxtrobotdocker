@@ -2,6 +2,7 @@
 
 <template>
   <div class="container">
+    
     <!-- Поле поиска -->
     <div class="search-container">  
   <input  
@@ -68,10 +69,11 @@
     <!-- Список новостей -->
     <div v-if="news.length > 0" class="news-list">
     <div style="position: relative;">
-      <div class="saved-tags">
+     
       
       <div class="saved-tags">
           <span
+          style="margin: 3px;"
             v-for="tag in savedTags"
             :key="tag"
             class="badge bg-success saved-tag pointer"
@@ -83,7 +85,7 @@
         </div>
 
         
-        </div>
+      
        
         <button
           class="btn-danger1 me-2"
@@ -578,5 +580,6 @@ a {
   gap: 10px;
   margin-top: 10px;
 }
+
 </style>
 

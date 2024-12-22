@@ -2,15 +2,11 @@
   <div class="container">
     <!-- Индикатор загрузки -->
     <div v-if="loading" class="text-center">
-      <v-progress-circular
-        indeterminate
-        color="primary"
-        size="50"
-      ></v-progress-circular>
+   <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><rect width="2.8" height="12" x="1" y="6" fill="currentColor"><animate id="svgSpinnersBarsScale0" attributeName="y" begin="0;svgSpinnersBarsScale1.end-0.1s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="6;1;6"/><animate attributeName="height" begin="0;svgSpinnersBarsScale1.end-0.1s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="12;22;12"/></rect><rect width="2.8" height="12" x="5.8" y="6" fill="currentColor"><animate attributeName="y" begin="svgSpinnersBarsScale0.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="6;1;6"/><animate attributeName="height" begin="svgSpinnersBarsScale0.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="12;22;12"/></rect><rect width="2.8" height="12" x="10.6" y="6" fill="currentColor"><animate attributeName="y" begin="svgSpinnersBarsScale0.begin+0.2s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="6;1;6"/><animate attributeName="height" begin="svgSpinnersBarsScale0.begin+0.2s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="12;22;12"/></rect><rect width="2.8" height="12" x="15.4" y="6" fill="currentColor"><animate attributeName="y" begin="svgSpinnersBarsScale0.begin+0.3s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="6;1;6"/><animate attributeName="height" begin="svgSpinnersBarsScale0.begin+0.3s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="12;22;12"/></rect><rect width="2.8" height="12" x="20.2" y="6" fill="currentColor"><animate id="svgSpinnersBarsScale1" attributeName="y" begin="svgSpinnersBarsScale0.begin+0.4s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="6;1;6"/><animate attributeName="height" begin="svgSpinnersBarsScale0.begin+0.4s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="12;22;12"/></rect></svg>
     </div>
 
     <!-- Список тегов -->
-    <div class="tags-list">
+    <div v-else class="tags-list">
       <div class="tags-lis" v-if="tags.length > 0">
         <div class="fw-bold">
           <!-- Total: {{ tags.length }} -->
@@ -37,14 +33,10 @@
         ></v-progress-circular>
       </div>
     </div>
-
+<br/>
     <!-- Индикатор загрузки новостей -->
-    <div v-if="loadingNews" class="text-center">
-      <v-progress-circular
-        indeterminate
-        color="primary"
-        size="50"
-      ></v-progress-circular>
+    <div v-if="loadingNews" class="text-center ">
+     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><rect width="2.8" height="12" x="1" y="6" fill="currentColor"><animate id="svgSpinnersBarsScale0" attributeName="y" begin="0;svgSpinnersBarsScale1.end-0.1s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="6;1;6"/><animate attributeName="height" begin="0;svgSpinnersBarsScale1.end-0.1s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="12;22;12"/></rect><rect width="2.8" height="12" x="5.8" y="6" fill="currentColor"><animate attributeName="y" begin="svgSpinnersBarsScale0.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="6;1;6"/><animate attributeName="height" begin="svgSpinnersBarsScale0.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="12;22;12"/></rect><rect width="2.8" height="12" x="10.6" y="6" fill="currentColor"><animate attributeName="y" begin="svgSpinnersBarsScale0.begin+0.2s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="6;1;6"/><animate attributeName="height" begin="svgSpinnersBarsScale0.begin+0.2s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="12;22;12"/></rect><rect width="2.8" height="12" x="15.4" y="6" fill="currentColor"><animate attributeName="y" begin="svgSpinnersBarsScale0.begin+0.3s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="6;1;6"/><animate attributeName="height" begin="svgSpinnersBarsScale0.begin+0.3s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="12;22;12"/></rect><rect width="2.8" height="12" x="20.2" y="6" fill="currentColor"><animate id="svgSpinnersBarsScale1" attributeName="y" begin="svgSpinnersBarsScale0.begin+0.4s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="6;1;6"/><animate attributeName="height" begin="svgSpinnersBarsScale0.begin+0.4s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="12;22;12"/></rect></svg>
     </div>
 
     <div v-if="news.length > 0" class="news-list">
@@ -100,7 +92,7 @@
       </div>
 
       <!-- Список новостей -->
-      <div class="row row-cols-1 row-cols-md-3 g-3 mt-3">
+      <!-- <div class="row row-cols-1 row-cols-md-3 g-3 mt-3">
         <div v-for="item in news" :key="item.id" class="col">
           <div class="card">
             <img
@@ -136,7 +128,139 @@
             </div>
           </div>
         </div>
+      </div> -->
+      <div class="row row-cols-1 row-cols-md-3 g-3 mt-3">
+        <div v-for="item in news" :key="item.id" class="col">
+          <div class="car ">
+            <img
+              v-if="item.tempImageUrl || item.urlToImage"
+              :src="item.tempImageUrl || item.urlToImage"
+              class="card-img-top c"
+            />
+            <img v-else :src="image" class="card-img-top c" />
+
+            <div class="card-body">
+              <div class="overlay">
+              <h5 class="card-title">
+                <a style="font-size: 12px;" :href="item.url" target="_blank">{{ item.sourceName }}</a>
+              </h5>
+              <p class="card-text">
+                <small class="text-muted">{{
+                  formatDateTime(item.publishedAt)
+                }}</small>
+              </p>
+              <p v-if="item.author" class="badge bg-primary" :style="{ 'max-width': '200px', 'white-space': 'nowrap', 'overflow': 'hidden', 'text-overflow': 'ellipsis' }">  
+  {{ item.author }}  
+</p>
+              <p v-else class="badge bg-secondary">Unknown</p>
+             <div class="">
+              <p style="color: cornflowerblue;" class="fw-bold">{{ item.title }}</p>
+              <p>{{ item.description }}</p>
+              <p v-html="item.content"></p>
+            </div>
+            </div>
+              <button @click="openEditModal(item)" class="btn-danger1 mt-2">
+                Edit
+              </button>
+              <button @click="sendToTelegram(item)" class="btn-danger1 mt-2">
+                Send to Telegram
+                <i style="color: cornflowerblue" class="bi bi-telegram"></i>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
+      
+      
+      <div
+      class="modal fade"
+      id="editModal"
+      tabindex="-1"
+      aria-labelledby="editModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          
+          <div class="modal-body">
+            <setting/>
+            <div class="mb-3">
+              <div class="text-center mt-3">
+                <img
+                  :src="editableItem.tempImageUrl || editableItem.urlToImage"
+                  class="img-fluid"
+                  alt="Preview"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="editImageFile" class="form-label"
+                  >Upload Image</label
+                >
+                <input
+                  id="editImageFile"
+                  type="file"
+                  @change="uploadImage"
+                  class="form-control"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="editImage" class="form-label">Image URL</label>
+                <input
+                  id="editImage"
+                  type="text"
+                  v-model="editableItem.tempImageUrl"
+                  class="form-control"
+                />
+              </div>
+              <label for="editTitle" class="form-label">Title</label>
+              <input
+                id="editTitle"
+                type="text"
+                v-model="editableItem.title"
+                class="form-control"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="editDescription" class="form-label"
+                >Description</label
+              >
+              <textarea
+                id="editDescription"
+                v-model="editableItem.description"
+                class="form-control"
+              ></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="editContent" class="form-label">Content</label>
+              <textarea
+                id="editContent"
+                v-model="editableItem.content"
+                class="form-control"
+              ></textarea>
+            </div>
+          </div>
+
+          <div  class="modal-footer">
+            <button type="button" class="btn-danger1" data-bs-dismiss="modal">
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn-danger1"
+              @click="saveChanges"
+              data-bs-dismiss="modal"
+            >
+              Save changes
+            </button>
+            <button @click="sendToTelegram(item)" class="btn-danger1 mt-2">
+                Send to Telegram
+                <i style="color: cornflowerblue" class="bi bi-telegram"></i>
+              </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
     </div>
   </div>
 </template>
@@ -164,6 +288,29 @@ export default {
   setup() {
     const store = useTopPopularStore(); // Использование store
     const channelStore = useChannelStore(); // Store для работы с каналами
+
+    const editableItem = ref({});
+    const openEditModal = (item) => {
+      editableItem.value = { ...item };
+      const modal = new bootstrap.Modal(document.getElementById("editModal"));
+      modal.show();
+    };
+    const saveChanges = () => {
+      const index = store.news.findIndex(
+        (news) => news.id === editableItem.value.id
+      );
+      if (index !== -1) {
+        // Проверяем, есть ли новое изображение
+        if (editableItem.value.tempImageUrl !== editableItem.value.urlToImage) {
+          // Сохраняем новое изображение
+          store.news[index].urlToImage = editableItem.value.tempImageUrl;
+        }
+        // Сохраняем остальные изменения
+        store.news[index] = { ...editableItem.value };
+      }
+    };
+
+
 
     // Локальные переменные и данные
     const tagsList = ref(null); // Список тегов
@@ -228,6 +375,9 @@ export default {
     });
 
     return {
+      openEditModal,
+      saveChanges,
+      editableItem,
       // Данные и методы для использования в шаблоне
       savedTags,
       tags,

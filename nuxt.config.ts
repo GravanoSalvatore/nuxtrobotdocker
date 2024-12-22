@@ -72,18 +72,22 @@ export default defineNuxtConfig({
   pinia: {  
     autoImports: [  
       // automatically imports `defineStore`  
-      'defineStore',   
+      // 'defineStore',   
       // automatically imports `defineStore` as `definePiniaStore`  
       ['defineStore', 'definePiniaStore'],  
     ],  
   },  
   plugins: [
-    '~/plugins/axios.ts'
+    '~/plugins/axios.ts',
+    
   ],
   // icon: {
   //   serverBundle: {
   //     collections: ['uil', 'mdi'] // <!--- this
   //   }
   // }
-  
+  runtimeConfig: {
+    public: {
+      OPENAI_API_KEY: process.env.OPENAI_API_KEY || '',
+    },}
 })

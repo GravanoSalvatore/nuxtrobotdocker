@@ -1,10 +1,11 @@
 <template lang="">
+  <!-- <TonConnectUIProvider :options="options"> -->
   <nav class="navbar navbar-expand-lg mb-4">
     <div class="container-fluid">
       <NuxtLink class="navbar-brand" to="/"
         ><img style="max-width: 200px" src="@/assets/img/4vrobot.png"
       /></NuxtLink>
-      <button
+      <!-- <button
         class="navbar-toggler"
         type="button"
         data-bs-toggle="collapse"
@@ -12,9 +13,23 @@
         aria-controls="navbarNav"
         aria-expanded="false"
         aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      > -->
+      <svg 
+       class="navbar-toggler"
+      xmlns="http://www.w3.org/2000/svg"
+       width="52" 
+       height="52" 
+       viewBox="0 0 2048 2048"
+       data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+       style="border:none !important"
+       >
+       
+        <path fill="cornflowerblue" d="M2048 128v128H0V128zM0 1664h2048v128H0zm0-768h2048v128H0zm0-384h2048v128H0zm0 768h2048v128H0z"/></svg>
+       <!-- <span class="navbar-toggler-icon"></span>
+      </button> -->
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
@@ -25,8 +40,10 @@
           </li>
           <li class="nav-item">
             <NuxtLink class="nav-link" to="/"
-              >Personal account <i class="bi bi-person-check-fill"></i
-            ></NuxtLink>
+              >Personal account 
+              <!-- <i class="bi bi-person-check-fill"></i
+            > -->
+          </NuxtLink>
           </li>
           <!-- <li class="nav-item">
             <NuxtLink class="nav-link" to="/terms">Terms of Services</NuxtLink>
@@ -88,18 +105,157 @@
                   class="accordion-button pointer"
                 >
                   <div class="card-icon me-2" v-html="item.icon"></div>
-                  <span>{{ item.title }}</span>
+                  <span style="color:">{{ item.title }}</span>
                 </button>
               </h2>
             </div>
+          <br/>
+            <Pay/>
           </div>
         </div>
-        <footer class="py-4">
+
+
+         <!-- Сохранённые теги -->
+    <div class="saved-tags">
+      <span
+        v-for="tag in savedTags"
+        :key="tag"
+        class="badge bg-success saved-tag"
+        @click="handleTagClick(tag)"
+      >
+        {{ tag }}
+        <i
+          @click.stop="removeSavedTag(tag)"
+          class="bi bi-x-circle pointer text-white"
+        ></i>
+      </span>
+    </div>
+
+   
+      <br/><br/>
+      
+       
+      </div>
+
+      <!-- Правая колонка -->
+      <div class="col-12 col-md-9 p" ref="newsContainer">
+       
+        <div class="row container p">
+          <NuxtPage />
+        </div>
+      </div>
+      <div
+        v-if="showModal"
+        class="modal fade show"
+        id="settingsModal"
+        tabindex="-1"
+        aria-labelledby="settingsModalLabel"
+        aria-hidden="true"
+        style="display: block; background:"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <button
+  type="button"
+  class="btn-close position-absolute top-0 end-0 me-2 mt-2"
+  aria-label="Close"
+  @click="closeModal"
+></button>
+
+            <!-- <div
+              class="modal-header"
+              style=""
+            >
+              Manage Channels
+             
+            </div> -->
+            <div class="modal-body">
+              <!-- Ваш компонент -->
+              <Setting />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+   <!-- Список новостей -->
+   <div style="position: relative;" class="news-list mt-4" >
+    <i  v-if="news.length > 0"   style="position: absolute; right:0; top: -25px" @click="clearNews" class="bi bi-x-circle pointer"></i>
+  <div v-if="loadingNews" class="text-center">
+    <p>
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><rect width="2.8" height="12" x="1" y="6" fill="currentColor"><animate id="svgSpinnersBarsScale0" attributeName="y" begin="0;svgSpinnersBarsScale1.end-0.1s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="6;1;6"/><animate attributeName="height" begin="0;svgSpinnersBarsScale1.end-0.1s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="12;22;12"/></rect><rect width="2.8" height="12" x="5.8" y="6" fill="currentColor"><animate attributeName="y" begin="svgSpinnersBarsScale0.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="6;1;6"/><animate attributeName="height" begin="svgSpinnersBarsScale0.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="12;22;12"/></rect><rect width="2.8" height="12" x="10.6" y="6" fill="currentColor"><animate attributeName="y" begin="svgSpinnersBarsScale0.begin+0.2s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="6;1;6"/><animate attributeName="height" begin="svgSpinnersBarsScale0.begin+0.2s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="12;22;12"/></rect><rect width="2.8" height="12" x="15.4" y="6" fill="currentColor"><animate attributeName="y" begin="svgSpinnersBarsScale0.begin+0.3s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="6;1;6"/><animate attributeName="height" begin="svgSpinnersBarsScale0.begin+0.3s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="12;22;12"/></rect><rect width="2.8" height="12" x="20.2" y="6" fill="currentColor"><animate id="svgSpinnersBarsScale1" attributeName="y" begin="svgSpinnersBarsScale0.begin+0.4s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="6;1;6"/><animate attributeName="height" begin="svgSpinnersBarsScale0.begin+0.4s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="12;22;12"/></rect></svg>
+    </p>
+  </div>
+
+  <div    v-else class="row g-4">
+   
+    <div
+      v-for="item in news"
+      :key="item.id"
+      class="col-12 col-md-6 col-lg-4 col-xl-3"
+    >
+      <div class="news-item border p-3 rounded">
+        <div class="car">
+          <img
+            v-if="item.tempImageUrl || item.urlToImage"
+            :src="item.tempImageUrl || item.urlToImage"
+            class="card-img-top c"
+          />
+          <img v-else :src="image" class="card-img-top c" />
+
+          <div class="card-body">
+            <div class="overlay">
+              <h5 class="card-title">
+                <a
+                  style="font-size: 12px;"
+                  :href="item.url"
+                  target="_blank"
+                >
+                  {{ item.sourceName }}
+                </a>
+              </h5>
+              <p class="card-text">
+                <small class="text-muted">
+                  {{ formatDateTime(item.publishedAt) }}
+                </small>
+              </p>
+              <p
+                v-if="item.author"
+                class="badge bg-primary"
+                :style="{ 'max-width': '200px', 'white-space': 'nowrap', 'overflow': 'hidden', 'text-overflow': 'ellipsis' }"
+              >
+                {{ item.author }}
+              </p>
+              <p v-else class="badge bg-secondary">Unknown</p>
+              <div>
+                <p style="color: cornflowerblue;" class="fw-bold">
+                  {{ item.title }}
+                </p>
+                <p>{{ item.description }}</p>
+                <p v-html="item.content"></p>
+              </div>
+            </div>
+            <button @click="openEditModal(item)" class="btn-danger1 mt-2">
+              Edit
+            </button>
+            <button @click="sendToTelegram(item)" class="btn-danger1 mt-2">
+              Send to Telegram
+              <i
+                style="color: cornflowerblue"
+                class="bi bi-telegram"
+              ></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="">
           <div class="container">
             <div class="row align-items-center">
               <!-- Социальные иконки -->
               <div
-                class="col-md-12 text-center text-md-start mb-3 mb-md-0 mt-4"
+                class="col-md-12 text-center text-md-start mb-3 mb-md-0 "
               >
                 <div
                   class="d-flex justify-content-center justify-content-md-start"
@@ -124,11 +280,11 @@
                   </a>
                 </div>
               </div>
-
+              <br/><br/>
               <!-- Поле для обратной связи -->
-              <div class="col-md-12 mb-3 mb-md-0 mt-4">
+              <div class="col-md-12 mb-3 mb-md-0 ">
                 <form @submit.prevent="sendFeedback">
-                  <div class="input-group">
+                  <!-- <div class="input-group ">
                     <input
                       type="email"
                       class="form-control"
@@ -138,7 +294,7 @@
                       required
                     />
                     <button class="btn-danger1" type="submit">feedback</button>
-                  </div>
+                  </div> -->
                 </form>
               </div>
 
@@ -149,62 +305,38 @@
             </div>
           </div>
         </footer>
-      </div>
-
-      <!-- Правая колонка -->
-      <div class="col-12 col-md-9 p" ref="newsContainer">
-       
-        <div class="row container p">
-          <NuxtPage />
-        </div>
-      </div>
-      <div
-        v-if="showModal"
-        class="modal fade show"
-        id="settingsModal"
-        tabindex="-1"
-        aria-labelledby="settingsModalLabel"
-        aria-hidden="true"
-        style="display: block; background:"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div
-              class="modal-header"
-              style=""
-            >
-              Manage Channels
-              <button
-                type="button"
-                class="btn-close"
-                aria-label="Close"
-                @click="closeModal"
-              ></button>
-            </div>
-            <div class="modal-body">
-              <!-- Ваш компонент -->
-              <Setting />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
+<!-- </TonConnectUIProvider> -->
 </template>
 
 <script>
-
+//import Pay from '@/components/Pay.vue'
+ //import { useTopPopularStore } from "../stores/popular";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
+import { useChannelStore } from "@/stores/channelStore";
 import { useThemeStore } from "~/stores/useThemeStore";
 export default {
-  
+  ssr: false,
+  // components:{Pay},
   data() {
     return {
       email: "",
     };
   },
   methods: {
+    formatDateTime(dateTime) {
+      const options = {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+      };
+      return new Date(dateTime).toLocaleString("en-US", options);
+    },
     sendFeedback() {
       if (this.email) {
         alert(`Ваш email (${this.email}) принят. Спасибо за обратную связь!`);
@@ -214,7 +346,42 @@ export default {
   },
 
   setup() {
+   
     const themeStore = useThemeStore();
+    const channelStore = useChannelStore();
+    const savedTags = computed(() => themeStore.savedTags);
+    const tags = computed(() => themeStore.tags);
+    const news = computed(() => themeStore.news); 
+    const localNews = ref([]);
+    const loadingNews = computed(() => themeStore.loadingNews);
+    const activeChannelId = computed(() => channelStore.activeChannelId); // Получаем activeChannelId
+    const clearNews = () => {
+      themeStore.clearNews();
+      localNews.value = [];
+    };
+    const sendToTelegram = (item) => {
+      if (!activeChannelId.value) {
+        alert("Выберите канал для отправки новостей!");
+        return;
+      }
+
+      themeStore.sendToTelegram(item, activeChannelId.value); 
+    };
+    const fetchNews = async (tagName) => {
+      await themeStore.fetchNews(tagName);
+      localNews.value = themeStore.news.map((item) => ({ ...item })); // Локальная копия новостей
+    };
+    // const removeSavedTag = (tag) => {
+    //   themeStore.savedTags = themeStore.savedTags.filter((savedTag) => savedTag !== tag); // Удаляем тег
+    //   localStorage.setItem("savedTags", JSON.stringify(themeStore.savedTags)); // Сохраняем изменения в localStorage
+    //   console.log("Тег удалён:", tag);
+    // };
+
+    const removeSavedTag = (tag) => {
+  themeStore.toggleSaveTag(tag); // Обновляем теги через метод Pinia
+};
+
+
     const activeIndex = ref(null);
     const router = useRouter();
     const showModal = ref(false);
@@ -226,7 +393,7 @@ export default {
       },
       {
         title: "Posting",
-        icon: '<i class="bi bi-tags"></i>',
+        icon: '<i class="bi bi-stickies"></i>',
         route: "/main",
       },
       {
@@ -235,12 +402,12 @@ export default {
         icon: '<i class="bi bi-people-fill"></i>',
         route: "/ref",
       },
-      {
-        title: "Payments",
-        content: "Content for item #4.",
-        icon: '<i class="bi bi-wallet2"></i>',
-        route: "/pay",
-      },
+      // {
+      //   title: "Payments",
+      //   content: "Content for item #4.",
+      //   icon: '<i class="bi bi-wallet2"></i>',
+      //   route: "/pay",
+      // },
       // {
       //   title: "About us",
       //   icon: '<i class="bi bi-file-earmark-text"></i>',
@@ -270,16 +437,7 @@ export default {
         route: "/disclaimer",
       },
     ]);
-    // const handleItemClick = (item, index) => {
-    //   // Для Channels и Posting не выполнять навигацию
-
-    //   if (item.route) {
-    //     router.push(item.route);
-    //   } else {
-    //     console.warn(`No route defined for ${item.title}`);
-    //   }
-    //   activeIndex.value = index;
-    // };
+   
     const handleItemClick = (item, index) => {
       if (item.title === "Setting") {
         showModal.value = true; // Открыть модальное окно
@@ -291,7 +449,14 @@ export default {
       }
       activeIndex.value = index;
     };
-
+    const handleTagClick = async (tag) => {
+      try {
+        await themeStore.fetchNews(tag); // Загружаем новости по тегу
+        console.log(`Новости для тега "${tag}" успешно загружены.`);
+      } catch (error) {
+        console.error(`Ошибка загрузки новостей для тега "${tag}":`, error);
+      }
+    };
     const closeModal = () => {
       showModal.value = false; // Закрыть модальное окно
       console.log("Модальное окно закрыто");
@@ -303,21 +468,53 @@ export default {
     } catch (error) {
       console.error("Ошибка загрузки темы:", error);
     }
-
+    onMounted(() => {
+      themeStore.loadSavedTags(); // Загружаем сохранённые теги
+      channelStore.loadChannels(); 
+    });
     // Данные для аккордеона
 
     return {
+      removeSavedTag,
+      savedTags,
+      tags,
+      sendToTelegram,
+      activeChannelId, 
+      clearNews,
+      localNews,
+      // news,
+      handleTagClick,
+      news,
+      loadingNews,
       closeModal,
       showModal,
       activeIndex,
       handleItemClick,
       accordionItems,
       themeStore,
+      
     };
   },
 };
 </script>
+
+
 <style lang="css" scoped>
+.card-body {
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 15px;
+  
+}
+.overlay{
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 250px;
+}
+.card-img-top {
+  width: 100%;
+  height: auto;
+}
 .modal-dialog {
   max-width: 600px;
   margin: 30px auto;
@@ -468,5 +665,19 @@ caret-color: yellow;
 }
 .accordion-button::after {
   display: none !important;
+}
+
+.saved-tags {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.saved-tag {
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-size: 12px;
 }
 </style>

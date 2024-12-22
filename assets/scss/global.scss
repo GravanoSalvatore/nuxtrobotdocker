@@ -15,6 +15,9 @@ body, html , #_nuxt {
     height: 100dvh;
    
 }
+a{
+  text-decoration: none;
+}
 .accordion-button {
     background-color: transparent !important; /* Убираем серый фон */
     color: inherit !important; /* Оставляем цвет текста, заданный темой */
