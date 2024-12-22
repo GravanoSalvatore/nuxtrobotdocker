@@ -572,7 +572,7 @@ a {
   background-color: #f93402;
 }
 .save-tag-btn:hover {
-  background-color: #0056b3;
+  background-color: #0366cf;
 }
 
 .button-group {
