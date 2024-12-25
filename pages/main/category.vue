@@ -3,93 +3,76 @@
     <!-- Active channel ID: {{ activeChannelId }}   -->
     <div class="categories">
       <crypto v-if="selectedCategory === 'Криптовалюты'" />
-      <button
-        class=" btn-danger3 "
-        @click="selectCategory('Новости')"
-      >News
+      <button class="btn-danger3" @click="selectCategory('Новости')">
+        News
         <!-- {{ $t("news") }} -->
       </button>
-      <button
-        class=" btn-danger3"
-        @click="selectCategory('Здоровье')"
-      >Health
+      <button class="btn-danger3" @click="selectCategory('Здоровье')">
+        Health
         <!-- {{ $t("health") }} -->
       </button>
-      <button
-        class=" btn-danger3"
-        @click="selectCategory('Криптовалюты')"
-      >Cryptocurrency
+      <button class="btn-danger3" @click="selectCategory('Криптовалюты')">
+        Cryptocurrency
         <!-- {{ $t("cryptocurrency") }} -->
       </button>
-      
-      
-      <button class=" btn-danger3" @click="selectCategory('Бизнес')">
+
+      <button class="btn-danger3" @click="selectCategory('Бизнес')">
         <!-- {{ $t("business") }} -->Business
       </button>
-      <button class=" btn-danger3" @click="selectCategory('Спорт')">
+      <button class="btn-danger3" @click="selectCategory('Спорт')">
         <!-- {{ $t("sport") }} -->Sport
       </button>
-      <button
-        class=" btn-danger3"
-        @click="selectCategory('Технологии')"
-      >
+      <button class="btn-danger3" @click="selectCategory('Технологии')">
         <!-- {{ $t("technology") }} -->Technology
       </button>
-      <button
-        class=" btn-danger3"
-        @click="selectCategory('Политика')"
-      >
+      <button class="btn-danger3" @click="selectCategory('Политика')">
         <!-- {{ $t("policy") }} -->Policy
       </button>
-      <button class=" btn-danger3" @click="selectCategory('IT')">
+      <button class="btn-danger3" @click="selectCategory('IT')">
         Internet technologies
       </button>
-      <button
-        class=" btn-danger3"
-        @click="selectCategory('Развлечения')"
-      >
+      <button class="btn-danger3" @click="selectCategory('Развлечения')">
         <!-- {{ $t("entertainment") }} -->Entertainment
       </button>
-      <button class=" btn-danger3" @click="selectCategory('Наука')">
+      <button class="btn-danger3" @click="selectCategory('Наука')">
         <!-- {{ $t("science") }} -->Science
       </button>
     </div>
     <div v-if="selectedCategory">
-     
-     <div class="container" style="">
-      <v-btn
-        v-if="languageAvailable(selectedCategory, 52)"
-        class="language-btn  fw-bold "
-        @click="selectLanguage(52)"
-        >Русский</v-btn
-      >
-      <v-btn
-        v-if="languageAvailable(selectedCategory, 14)"
-        class="language-btn  fw-bold "
-        @click="selectLanguage(14)"
-        >English</v-btn
-      >
-      <v-btn
-        v-if="languageAvailable(selectedCategory, 65)"
-        class="language-btn  fw-bold "
-        @click="selectLanguage(65)"
-        >Українська</v-btn
-      >
-      <v-btn
-        v-if="languageAvailable(selectedCategory, 45)"
-        class="language-btn  fw-bold "
-        @click="selectLanguage(45)"
-        >Nederlands</v-btn
-      >
-      <v-btn
-        v-if="languageAvailable(selectedCategory, 13)"
-        class="language-btn  fw-bold "
-        @click="selectLanguage(13)"
-        >Немецкий</v-btn
-      >
+      <div class="container" style="">
+        <v-btn
+          v-if="languageAvailable(selectedCategory, 52)"
+          class="language-btn fw-bold"
+          @click="selectLanguage(52)"
+          >Русский</v-btn
+        >
+        <v-btn
+          v-if="languageAvailable(selectedCategory, 14)"
+          class="language-btn fw-bold"
+          @click="selectLanguage(14)"
+          >English</v-btn
+        >
+        <v-btn
+          v-if="languageAvailable(selectedCategory, 65)"
+          class="language-btn fw-bold"
+          @click="selectLanguage(65)"
+          >Українська</v-btn
+        >
+        <v-btn
+          v-if="languageAvailable(selectedCategory, 45)"
+          class="language-btn fw-bold"
+          @click="selectLanguage(45)"
+          >Nederlands</v-btn
+        >
+        <v-btn
+          v-if="languageAvailable(selectedCategory, 13)"
+          class="language-btn fw-bold"
+          @click="selectLanguage(13)"
+          >Немецкий</v-btn
+        >
+      </div>
     </div>
-    </div>
-<br/>
+    <br />
     <div v-if="selectedLanguage">
       <v-text-field
         variant="underlined"
@@ -99,10 +82,12 @@
         placeholder="Поиск тегов"
         class="tag-search text-white"
       ></v-text-field>
+
+      <div v-if="sortedFilteredTags.length" class="tag-count">
+        <p>Total: {{ sortedFilteredTags.length }}</p>
+      </div>
       <div class="over tags-lis">
-        
         <div class="">
-          
           <button
             style="font-size: 12px"
             class="btn-danger2"
@@ -116,64 +101,55 @@
       </div>
     </div>
 
-    
-     
-      <br />
-     
+    <br />
 
-   
-
-      <news-list  
-  v-if="isNewsVisible"  
-  :articles="articles"  
- 
-  :sendToTelegram="sendToTelegram"  
-  :image="image"  
-  :closed="closed"  
-/>
+    <news-list
+      v-if="isNewsVisible"
+      :articles="articles"
+      :sendToTelegram="sendToTelegram"
+      :image="image"
+      :closed="closed"
+    />
   </div>
 </template>
 
 <script>
-
 import axios from "axios";
 
- import SavedTagsMenu from "../../components/SavedTagsMenu.vue";
+import SavedTagsMenu from "../../components/SavedTagsMenu.vue";
 import NewsList from "../../components/NewsList.vue";
-import { useCategoryStore } from '../../stores/categories'; // Импортируем созданный магазин
-import { useChannelStore } from '../../stores/channelStore';
-import { mapState, mapActions } from 'pinia';
+import { useCategoryStore } from "../../stores/categories"; // Импортируем созданный магазин
+import { useChannelStore } from "../../stores/channelStore";
+import { mapState, mapActions } from "pinia";
 
 export default {
-  setup(){
-    
-    const channelStore = useChannelStore();  
-  channelStore.loadChannels(); // Вызовите метод, который загружает данные из localStorage  
-  return { channelStore }; 
-
+  setup() {
+    const channelStore = useChannelStore();
+    channelStore.loadChannels(); // Вызовите метод, который загружает данные из localStorage
+    return { channelStore };
   },
-  watch: {  
-  activeChannelId(newVal) {  
-    console.log('ActiveChannelId changed:', newVal);  
-  },  
-},  
-  created() {  
-  // Инициализируем хранилище каналов  
-  this.channelStore = useChannelStore();  
-  console.log('Created, activeChannelId:', this.activeChannelId);  
-} ,
-  components: { 
-      // closed, 
-      // crypto,
-      SavedTagsMenu, 
-      NewsList, 
-      // editor 
+  watch: {
+    activeChannelId(newVal) {
+      console.log("ActiveChannelId changed:", newVal);
+    },
+  },
+  created() {
+    // Инициализируем хранилище каналов
+    this.channelStore = useChannelStore();
+    console.log("Created, activeChannelId:", this.activeChannelId);
+  },
+  components: {
+    // closed,
+    // crypto,
+    SavedTagsMenu,
+    NewsList,
+    // editor
   },
   data() {
     return {
       // channelStore: useChannelStore() ,
       isNewsVisible: false, // Изначально новости и кнопка скрыты
-    currentTag: "", 
+      currentTag: "",
       // image:
       //   "https://img.freepik.com/free-photo/3d-rendering-illustration-letter-blocks-forming-word-news-white-background_181624-60840.jpg",
       // currentPage: 1,
@@ -190,10 +166,26 @@ export default {
   //   },
   // },
   computed: {
-    activeChannelId() {  
-      return this.channelStore.activeChannelId;  
-    } ,
-    ...mapState(useCategoryStore, ['botToken', 'articles', 'tagSearch', 'selectedCategory', 'selectedLanguage', 'tags', 'scienceEn', 'itRu', 'techEn', 'newsUa', 'newsEn', 'newsRuUa', 'businessNl', 'cryptoRu', 'savedTags']),
+    activeChannelId() {
+      return this.channelStore.activeChannelId;
+    },
+    ...mapState(useCategoryStore, [
+      "botToken",
+      "articles",
+      "tagSearch",
+      "selectedCategory",
+      "selectedLanguage",
+      "tags",
+      "scienceEn",
+      "itRu",
+      "techEn",
+      "newsUa",
+      "newsEn",
+      "newsRuUa",
+      "businessNl",
+      "cryptoRu",
+      "savedTags",
+    ]),
     sortedFilteredTags() {
       return (this.filteredTags || []).sort((a, b) => a.localeCompare(b));
     },
@@ -207,11 +199,18 @@ export default {
     },
   },
   mounted() {
-    console.log('Mounted, activeChannelId:', this.activeChannelId);  
+    console.log("Mounted, activeChannelId:", this.activeChannelId);
     this.loadSavedTags();
   },
   methods: {
-    ...mapActions(useCategoryStore, ['selectCategory', 'selectLanguage', 'fetchData', 'toggleSaveTag', 'loadSavedTags', 'removeTag']),
+    ...mapActions(useCategoryStore, [
+      "selectCategory",
+      "selectLanguage",
+      "fetchData",
+      "toggleSaveTag",
+      "loadSavedTags",
+      "removeTag",
+    ]),
     handleNewsSelected(news) {
       this.selectedNews = news;
     },
@@ -219,36 +218,45 @@ export default {
     switchLanguage(lang) {
       this.$i18n.locale = lang;
     },
- 
-  sendToTelegram(item) {
-  const chatId = this.chatId;
-  console.log("Chat ID при вызове sendToTelegram:", chatId);
 
-  if (!chatId) {
-    console.error("Chat ID пустой, сообщение не будет отправлено.");
-    alert("Ошибка: chat ID не установлен.");
-    return;
-  }
+    sendToTelegram(item) {
+      const chatId = this.chatId;
+      console.log("Chat ID при вызове sendToTelegram:", chatId);
 
-  const botToken = this.botToken;
-  const message = `<b>${item.title}</b>\n<a href="${item.url}">Перейти на сайт</a>`;
-  const data = {
-    chat_id: chatId,
-    text: message,
-    parse_mode: "HTML",
-  };
+      if (!chatId) {
+        console.error("Chat ID пустой, сообщение не будет отправлено.");
+        alert("Ошибка: chat ID не установлен.");
+        return;
+      }
 
-  axios
-    .post(`https://api.telegram.org/bot${botToken}/sendMessage`, data)
-    .then((response) => {
-      console.log("Сообщение успешно отправлено в телеграм:", response.data);
-      alert("Сообщение успешно отправлено в телеграм");
-    })
-    .catch((error) => {
-      console.error("Ошибка при отправке сообщения в телеграм:", error.response.data);
-      alert("Ошибка при отправке сообщения в телеграм: " + error.response.data.description);
-    });
-},
+      const botToken = this.botToken;
+      const message = `<b>${item.title}</b>\n<a href="${item.url}">Перейти на сайт</a>`;
+      const data = {
+        chat_id: chatId,
+        text: message,
+        parse_mode: "HTML",
+      };
+
+      axios
+        .post(`https://api.telegram.org/bot${botToken}/sendMessage`, data)
+        .then((response) => {
+          console.log(
+            "Сообщение успешно отправлено в телеграм:",
+            response.data
+          );
+          alert("Сообщение успешно отправлено в телеграм");
+        })
+        .catch((error) => {
+          console.error(
+            "Ошибка при отправке сообщения в телеграм:",
+            error.response.data
+          );
+          alert(
+            "Ошибка при отправке сообщения в телеграм: " +
+              error.response.data.description
+          );
+        });
+    },
 
     languageAvailable(category, languageId) {
       if (category === "Криптовалюты" && languageId === 52) return true;
@@ -276,21 +284,20 @@ export default {
       return new Date(dateTime).toLocaleString("en-US", options);
     },
     closed() {
-    console.log('closed');
-    this.isNewsVisible = false; // Скрываем новости и кнопку
-    this.articles = []; // Очищаем массив статей
-  },
-  handleNewsClosed() {
-    this.isNewsVisible = false; // Скрываем новости и кнопку
-   
-  },
-  async fetchData(tag) {
-  this.currentTag = tag;
-  const store = useCategoryStore();
-  await store.fetchData(tag);
-  
-  this.isNewsVisible = true; // Показываем новости и кнопку
-},
+      console.log("closed");
+      this.isNewsVisible = false; // Скрываем новости и кнопку
+      this.articles = []; // Очищаем массив статей
+    },
+    handleNewsClosed() {
+      this.isNewsVisible = false; // Скрываем новости и кнопку
+    },
+    async fetchData(tag) {
+      this.currentTag = tag;
+      const store = useCategoryStore();
+      await store.fetchData(tag);
+
+      this.isNewsVisible = true; // Показываем новости и кнопку
+    },
     async fetchSavedTagData(tag) {
       this.currentTag = tag;
       const store = useCategoryStore();
@@ -315,46 +322,46 @@ export default {
 };
 </script>
 
-<style scoped >
+<style scoped>
+.tag-count {
+  margin: 10px 0;
+  font-weight: bold;
+  text-align: center;
+}
+
 .tags-lis {
   box-shadow: 0px 8px 16px rgba(19, 93, 147, 0.3);
- border-radius: 20px;
+  border-radius: 20px;
 }
 .language-btn {
-display: inline-block; /* Кнопки в одной строке, но могут переноситься */
-margin: 5px;
-padding: 8px 12px;
+  display: inline-block; /* Кнопки в одной строке, но могут переноситься */
+  margin: 5px;
+  padding: 8px 12px;
 
-font-weight: bold;
-border-radius: 5px;
-text-align: center;
-/* background-color: #007bff;
+  font-weight: bold;
+  border-radius: 5px;
+  text-align: center;
+  /* background-color: #007bff;
 color: white; */
-transition: background-color 0.3s, transform 0.3s ease;
+  transition:
+    background-color 0.3s,
+    transform 0.3s ease;
 }
-
-
 
 @media (max-width: 767px) {
-.language-btn {
-  font-size: 12px; /* Уменьшение текста для мобильных устройств */
-  padding: 6px 10px; /* Уменьшенные отступы */
-  margin: 3px; /* Сужаем отступы между кнопками */
-}
+  .language-btn {
+    font-size: 12px; /* Уменьшение текста для мобильных устройств */
+    padding: 6px 10px; /* Уменьшенные отступы */
+    margin: 3px; /* Сужаем отступы между кнопками */
+  }
 }
 
 @media (max-width: 480px) {
-.language-btn {
-  font-size: 11px; /* Ещё меньший текст для узких экранов */
-  padding: 4px 8px;
+  .language-btn {
+    font-size: 11px; /* Ещё меньший текст для узких экранов */
+    padding: 4px 8px;
+  }
 }
-}
-
-
-
-
-
-
 
 .saved-tags-list {
   max-height: 200px;
@@ -414,15 +421,13 @@ a {
   font-weight: bold;
 }
 .save-tag-btn {
- 
-  left:10px;
-  position:absolute;
+  left: 10px;
+  position: absolute;
   margin-left: 10px;
   padding: 5px 10px;
   cursor: pointer;
   /* color: #fff; */
   /* background: linear-gradient(135deg,#123c63 0%,#0a243d 50%, #291919 100%); */
- 
 
   /* border: none; */
   /* border-radius: 5px; */

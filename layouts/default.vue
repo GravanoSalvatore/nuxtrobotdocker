@@ -33,24 +33,32 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <NuxtLink class="nav-link" to="/">Home</NuxtLink>
+            <NuxtLink
+              class="nav-link"
+              :class="{ active: $route.path === '/' }"
+              to="/"
+            >
+              Home
+            </NuxtLink>
           </li>
           <li class="nav-item">
-            <NuxtLink class="nav-link" to="/doc">Documentation</NuxtLink>
+            <NuxtLink
+              class="nav-link"
+              :class="{ active: $route.path === '/doc' }"
+              to="/doc"
+            >
+              Documentation
+            </NuxtLink>
           </li>
           <li class="nav-item">
-            <NuxtLink class="nav-link" to="/"
-              >Personal account 
-              <!-- <i class="bi bi-person-check-fill"></i
-            > -->
-          </NuxtLink>
+            <NuxtLink
+              class="nav-link"
+              :class="{ active: $route.path === '/terms' }"
+              to="/terms"
+            >
+              Personal account
+            </NuxtLink>
           </li>
-          <!-- <li class="nav-item">
-            <NuxtLink class="nav-link" to="/terms">Terms of Services</NuxtLink>
-          </li>
-          <li class="nav-item">
-            <NuxtLink class="nav-link" to="/ref">Invite Friends</NuxtLink>
-          </li> -->
         </ul>
       </div>
     </div>
@@ -153,7 +161,7 @@
         aria-hidden="true"
         style="display: block; background:"
       >
-        <div class="modal-dialog">
+        <div class="modal-dialog form">
           <div class="modal-content">
             <button
   type="button"
@@ -178,7 +186,10 @@
       </div>
     </div>
    <!-- Список новостей -->
-   <div style="position: relative;" class="news-list mt-4" >
+   <div style="position: relative;" class="news-list " >
+    <div v-if="news.length > 0" style="color:cornflowerblue" class=" text-center ">
+       Total: {{ news.length }}
+        </div>
     <i  v-if="news.length > 0"   style="position: absolute; right:0; top: -25px" @click="clearNews" class="bi bi-x-circle pointer"></i>
   <div v-if="loadingNews" class="text-center">
     <p>
@@ -186,7 +197,7 @@
     </p>
   </div>
 
-  <div    v-else class="row g-4">
+  <div    v-else class="row g-4 mt-2">
    
     <div
       v-for="item in news"
@@ -238,7 +249,7 @@
               Edit
             </button>
             <button @click="sendToTelegram(item)" class="btn-danger1 mt-2">
-              Send to Telegram
+              Telegram
               <i
                 style="color: cornflowerblue"
                 class="bi bi-telegram"
@@ -314,6 +325,7 @@
  //import { useTopPopularStore } from "../stores/popular";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
+import { useTopPopularStore } from "../../stores/popular";
 import { useChannelStore } from "@/stores/channelStore";
 import { useThemeStore } from "~/stores/useThemeStore";
 export default {
@@ -346,7 +358,7 @@ export default {
   },
 
   setup() {
-   
+   const popularStore = useTopPopularStore();
     const themeStore = useThemeStore();
     const channelStore = useChannelStore();
     const savedTags = computed(() => themeStore.savedTags);
@@ -367,9 +379,12 @@ export default {
 
       themeStore.sendToTelegram(item, activeChannelId.value); 
     };
+   
     const fetchNews = async (tagName) => {
+   
       await themeStore.fetchNews(tagName);
       localNews.value = themeStore.news.map((item) => ({ ...item })); // Локальная копия новостей
+     
     };
     // const removeSavedTag = (tag) => {
     //   themeStore.savedTags = themeStore.savedTags.filter((savedTag) => savedTag !== tag); // Удаляем тег
@@ -433,7 +448,7 @@ export default {
       {
         title: "Disclaimer",
         content: "Content for item #9.",
-        icon: '<i class="bi bi-exclamation-triangle-fill"></i>',
+        icon: '<i class="bi bi-exclamation-triangle-fill text-danger"></i>',
         route: "/disclaimer",
       },
     ]);
@@ -451,6 +466,7 @@ export default {
     };
     const handleTagClick = async (tag) => {
       try {
+        popularStore.clearNews();
         await themeStore.fetchNews(tag); // Загружаем новости по тегу
         console.log(`Новости для тега "${tag}" успешно загружены.`);
       } catch (error) {
@@ -492,6 +508,7 @@ export default {
       handleItemClick,
       accordionItems,
       themeStore,
+      popularStore
       
     };
   },
@@ -500,6 +517,20 @@ export default {
 
 
 <style lang="css" scoped>
+.nav-link {
+ 
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: cornflowerblue;
+}
+
+.nav-link.active {
+  color: cornflowerblue; /* Цвет активной ссылки */
+  font-weight: bold;
+}
+
 .card-body {
   border-radius: 5px;
   padding: 15px;
@@ -679,5 +710,8 @@ caret-color: yellow;
   padding: 5px 10px;
   border-radius: 10px;
   font-size: 12px;
+}
+.nav-link{
+  color:  var(--bs-body-color);;
 }
 </style>

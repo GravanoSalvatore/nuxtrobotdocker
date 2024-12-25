@@ -43,8 +43,8 @@
     <div class="tags-list">
       <div class="tags-lis" v-if="tags.length > 0">
        
-        <div style="margin-left: 23px" class="mb-1 fw-bold pt-4">
-          Total: {{ tags.length }}
+        <div style="color:cornflowerblue" class="fw-bold text-center ">
+       Total: {{ tags.length }}
         </div>
         <div
           class="scrollable-tags-list rounded"
@@ -298,19 +298,19 @@ export default {
     const autopilotActive = ref(false);
     
 //getters
-const savedTags = computed(() => popularStore.savedTags);
+//const savedTags = computed(() => popularStore.savedTags);
 const sortedTags = computed(() => store.sortedTags);
-const isTagSaved = computed(() => popularStore.isTagSaved);
-const currentTag = computed(() => popularStore.currentTag);
-// const tags = computed(() => popularStore.tags);
-const toggleSaveTag = (tag) => {
-  popularStore.toggleSaveTag(tag);
-    };
-    const removeSavedTag = (tag) => {
-      popularStore.savedTags = popularStore.savedTags.filter((savedTag) => savedTag !== tag); // Удаляем тег
-      localStorage.setItem("savedTags", JSON.stringify(popularStore.savedTags)); // Сохраняем изменения в localStorage
-      console.log("Тег удалён:", tag);
-    };
+// const isTagSaved = computed(() => popularStore.isTagSaved);
+// const currentTag = computed(() => popularStore.currentTag);
+//  const tags = computed(() => popularStore.tags);
+// const toggleSaveTag = (tag) => {
+//   popularStore.toggleSaveTag(tag);
+//     };
+//     const removeSavedTag = (tag) => {
+//       popularStore.savedTags = popularStore.savedTags.filter((savedTag) => savedTag !== tag); // Удаляем тег
+//       localStorage.setItem("savedTags", JSON.stringify(popularStore.savedTags)); // Сохраняем изменения в localStorage
+//       console.log("Тег удалён:", tag);
+//     };
 
 
 
@@ -400,12 +400,13 @@ const toggleSaveTag = (tag) => {
     });
 
     return {
-      savedTags,
-      toggleSaveTag,
-      removeSavedTag,
+      // savedTags,
+      // toggleSaveTag,
+      // removeSavedTag,
       sortedTags,
-      isTagSaved,
-      currentTag,
+      // isTagSaved,
+      // currentTag,
+      // tags,
       // tags,
       autopilotActive,
       toggleAutopilot,

@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    
     <!-- Индикатор загрузки -->
     <div v-if="loading" class="text-center">
    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><rect width="2.8" height="12" x="1" y="6" fill="currentColor"><animate id="svgSpinnersBarsScale0" attributeName="y" begin="0;svgSpinnersBarsScale1.end-0.1s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="6;1;6"/><animate attributeName="height" begin="0;svgSpinnersBarsScale1.end-0.1s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="12;22;12"/></rect><rect width="2.8" height="12" x="5.8" y="6" fill="currentColor"><animate attributeName="y" begin="svgSpinnersBarsScale0.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="6;1;6"/><animate attributeName="height" begin="svgSpinnersBarsScale0.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="12;22;12"/></rect><rect width="2.8" height="12" x="10.6" y="6" fill="currentColor"><animate attributeName="y" begin="svgSpinnersBarsScale0.begin+0.2s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="6;1;6"/><animate attributeName="height" begin="svgSpinnersBarsScale0.begin+0.2s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="12;22;12"/></rect><rect width="2.8" height="12" x="15.4" y="6" fill="currentColor"><animate attributeName="y" begin="svgSpinnersBarsScale0.begin+0.3s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="6;1;6"/><animate attributeName="height" begin="svgSpinnersBarsScale0.begin+0.3s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="12;22;12"/></rect><rect width="2.8" height="12" x="20.2" y="6" fill="currentColor"><animate id="svgSpinnersBarsScale1" attributeName="y" begin="svgSpinnersBarsScale0.begin+0.4s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="6;1;6"/><animate attributeName="height" begin="svgSpinnersBarsScale0.begin+0.4s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="12;22;12"/></rect></svg>
@@ -8,31 +9,34 @@
     <!-- Список тегов -->
     <div v-else class="tags-list">
       <div class="tags-lis" v-if="tags.length > 0">
-        <div class="fw-bold">
-          <!-- Total: {{ tags.length }} -->
+       
+        <div style="color:cornflowerblue" class=" text-center ">
+       Total: {{ tags.length }}
         </div>
+       
         <div class="scrollable-tags-list rounded" ref="tagsList">
           <button
-            v-for="tag in sortedTags"
+            v-for="tag in filteredSortedTags"
             :key="tag.id"
             class="btn-danger2"
             @click="fetchNews(tag.name)"
           >
-            {{ tag.name }} -
+            {{ tag.name }} 
             <span class="rounded" style="padding: 5px">
               {{ tag.popularity }}
             </span>
           </button>
         </div>
       </div>
-      <div v-else-if="loadingTags">
+      <!-- <div v-else-if="loadingTags">
         <v-progress-circular
           indeterminate
           color="primary"
           size="50"
         ></v-progress-circular>
-      </div>
+      </div> -->
     </div>
+   
 <br/>
     <!-- Индикатор загрузки новостей -->
     <div v-if="loadingNews" class="text-center ">
@@ -40,6 +44,9 @@
     </div>
 
     <div v-if="news.length > 0" class="news-list">
+     <!-- <div style="color:cornflowerblue" class="fw-bold text-center ">
+       Total: {{ news.length }}
+        </div> -->
       <div style="position: relative;">
         <!-- Сохранённые теги -->
         <div class="saved-tags">
@@ -183,7 +190,21 @@
         <div class="modal-content">
           
           <div class="modal-body">
-            <setting/>
+            <div>
+    <!-- Кнопка для открытия компонента -->
+    <button @click="toggleSetting" class="btn ">
+      <i class="bi bi-sliders"></i>
+    </button>
+
+    <!-- Анимированный блок с настройками -->
+    <transition name="fade">
+      <div v-if="showSetting" class="setting-container">
+        <setting />
+        <!-- Кнопка для закрытия -->
+        <!-- <button @click="toggleSetting" class="btn btn-danger mt-3">Close</button> -->
+      </div>
+    </transition>
+  </div>
             <div class="mb-3">
               <div class="text-center mt-3">
                 <img
@@ -310,6 +331,11 @@ export default {
       }
     };
 
+    const showSetting = ref(false);
+
+const toggleSetting = () => {
+  showSetting.value = !showSetting.value;
+};
 
 
     // Локальные переменные и данные
@@ -319,17 +345,18 @@ export default {
     // Геттеры для computed свойств
     const savedTags = computed(() => store.savedTags);
     const tags = computed(() => store.tags);
+     const sortedTags = computed(() => store.sortedTags);
+    const currentTag = computed(() => store.currentTag);
+    const isTagSaved = computed(() => store.isTagSaved);
+   
+    const activeChannelId = computed(() => channelStore.activeChannelId);
     const news = computed(() => store.news);
     const loadingTags = computed(() => store.loadingTags);
     const loadingNews = computed(() => store.loadingNews);
     const loading = computed(() => store.loading);
-    const sortedTags = computed(() => store.sortedTags);
-    const currentTag = computed(() => store.currentTag);
-    const isTagSaved = computed(() => store.isTagSaved);
-    const activeChannelId = computed(() => channelStore.activeChannelId);
-
     // Методы
     const fetchTags = () => store.fetchTags();
+  
 
     const fetchNews = async (tagName) => {
       await store.fetchNews(tagName);
@@ -344,6 +371,11 @@ export default {
     const toggleSaveTag = (tag) => {
       store.toggleSaveTag(tag);
     };
+    const filteredSortedTags = computed(() => {
+  const result = sortedTags.value.filter(tag => tag.name && tag.name.trim() !== "" && tag.name !== "0");
+  console.log("Фильтрованные теги:", result);
+  return result;
+});
 
     const removeSavedTag = (tag) => {
       store.savedTags = store.savedTags.filter((savedTag) => savedTag !== tag); // Удаляем тег
@@ -375,9 +407,12 @@ export default {
     });
 
     return {
+      filteredSortedTags,
       openEditModal,
       saveChanges,
       editableItem,
+      showSetting,
+      toggleSetting,
       // Данные и методы для использования в шаблоне
       savedTags,
       tags,
@@ -391,7 +426,8 @@ export default {
       localNews,
       activeChannelId,
       fetchTags,
-      fetchNews,
+     
+       fetchNews,
       clearNews,
       toggleSaveTag,
       removeSavedTag,
@@ -535,8 +571,8 @@ a {
   margin-left: 10px;
   padding: 5px 10px;
   cursor: pointer;
-  /* color: #fff;
-    background-color: #007bff; */
+  color: #fff;
+    /* background-color: #007bff; */
   /* border: none;
     border-radius: 5px; */
 }
