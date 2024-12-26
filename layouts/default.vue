@@ -14,21 +14,24 @@
         aria-expanded="false"
         aria-label="Toggle navigation"
       > -->
-      <svg 
-       class="navbar-toggler"
-      xmlns="http://www.w3.org/2000/svg"
-       width="52" 
-       height="52" 
-       viewBox="0 0 2048 2048"
-       data-bs-toggle="collapse"
+      <svg
+        class="navbar-toggler"
+        xmlns="http://www.w3.org/2000/svg"
+        width="52"
+        height="52"
+        viewBox="0 0 2048 2048"
+        data-bs-toggle="collapse"
         data-bs-target="#navbarNav"
         aria-controls="navbarNav"
         aria-expanded="false"
-       style="border:none !important"
-       >
-       
-        <path fill="cornflowerblue" d="M2048 128v128H0V128zM0 1664h2048v128H0zm0-768h2048v128H0zm0-384h2048v128H0zm0 768h2048v128H0z"/></svg>
-       <!-- <span class="navbar-toggler-icon"></span>
+        style="border: none !important"
+      >
+        <path
+          fill="cornflowerblue"
+          d="M2048 128v128H0V128zM0 1664h2048v128H0zm0-768h2048v128H0zm0-384h2048v128H0zm0 768h2048v128H0z"
+        />
+      </svg>
+      <!-- <span class="navbar-toggler-icon"></span>
       </button> -->
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
@@ -95,7 +98,7 @@
         style="font-size: 30px; margin-left: 20px"
       />
     </button>
-
+<Grid/>
     <div class="row">
       <!-- Левая колонка -->
       <div class="col-12 col-md-3 fixed-sidebar mb-4 mb-md-0">
@@ -117,37 +120,32 @@
                 </button>
               </h2>
             </div>
-          <br/>
-            <Pay/>
+            <br />
+            <Pay />
           </div>
         </div>
 
+        <!-- Сохранённые теги -->
+        <div class="saved-tags">
+          <span
+            v-for="tag in savedTags"
+            :key="tag"
+            class="badge bg-success saved-tag"
+            @click="handleTagClick(tag)"
+          >
+            {{ tag }}
+            <i
+              @click.stop="removeSavedTag(tag)"
+              class="bi bi-x-circle pointer text-white"
+            ></i>
+          </span>
+        </div>
 
-         <!-- Сохранённые теги -->
-    <div class="saved-tags">
-      <span
-        v-for="tag in savedTags"
-        :key="tag"
-        class="badge bg-success saved-tag"
-        @click="handleTagClick(tag)"
-      >
-        {{ tag }}
-        <i
-          @click.stop="removeSavedTag(tag)"
-          class="bi bi-x-circle pointer text-white"
-        ></i>
-      </span>
-    </div>
-
-   
-      <br/><br/>
-      
-       
+        <br /><br />
       </div>
 
       <!-- Правая колонка -->
       <div class="col-12 col-md-9 p" ref="newsContainer">
-       
         <div class="row container p">
           <NuxtPage />
         </div>
@@ -164,11 +162,11 @@
         <div class="modal-dialog form">
           <div class="modal-content">
             <button
-  type="button"
-  class="btn-close position-absolute top-0 end-0 me-2 mt-2"
-  aria-label="Close"
-  @click="closeModal"
-></button>
+              type="button"
+              class="btn-close position-absolute top-0 end-0 me-2 mt-2"
+              aria-label="Close"
+              @click="closeModal"
+            ></button>
 
             <!-- <div
               class="modal-header"
@@ -185,117 +183,217 @@
         </div>
       </div>
     </div>
-   <!-- Список новостей -->
-   <div style="position: relative;" class="news-list " >
-    <div v-if="news.length > 0" style="color:cornflowerblue" class=" text-center ">
-       Total: {{ news.length }}
-        </div>
-    <i  v-if="news.length > 0"   style="position: absolute; right:0; top: -25px" @click="clearNews" class="bi bi-x-circle pointer"></i>
-  <div v-if="loadingNews" class="text-center">
-    <p>
-      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><rect width="2.8" height="12" x="1" y="6" fill="currentColor"><animate id="svgSpinnersBarsScale0" attributeName="y" begin="0;svgSpinnersBarsScale1.end-0.1s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="6;1;6"/><animate attributeName="height" begin="0;svgSpinnersBarsScale1.end-0.1s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="12;22;12"/></rect><rect width="2.8" height="12" x="5.8" y="6" fill="currentColor"><animate attributeName="y" begin="svgSpinnersBarsScale0.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="6;1;6"/><animate attributeName="height" begin="svgSpinnersBarsScale0.begin+0.1s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="12;22;12"/></rect><rect width="2.8" height="12" x="10.6" y="6" fill="currentColor"><animate attributeName="y" begin="svgSpinnersBarsScale0.begin+0.2s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="6;1;6"/><animate attributeName="height" begin="svgSpinnersBarsScale0.begin+0.2s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="12;22;12"/></rect><rect width="2.8" height="12" x="15.4" y="6" fill="currentColor"><animate attributeName="y" begin="svgSpinnersBarsScale0.begin+0.3s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="6;1;6"/><animate attributeName="height" begin="svgSpinnersBarsScale0.begin+0.3s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="12;22;12"/></rect><rect width="2.8" height="12" x="20.2" y="6" fill="currentColor"><animate id="svgSpinnersBarsScale1" attributeName="y" begin="svgSpinnersBarsScale0.begin+0.4s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="6;1;6"/><animate attributeName="height" begin="svgSpinnersBarsScale0.begin+0.4s" calcMode="spline" dur="0.6s" keySplines=".36,.61,.3,.98;.36,.61,.3,.98" values="12;22;12"/></rect></svg>
-    </p>
-  </div>
+    <!-- Список новостей -->
+    <div style="position: relative" class="news-list">
+      <div
+        v-if="news.length > 0"
+        style="color: cornflowerblue"
+        class="text-center"
+      >
+        Total: {{ news.length }}
+      </div>
+      <i
+        v-if="news.length > 0"
+        style="position: absolute; right: 0; top: -25px"
+        @click="clearNews"
+        class="bi bi-x-circle pointer"
+      ></i>
+      <div v-if="loadingNews" class="text-center">
+        <p>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+          >
+            <rect width="2.8" height="12" x="1" y="6" fill="currentColor">
+              <animate
+                id="svgSpinnersBarsScale0"
+                attributeName="y"
+                begin="0;svgSpinnersBarsScale1.end-0.1s"
+                calcMode="spline"
+                dur="0.6s"
+                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
+                values="6;1;6"
+              />
+              <animate
+                attributeName="height"
+                begin="0;svgSpinnersBarsScale1.end-0.1s"
+                calcMode="spline"
+                dur="0.6s"
+                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
+                values="12;22;12"
+              />
+            </rect>
+            <rect width="2.8" height="12" x="5.8" y="6" fill="currentColor">
+              <animate
+                attributeName="y"
+                begin="svgSpinnersBarsScale0.begin+0.1s"
+                calcMode="spline"
+                dur="0.6s"
+                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
+                values="6;1;6"
+              />
+              <animate
+                attributeName="height"
+                begin="svgSpinnersBarsScale0.begin+0.1s"
+                calcMode="spline"
+                dur="0.6s"
+                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
+                values="12;22;12"
+              />
+            </rect>
+            <rect width="2.8" height="12" x="10.6" y="6" fill="currentColor">
+              <animate
+                attributeName="y"
+                begin="svgSpinnersBarsScale0.begin+0.2s"
+                calcMode="spline"
+                dur="0.6s"
+                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
+                values="6;1;6"
+              />
+              <animate
+                attributeName="height"
+                begin="svgSpinnersBarsScale0.begin+0.2s"
+                calcMode="spline"
+                dur="0.6s"
+                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
+                values="12;22;12"
+              />
+            </rect>
+            <rect width="2.8" height="12" x="15.4" y="6" fill="currentColor">
+              <animate
+                attributeName="y"
+                begin="svgSpinnersBarsScale0.begin+0.3s"
+                calcMode="spline"
+                dur="0.6s"
+                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
+                values="6;1;6"
+              />
+              <animate
+                attributeName="height"
+                begin="svgSpinnersBarsScale0.begin+0.3s"
+                calcMode="spline"
+                dur="0.6s"
+                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
+                values="12;22;12"
+              />
+            </rect>
+            <rect width="2.8" height="12" x="20.2" y="6" fill="currentColor">
+              <animate
+                id="svgSpinnersBarsScale1"
+                attributeName="y"
+                begin="svgSpinnersBarsScale0.begin+0.4s"
+                calcMode="spline"
+                dur="0.6s"
+                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
+                values="6;1;6"
+              />
+              <animate
+                attributeName="height"
+                begin="svgSpinnersBarsScale0.begin+0.4s"
+                calcMode="spline"
+                dur="0.6s"
+                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
+                values="12;22;12"
+              />
+            </rect>
+          </svg>
+        </p>
+      </div>
 
-  <div    v-else class="row g-4 mt-2">
-   
-    <div
-      v-for="item in news"
-      :key="item.id"
-      class="col-12 col-md-6 col-lg-4 col-xl-3"
-    >
-      <div class="news-item border p-3 rounded">
-        <div class="car">
-          <img
-            v-if="item.tempImageUrl || item.urlToImage"
-            :src="item.tempImageUrl || item.urlToImage"
-            class="card-img-top c"
-          />
-          <img v-else :src="image" class="card-img-top c" />
+      <div v-else class="row g-4 mt-2">
+        <div
+          v-for="item in news"
+          :key="item.id"
+          class="col-12 col-md-6 col-lg-4 col-xl-3"
+        >
+          <div class="news-item border p-3 rounded">
+            <div class="car">
+              <img
+                v-if="item.tempImageUrl || item.urlToImage"
+                :src="item.tempImageUrl || item.urlToImage"
+                class="card-img-top c"
+              />
+              <img v-else :src="image" class="card-img-top c" />
 
-          <div class="card-body">
-            <div class="overlay">
-              <h5 class="card-title">
-                <a
-                  style="font-size: 12px;"
-                  :href="item.url"
-                  target="_blank"
-                >
-                  {{ item.sourceName }}
-                </a>
-              </h5>
-              <p class="card-text">
-                <small class="text-muted">
-                  {{ formatDateTime(item.publishedAt) }}
-                </small>
-              </p>
-              <p
-                v-if="item.author"
-                class="badge bg-primary"
-                :style="{ 'max-width': '200px', 'white-space': 'nowrap', 'overflow': 'hidden', 'text-overflow': 'ellipsis' }"
-              >
-                {{ item.author }}
-              </p>
-              <p v-else class="badge bg-secondary">Unknown</p>
-              <div>
-                <p style="color: cornflowerblue;" class="fw-bold">
-                  {{ item.title }}
-                </p>
-                <p>{{ item.description }}</p>
-                <p v-html="item.content"></p>
+              <div class="card-body">
+                <div class="overlay">
+                  <h5 class="card-title">
+                    <a style="font-size: 12px" :href="item.url" target="_blank">
+                      {{ item.sourceName }}
+                    </a>
+                  </h5>
+                  <p class="card-text">
+                    <small class="text-muted">
+                      {{ formatDateTime(item.publishedAt) }}
+                    </small>
+                  </p>
+                  <p
+                    v-if="item.author"
+                    class="badge bg-primary"
+                    :style="{
+                      'max-width': '200px',
+                      'white-space': 'nowrap',
+                      overflow: 'hidden',
+                      'text-overflow': 'ellipsis',
+                    }"
+                  >
+                    {{ item.author }}
+                  </p>
+                  <p v-else class="badge bg-secondary">Unknown</p>
+                  <div>
+                    <p style="color: cornflowerblue" class="fw-bold">
+                      {{ item.title }}
+                    </p>
+                    <p>{{ item.description }}</p>
+                    <p v-html="item.content"></p>
+                  </div>
+                </div>
+                <button @click="openEditModal(item)" class="btn-danger1 mt-2">
+                  Edit
+                </button>
+                <button @click="sendToTelegram(item)" class="btn-danger1 mt-2">
+                  Telegram
+                  <i style="color: cornflowerblue" class="bi bi-telegram"></i>
+                </button>
               </div>
             </div>
-            <button @click="openEditModal(item)" class="btn-danger1 mt-2">
-              Edit
-            </button>
-            <button @click="sendToTelegram(item)" class="btn-danger1 mt-2">
-              Telegram
-              <i
-                style="color: cornflowerblue"
-                class="bi bi-telegram"
-              ></i>
-            </button>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
-<footer class="">
-          <div class="container">
-            <div class="row align-items-center">
-              <!-- Социальные иконки -->
-              <div
-                class="col-md-12 text-center text-md-start mb-3 mb-md-0 "
-              >
-                <div
-                  class="d-flex justify-content-center justify-content-md-start"
-                >
-                  <a href="#" class="me-3 fs-4" aria-label="Facebook">
-                    <i class="bi bi-facebook"></i>
-                  </a>
-                  <a href="#" class="me-3 fs-4" aria-label="Twitter">
-                    <i class="bi bi-twitter"></i>
-                  </a>
-                  <a href="#" class="me-3 fs-4" aria-label="Instagram">
-                    <i class="bi bi-instagram"></i>
-                  </a>
-                  <a href="#" class="me-3 fs-4" aria-label="LinkedIn">
-                    <i class="bi bi-telegram"></i>
-                  </a>
-                  <a href="#" class="fs-4 me-3" aria-label="YouTube">
-                    <i class="bi bi-youtube"></i>
-                  </a>
-                  <a href="#" class="fs-4 me-3" aria-label="YouTube">
-                    <i class="bi bi-reddit"></i>
-                  </a>
-                </div>
-              </div>
-              <br/><br/>
-              <!-- Поле для обратной связи -->
-              <div class="col-md-12 mb-3 mb-md-0 ">
-                <form @submit.prevent="sendFeedback">
-                  <!-- <div class="input-group ">
+    <footer class="">
+      <div class="container">
+        <div class="row align-items-center">
+          <!-- Социальные иконки -->
+          <div class="col-md-12 text-center text-md-start mb-3 mb-md-0">
+            <div class="d-flex justify-content-center justify-content-md-start">
+              <a href="#" class="me-3 fs-4" aria-label="Facebook">
+                <i class="bi bi-facebook"></i>
+              </a>
+              <a href="#" class="me-3 fs-4" aria-label="Twitter">
+                <i class="bi bi-twitter"></i>
+              </a>
+              <a href="#" class="me-3 fs-4" aria-label="Instagram">
+                <i class="bi bi-instagram"></i>
+              </a>
+              <a href="#" class="me-3 fs-4" aria-label="LinkedIn">
+                <i class="bi bi-telegram"></i>
+              </a>
+              <a href="#" class="fs-4 me-3" aria-label="YouTube">
+                <i class="bi bi-youtube"></i>
+              </a>
+              <a href="#" class="fs-4 me-3" aria-label="YouTube">
+                <i class="bi bi-reddit"></i>
+              </a>
+            </div>
+          </div>
+          <br /><br />
+          <!-- Поле для обратной связи -->
+          <div class="col-md-12 mb-3 mb-md-0">
+            <form @submit.prevent="sendFeedback">
+              <!-- <div class="input-group ">
                     <input
                       type="email"
                       class="form-control"
@@ -306,23 +404,23 @@
                     />
                     <button class="btn-danger1" type="submit">feedback</button>
                   </div> -->
-                </form>
-              </div>
+            </form>
+          </div>
 
-              <!-- Адрес -->
-              <!-- <div class="col-md-12 text-center text-md-end mt-4">
+          <!-- Адрес -->
+          <!-- <div class="col-md-12 text-center text-md-end mt-4">
                 <p class="mb-0 fw-bold">fourv@gmail.com 4V company.</p>
               </div> -->
-            </div>
-          </div>
-        </footer>
+        </div>
+      </div>
+    </footer>
   </div>
-<!-- </TonConnectUIProvider> -->
+  <!-- </TonConnectUIProvider> -->
 </template>
 
 <script>
 //import Pay from '@/components/Pay.vue'
- //import { useTopPopularStore } from "../stores/popular";
+//import { useTopPopularStore } from "../stores/popular";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
 import { useTopPopularStore } from "../../stores/popular";
@@ -358,12 +456,12 @@ export default {
   },
 
   setup() {
-   const popularStore = useTopPopularStore();
+    const popularStore = useTopPopularStore();
     const themeStore = useThemeStore();
     const channelStore = useChannelStore();
     const savedTags = computed(() => themeStore.savedTags);
     const tags = computed(() => themeStore.tags);
-    const news = computed(() => themeStore.news); 
+    const news = computed(() => themeStore.news);
     const localNews = ref([]);
     const loadingNews = computed(() => themeStore.loadingNews);
     const activeChannelId = computed(() => channelStore.activeChannelId); // Получаем activeChannelId
@@ -377,14 +475,12 @@ export default {
         return;
       }
 
-      themeStore.sendToTelegram(item, activeChannelId.value); 
+      themeStore.sendToTelegram(item, activeChannelId.value);
     };
-   
+
     const fetchNews = async (tagName) => {
-   
       await themeStore.fetchNews(tagName);
       localNews.value = themeStore.news.map((item) => ({ ...item })); // Локальная копия новостей
-     
     };
     // const removeSavedTag = (tag) => {
     //   themeStore.savedTags = themeStore.savedTags.filter((savedTag) => savedTag !== tag); // Удаляем тег
@@ -393,9 +489,8 @@ export default {
     // };
 
     const removeSavedTag = (tag) => {
-  themeStore.toggleSaveTag(tag); // Обновляем теги через метод Pinia
-};
-
+      themeStore.toggleSaveTag(tag); // Обновляем теги через метод Pinia
+    };
 
     const activeIndex = ref(null);
     const router = useRouter();
@@ -452,7 +547,7 @@ export default {
         route: "/disclaimer",
       },
     ]);
-   
+
     const handleItemClick = (item, index) => {
       if (item.title === "Setting") {
         showModal.value = true; // Открыть модальное окно
@@ -486,7 +581,7 @@ export default {
     }
     onMounted(() => {
       themeStore.loadSavedTags(); // Загружаем сохранённые теги
-      channelStore.loadChannels(); 
+      channelStore.loadChannels();
     });
     // Данные для аккордеона
 
@@ -495,7 +590,7 @@ export default {
       savedTags,
       tags,
       sendToTelegram,
-      activeChannelId, 
+      activeChannelId,
       clearNews,
       localNews,
       // news,
@@ -508,17 +603,14 @@ export default {
       handleItemClick,
       accordionItems,
       themeStore,
-      popularStore
-      
+      popularStore,
     };
   },
 };
 </script>
 
-
 <style lang="css" scoped>
 .nav-link {
- 
   transition: color 0.3s ease;
 }
 
@@ -535,9 +627,8 @@ export default {
   border-radius: 5px;
   padding: 15px;
   margin-bottom: 15px;
-  
 }
-.overlay{
+.overlay {
   overflow-x: hidden;
   overflow-y: auto;
   height: 250px;
@@ -591,8 +682,6 @@ export default {
 /* .navbar-brand:hover {
   color: #0056b3;
 } */
-
-
 
 .nav-link:hover {
   color: cornflowerblue;
@@ -711,7 +800,7 @@ caret-color: yellow;
   border-radius: 10px;
   font-size: 12px;
 }
-.nav-link{
-  color:  var(--bs-body-color);;
+.nav-link {
+  color: var(--bs-body-color);
 }
 </style>

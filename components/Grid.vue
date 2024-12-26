@@ -2,28 +2,25 @@
 
 <template>
   <div class="container">
-    <div class="row" v-for="(cardGroup, index) in cardGroups" :key="index">
-      <div class="col-md-4" v-for="card in cardGroup" :key="card.title">
-        <div
-          class="card mb-4 pointer"
-          @click="navigateToRoute(card.route)"
-          :class="['hover-card', `hover-card-${index}`]"
-        >
-          <div class="card-body hover-content">
-            <!-- Рендеринг иконки -->
-            <div class="card-icon mb-3">
-              <Icon v-if="customIconList.includes(card.icon)" :name="`svg-spinners:${card.icon}`" />
-
-
-              <div v-else v-html="card.icon"></div>
-            </div>
-            <h5 class="card-title fw-bold text-center">{{ card.title }}</h5>
-            <!-- <p class="card-text text-center">{{ card.description }}</p> -->
+  <div class="row">
+    <div class="col-lg-2 col-md-4 col-sm-6 mb-4" v-for="(card) in cards" :key="card.title">
+      <div class="card h-100 pointer" @click="navigateToRoute(card.route)">
+        <div class="card-body text-center">
+          <!-- Иконка -->
+          <div class="card-icon mb-3">
+            <Icon
+              v-if="customIconList.includes(card.icon)"
+              :name="`svg-spinners:${card.icon}`"
+            />
+            <div v-else v-html="card.icon"></div>
           </div>
+          <h6 style="font-size: 11px;"  class="card-title ">{{ card.title }}</h6>
+          <!-- <p class="card-text">{{ card.description }}</p> -->
         </div>
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -44,92 +41,107 @@ export default {
       intervalId: null,
       // isMobile: window.innerWidth < 992,
       scrollPosition: 0,
-      customIconList: ["blocks-wave","3-dots-move","blocks-shuffle-3","blocks-scale", "wind-toy", "pulse", "rotate-cube","pulse-3"], // Добавьте сюда новые идентификаторы
-      cards: [
-        {
-          title: "EDITOR",
-          description: "4V.COIN",
-          icon: 'blocks-shuffle-3',
-          route: "/editor",
-        },
-        // {
-        //   title: "Categories",
-        //   description: "4V.WEB 3.0",
-        //   icon: '<i class="bi bi-tags"></i>',
-        //   route: "/category",
-        // },
-        {
-          title: "Categories",
-          description: "4V.WEB 3.0",
-          icon: "blocks-scale", // Уникальный идентификатор для иконки <Icon>
-          route: "/category",
-        },
-        {
-          title: "Popular",
-          description: "4V.DEX",
-          icon: "wind-toy",
-          route: "/popular",
-        },
-        {
-          title: "Search tags",
-          description: "4V.ROBOT",
-          icon: 'pulse-3',
-          route: "/tags",
-        },
-        // {
-        //   title: "Editor",
-        //   description: "4V.CRYPTO",
-        //   icon: '<i class="bi bi-pencil"></i>',
-        //   route: "/editor",
-        // },
+      customIconList: ["blocks-wave","3-dots-move","blocks-shuffle-3","blocks-scale", "wind-toy", "pulse", "rotate-cube","pulse-3","tadpole","clock"], // Добавьте сюда новые идентификаторы
+      // cards: [
+      //   {
+      //     title: "EDITOR",
+      //     description: "4V.COIN",
+      //     icon: 'blocks-shuffle-3',
+      //     route: "/editor",
+      //   },
+      //   // {
+      //   //   title: "Categories",
+      //   //   description: "4V.WEB 3.0",
+      //   //   icon: '<i class="bi bi-tags"></i>',
+      //   //   route: "/category",
+      //   // },
+      //   {
+      //     title: "Categories",
+      //     description: "4V.WEB 3.0",
+      //     icon: "blocks-scale", // Уникальный идентификатор для иконки <Icon>
+      //     route: "/category",
+      //   },
+      //   {
+      //     title: "Popular",
+      //     description: "4V.DEX",
+      //     icon: "wind-toy",
+      //     route: "/popular",
+      //   },
+      //   {
+      //     title: "Search tags",
+      //     description: "4V.ROBOT",
+      //     icon: 'pulse-3',
+      //     route: "/tags",
+      //   },
+      //   // {
+      //   //   title: "Editor",
+      //   //   description: "4V.CRYPTO",
+      //   //   icon: '<i class="bi bi-pencil"></i>',
+      //   //   route: "/editor",
+      //   // },
 
-        // {
-        //   title: "Created & selected",
-        //   description: "DISTRIBUTOR (Automatic Content Distributor)",
-        //   icon: '<i class="bi bi-tags-fill"></i>',
-        //   route: "/selected",
-        // },
-        {
-          title: "Setting",
-          description: "CONTENTWISE (Content Wise Engine)",
-          icon: '3-dots-move',
-          route: "/setting",
-        },
-        {
-          title: "Create tag",
-          description: "4V.COIN",
-          icon: 'blocks-wave',
-          route: "/create",
-        },
-        // {
-        //   title: "Payment",
-        //   description: "Payment",
-        //   icon: '<i class="bi bi-wallet2"></i>',
-        //   route: "/pay",
-        // },
-        // {
-        //   title: "Documentation",
-        //   description: "CONTENTWISE (Content Wise Engine)",
-        //   icon: '<i class="bi bi-filetype-doc"></i>',
-        //   route: "/doc",
-        // },
-        // {
-        //   title: "Invite friends",
-        //   description: "4V.COIN",
-        //   icon: '<i class="bi bi-people-fill"></i>',
-        //   route: "/ref",
-        // },
-        // {
-        //   title: "Feedback",
-        //   description: "Payment",
-        //   icon: '<i class="bi bi-chat-text-fill"></i>',
-        //   route: "/feedback",
-        // },
-        // { title: 'SMARTSHARE (Intelligent Sharing Protocol)', description: 'SMARTSHARE (Intelligent Sharing Protocol)' },
-        // { title: '4V.DEFI', description: '4V.DEFI' },
-        // { title: 'GLIDE(Global Localized Intelligent Dynamic Engine)', description: 'GLIDE(Global Localized Intelligent Dynamic Engine)' },
-        // { title: '4V.NEWS', description: '4V.NEWS' },
-      ],
+      //   // {
+      //   //   title: "Created & selected",
+      //   //   description: "DISTRIBUTOR (Automatic Content Distributor)",
+      //   //   icon: '<i class="bi bi-tags-fill"></i>',
+      //   //   route: "/selected",
+      //   // },
+      //   {
+      //     title: "Setting",
+      //     description: "CONTENTWISE (Content Wise Engine)",
+      //     icon: '3-dots-move',
+      //     route: "/setting",
+      //   },
+      //   {
+      //     title: "Create tag",
+      //     description: "4V.COIN",
+      //     icon: 'blocks-wave',
+      //     route: "/create",
+      //   },
+      //   // {
+      //   //   title: "Payment",
+      //   //   description: "Payment",
+      //   //   icon: '<i class="bi bi-wallet2"></i>',
+      //   //   route: "/pay",
+      //   // },
+      //   // {
+      //   //   title: "Documentation",
+      //   //   description: "CONTENTWISE (Content Wise Engine)",
+      //   //   icon: '<i class="bi bi-filetype-doc"></i>',
+      //   //   route: "/doc",
+      //   // },
+      //   // {
+      //   //   title: "Invite friends",
+      //   //   description: "4V.COIN",
+      //   //   icon: '<i class="bi bi-people-fill"></i>',
+      //   //   route: "/ref",
+      //   // },
+      //   // {
+      //   //   title: "Feedback",
+      //   //   description: "Payment",
+      //   //   icon: '<i class="bi bi-chat-text-fill"></i>',
+      //   //   route: "/feedback",
+      //   // },
+      //   // { title: 'SMARTSHARE (Intelligent Sharing Protocol)', description: 'SMARTSHARE (Intelligent Sharing Protocol)' },
+      //   // { title: '4V.DEFI', description: '4V.DEFI' },
+      //   // { title: 'GLIDE(Global Localized Intelligent Dynamic Engine)', description: 'GLIDE(Global Localized Intelligent Dynamic Engine)' },
+      //   // { title: '4V.NEWS', description: '4V.NEWS' },
+      // ],
+      cards: [
+      { title: "EDITOR", description: "4V.COIN", icon: "blocks-shuffle-3", route: "/main/editor" },
+      { title: "CATEGORIES", description: "4V.WEB 3.0", icon: "blocks-scale", route: "/main/category" },
+      { title: "POPULAR", description: "4V.DEX", icon: "wind-toy", route: "/main/popular" },
+      { title: "SEARCH TAG", description: "4V.ROBOT", icon: "pulse-3", route: "/main/tags" },
+
+      { title: "CREATE TAG", description: "4V.COIN", icon: "tadpole", route: "/main/editor" },
+      { title: "HISTORY", description: "4V.WEB 3.0", icon: "clock", route: "/main/category" },
+      
+      
+      // { title: "Popular", description: "4V.DEX", icon: "wind-toy", route: "/main/popular" },
+      // { title: "Search tags", description: "4V.ROBOT", icon: "pulse-3", route: "/main/tags" },
+      // { title: "Setting", description: "CONTENTWISE", icon: "3-dots-move", route: "/main/setting" },
+      // { title: "Create tag", description: "4V.COIN", icon: "blocks-wave", route: "/main/create" },
+    ],
       colors: [
         "aqua",
         "red",

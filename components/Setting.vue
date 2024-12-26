@@ -220,9 +220,15 @@
             >
               {{ channel.name }}
             </span>
+          
             <div>
-              <svg
-                class="btn-sm"
+              <i  @click="handleRemoveChannel(index)" class="bi bi-x-circle"></i>
+        
+
+              <!-- <svg
+              style="display: block !important;"
+              v-if="channel.name"
+                class=""
                 @click="handleRemoveChannel(index)"
                 xmlns="http://www.w3.org/2000/svg"
                 width="32"
@@ -263,7 +269,7 @@
                     </linearGradient>
                   </defs>
                 </g>
-              </svg>
+              </svg> -->
             </div>
           </li>
         </ul>

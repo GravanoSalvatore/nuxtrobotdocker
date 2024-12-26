@@ -1,28 +1,7 @@
 <template>
-    <div class="">
-      <div class="row" v-for="(cardGroup, index) in cardGroups" :key="index">
-        <div class="col-md-4" v-for="card in cardGroup" :key="card.title">
-          <div
-            class="card mb-4 pointer"
-            @click="navigateToRoute(card.route)"
-            :class="['hover-card', `hover-card-${index}`]"
-          >
-            <div class="card-body hover-content">
-              <!-- Рендеринг иконки -->
-              <div class="card-icon mb-3">
-                <Icon v-if="customIconList.includes(card.icon)" :name="`svg-spinners:${card.icon}`" />
-  
-  
-                <div v-else v-html="card.icon"></div>
-              </div>
-              <h5 class="card-title fw-bold text-center">{{ card.title }}</h5>
-              <!-- <p class="card-text text-center">{{ card.description }}</p> -->
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- <NuxtPage /> -->
-    </div>
+    <div class="container">
+    
+  </div>
   </template>
   
   <script>

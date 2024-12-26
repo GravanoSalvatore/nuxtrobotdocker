@@ -81,6 +81,7 @@ export default defineNuxtConfig({
     '~/plugins/axios.ts',
     
   ],
+  
   // icon: {
   //   serverBundle: {
   //     collections: ['uil', 'mdi'] // <!--- this
