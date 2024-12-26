@@ -123,38 +123,40 @@
             <br />
             <Pay />
           </div>
-       
+
           <footer class="">
-      <div class="container">
-        <div class="row align-items-center">
-          <!-- Социальные иконки -->
-          <div class="col-md-12 text-center text-md-start mb-3 mb-md-0">
-            <div class="d-flex justify-content-center justify-content-md-start">
-              <a href="#" class="me-3 fs-4" aria-label="Facebook">
-                <i class="bi bi-facebook"></i>
-              </a>
-              <a href="#" class="me-3 fs-4" aria-label="Twitter">
-                <i class="bi bi-twitter"></i>
-              </a>
-              <a href="#" class="me-3 fs-4" aria-label="Instagram">
-                <i class="bi bi-instagram"></i>
-              </a>
-              <a href="#" class="me-3 fs-4" aria-label="LinkedIn">
-                <i class="bi bi-telegram"></i>
-              </a>
-              <a href="#" class="fs-4 me-3" aria-label="YouTube">
-                <i class="bi bi-youtube"></i>
-              </a>
-              <a href="#" class="fs-4 me-3" aria-label="YouTube">
-                <i class="bi bi-reddit"></i>
-              </a>
-            </div>
-          </div>
-          <br /><br />
-          <!-- Поле для обратной связи -->
-          <div class="col-md-12 mb-3 mb-md-0">
-            <form @submit.prevent="sendFeedback">
-              <!-- <div class="input-group ">
+            <div class="container">
+              <div class="row align-items-center">
+                <!-- Социальные иконки -->
+                <div class="col-md-12 text-center text-md-start mb-3 mb-md-0">
+                  <div
+                    class="d-flex justify-content-center justify-content-md-start"
+                  >
+                    <a href="#" class="me-3 fs-4" aria-label="Facebook">
+                      <i class="bi bi-facebook"></i>
+                    </a>
+                    <a href="#" class="me-3 fs-4" aria-label="Twitter">
+                      <i class="bi bi-twitter"></i>
+                    </a>
+                    <a href="#" class="me-3 fs-4" aria-label="Instagram">
+                      <i class="bi bi-instagram"></i>
+                    </a>
+                    <a href="#" class="me-3 fs-4" aria-label="LinkedIn">
+                      <i class="bi bi-telegram"></i>
+                    </a>
+                    <a href="#" class="fs-4 me-3" aria-label="YouTube">
+                      <i class="bi bi-youtube"></i>
+                    </a>
+                    <a href="#" class="fs-4 me-3" aria-label="YouTube">
+                      <i class="bi bi-reddit"></i>
+                    </a>
+                  </div>
+                </div>
+                <br /><br />
+                <!-- Поле для обратной связи -->
+                <div class="col-md-12 mb-3 mb-md-0">
+                  <form @submit.prevent="sendFeedback">
+                    <!-- <div class="input-group ">
                     <input
                       type="email"
                       class="form-control"
@@ -165,16 +167,16 @@
                     />
                     <button class="btn-danger1" type="submit">feedback</button>
                   </div> -->
-            </form>
-          </div>
+                  </form>
+                </div>
 
-          <!-- Адрес -->
-          <!-- <div class="col-md-12 text-center text-md-end mt-4">
+                <!-- Адрес -->
+                <!-- <div class="col-md-12 text-center text-md-end mt-4">
                 <p class="mb-0 fw-bold">fourv@gmail.com 4V company.</p>
               </div> -->
-        </div>
-      </div>
-    </footer>
+              </div>
+            </div>
+          </footer>
         </div>
 
         <!-- Сохранённые теги -->
@@ -413,11 +415,8 @@
             </div>
           </div>
         </div>
-      
       </div>
-   
     </div>
-   
   </div>
   <!-- </TonConnectUIProvider> -->
 </template>
@@ -586,6 +585,7 @@ export default {
     onMounted(() => {
       themeStore.loadSavedTags(); // Загружаем сохранённые теги
       channelStore.loadChannels();
+      themeStore.startSyncingSavedTags(); 
     });
     // Данные для аккордеона
 

@@ -97,12 +97,12 @@ export const useThemeStore = defineStore("theme", {
       }
     },
 
-    loadSavedTags() {
-      const saved = localStorage.getItem("savedTags");
-      if (saved) {
-        this.savedTags = JSON.parse(saved);
-      }
-    },
+    // loadSavedTags() {
+    //   const saved = localStorage.getItem("savedTags");
+    //   if (saved) {
+    //     this.savedTags = JSON.parse(saved);
+    //   }
+    // },
 
     // toggleSaveTag(tag) {
     //   if (this.isTagSaved) {
@@ -115,15 +115,34 @@ export const useThemeStore = defineStore("theme", {
     //     console.log("Тег сохранён:", tag);
     //   }
     // },
+    loadSavedTags() {
+      const saved = localStorage.getItem('savedTags');
+      this.savedTags = saved ? JSON.parse(saved) : [];
+    },
+
+    saveTagsToLocalStorage() {
+      localStorage.setItem('savedTags', JSON.stringify(this.savedTags));
+    },
+
     toggleSaveTag(tag) {
       if (this.savedTags.includes(tag)) {
         this.savedTags = this.savedTags.filter((savedTag) => savedTag !== tag);
-        console.log("Тег удалён:", tag);
       } else {
         this.savedTags.push(tag);
-        console.log("Тег добавлен:", tag);
       }
-      localStorage.setItem("savedTags", JSON.stringify(this.savedTags));
+      this.saveTagsToLocalStorage();
+    },
+
+    startSyncingSavedTags() {
+      // Периодически обновляем данные из localStorage
+      setInterval(() => {
+        const saved = localStorage.getItem('savedTags');
+        const parsed = saved ? JSON.parse(saved) : [];
+        if (JSON.stringify(parsed) !== JSON.stringify(this.savedTags)) {
+          this.savedTags = parsed; // Обновляем теги из localStorage
+          console.log('Теги синхронизированы из localStorage:', this.savedTags);
+        }
+      }, 5000); // Интервал в 5 секунд
     },
     
     async fetchTags() {
