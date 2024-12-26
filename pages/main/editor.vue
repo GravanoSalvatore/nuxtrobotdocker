@@ -9,35 +9,39 @@
         rows="6"
       ></textarea>
 
-      <input
-        type="text"
-        v-model="gifSearchQuery"
-        class="form-control mt-2"
-        placeholder="Search GIF..."
-      />
+    
 
       <!-- Кнопка отображения Emoji Picker -->
       <client-only>
         <i
           style="color: cornflowerblue"
           @click="toggleEmojiPicker"
-          class="bi"
+          class="bi pointer"
           :class="showEmojiPicker ? 'bi-x-circle' : 'bi-emoji-smile'"
         ></i>
 
         <!-- Emoji Picker -->
+        <div  class= "position-relative"> 
         <div
           v-if="showEmojiPicker"
-          class="emoji-picker-container mt-2 d-flex justify-content-center align-items-center"
+          class= " emoji-picker-container mt-2 d-flex justify-content-center align-items-center"
         >
-          <!-- Привязываем picker к теме приложения -->
+        
           <emoji-picker
-            class="custom-emoji-picker"
+          style="z-index: 10000;top:0"
+            class="custom-emoji-picker position-absolute "
             @emoji-click="addEmoji"
           ></emoji-picker>
         </div>
+        </div>
       </client-only>
       <!-- Новая функция: Выбор даты и времени -->
+      <input
+        type="text"
+        v-model="gifSearchQuery"
+        class="form-control mt-2"
+        placeholder="Search GIF..."
+      />
       <div class="schedule-controls mt-2">
         <!-- <label for="schedule-date">Schedule Date:</label> -->
         <input
