@@ -152,10 +152,10 @@
                     </a>
                   </div>
                 </div>
-                <br /><br />
+                
                 <!-- Поле для обратной связи -->
-                <div class="col-md-12 mb-3 mb-md-0">
-                  <form @submit.prevent="sendFeedback">
+                <!-- <div class="col-md-12 mb-3 mb-md-0">
+                  <form @submit.prevent="sendFeedback"> -->
                     <!-- <div class="input-group ">
                     <input
                       type="email"
@@ -167,8 +167,8 @@
                     />
                     <button class="btn-danger1" type="submit">feedback</button>
                   </div> -->
-                  </form>
-                </div>
+                  <!-- </form>
+                </div> -->
 
                 <!-- Адрес -->
                 <!-- <div class="col-md-12 text-center text-md-end mt-4">
@@ -195,7 +195,7 @@
           </span>
         </div>
 
-        <br /><br />
+        
       </div>
 
       <!-- Правая колонка -->
@@ -802,7 +802,7 @@ caret-color: yellow;
   cursor: pointer;
   padding: 5px 10px;
   border-radius: 10px;
-  font-size: 12px;
+  font-size: 10px;
 }
 .nav-link {
   color: var(--bs-body-color);

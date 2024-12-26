@@ -406,7 +406,7 @@
                 Edit
               </button>
               <button @click="sendToTelegram(item)" class="btn-danger1 mt-2">
-                Send to Telegram
+                Telegram
                 <i style="color: cornflowerblue" class="bi bi-telegram"></i>
               </button>
             </div>
@@ -690,7 +690,7 @@ export default {
   cursor: pointer;
   padding: 5px 10px;
   border-radius: 10px;
-  font-size: 12px;
+  font-size: 10px;
 }
 
 .saved-tag .bi-x-circle {

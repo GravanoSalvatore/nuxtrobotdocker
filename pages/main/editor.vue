@@ -216,7 +216,7 @@
           <button
             @click="startRecording"
             :disabled="isRecording"
-            class="btn-danger3 btn-sm flex-grow-1"
+            class="pointer btn-danger3 btn-sm flex-grow-1"
           >
             <i class="bi bi-mic"></i> Record
           </button>
@@ -224,7 +224,7 @@
           <button
             @click="pauseRecording"
             :disabled="!isRecording"
-            class="btn-danger3 btn-sm flex-grow-1"
+            class="pointer btn-danger3 btn-sm flex-grow-1"
           >
             <i class="bi bi-pause"></i> Pause
           </button>
