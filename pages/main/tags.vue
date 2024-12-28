@@ -35,7 +35,7 @@
 
     <!-- Список тегов -->
     <div class="tags-list">
-      <div class="tags-lis" v-if="tags.length > 0">
+      <div class="tags-lis" v-if="tags.length > 0" >
         <div style="color: cornflowerblue" class="fw-bold text-center">
           Total: {{ tags.length }}
         </div>
@@ -44,7 +44,19 @@
           ref="tagsList"
           style="max-height: 300px; overflow-y: auto"
         >
-          <button
+         
+        
+        <button
+  v-for="tag in sortedTags"
+  :key="tag.id"
+  class="btn-danger2 m-1"
+  @click="() => { selectTag(tag.name); fetchNews(tag.name); }"
+>
+  {{ tag.name }} -
+  <span class="badge">{{ tag.popularity }}</span>
+</button>
+
+        <!-- <button
             v-for="tag in sortedTags"
             :key="tag.id"
             class="btn-danger2 m-1"
@@ -52,7 +64,7 @@
           >
             {{ tag.name }} -
             <span class="badge">{{ tag.popularity }}</span>
-          </button>
+          </button> -->
         </div>
       </div>
     </div>
@@ -60,12 +72,12 @@
     <!-- Список новостей -->
     <div v-if="news.length > 0" class="news-list">
       <div style="position: relative">
-        <div class="saved-tags">
+         <!-- Сохранённые теги -->
+         <div class="saved-tags">
           <span
-            style="margin: 3px"
             v-for="tag in savedTags"
             :key="tag"
-            class="badge bg-success saved-tag pointer"
+            class="badge bg-success saved-tag pointer m-1"
             @click="fetchNews(tag)"
           >
             {{ tag }}
@@ -75,24 +87,17 @@
             ></i>
           </span>
         </div>
-
+        
+       
         <button
-          class="btn-danger1 me-2"
-          :class="{ 'btn-danger': isTagSaved }"
-          @click="toggleSaveTag(currentTag)"
-        >
-          {{ isTagSaved ? "Delete" : "Save" }}
-        </button>
+  class="btn-danger1 me-2"
+  :class="{ 'btn-danger': isTagSaved }"
+  @click="toggleSaveTag(currentTag)"
+>
+  {{ isTagSaved ? "Delete" : "Save" }}
+</button>
 
-        <button
-          @click="toggleAutopilot"
-          :class="[
-            'btn-danger1 fw-bold me-2',
-            { 'btn-primary': autopilotActive },
-          ]"
-        >
-          {{ autopilotActive ? "Stop Autopilot" : "Start Autopilot" }}
-        </button>
+        
         <!-- Button trigger modal -->
         <button
           type="button"
@@ -308,42 +313,42 @@ export default {
   setup(props) {
     const store = useTagStore();
     const channelStore = useChannelStore();
-    const popularStore = useTopPopularStore();
-
-    const autopilotInterval = ref(null);
-    const autopilotActive = ref(false);
+    const storePop = useTopPopularStore();
+   
+    // const autopilotInterval = ref(null);
+    // const autopilotActive = ref(false);
 
     //getters
-    //const savedTags = computed(() => popularStore.savedTags);
+    
     const sortedTags = computed(() => store.sortedTags);
-    // const isTagSaved = computed(() => popularStore.isTagSaved);
-    // const currentTag = computed(() => popularStore.currentTag);
-    //  const tags = computed(() => popularStore.tags);
-    // const toggleSaveTag = (tag) => {
-    //   popularStore.toggleSaveTag(tag);
-    //     };
-    //     const removeSavedTag = (tag) => {
-    //       popularStore.savedTags = popularStore.savedTags.filter((savedTag) => savedTag !== tag); // Удаляем тег
-    //       localStorage.setItem("savedTags", JSON.stringify(popularStore.savedTags)); // Сохраняем изменения в localStorage
-    //       console.log("Тег удалён:", tag);
-    //     };
+    const savedTags = computed(() => storePop.savedTags);
+    const currentTag = ref(""); // Текущий выбранный тег
+    const selectTag = (tagName) => {
+  currentTag.value = tagName;
+  console.log("Текущий тег установлен:", tagName);
+};
 
-    const toggleAutopilot = () => {
-      if (autopilotActive.value) {
-        clearInterval(autopilotInterval.value);
-        autopilotInterval.value = null;
-        autopilotActive.value = false;
-      } else {
-        autopilotActive.value = true;
-        autopilotInterval.value = setInterval(() => {
-          store.fetchNews(store.currentTag).then(() => {
-            store.news.forEach((news) => {
-              store.sendToTelegram(news, activeChannelId.value);
-            });
-          });
-        }, 60000); // Отправляем каждые 60 секунд
-      }
-    };
+// Вызываем метод сохранения/удаления тега
+const toggleSaveTag = () => {
+  if (!currentTag.value.trim()) {
+    console.error("Текущий тег пустой, невозможно сохранить.");
+    return;
+  }
+  storePop.toggleSaveTag(currentTag.value); // Передаём текущий тег в метод store
+  console.log("Тег сохранён/удалён:", currentTag.value);
+};
+
+
+// Проверяем, сохранён ли текущий тег
+const isTagSaved = computed(() => storePop.savedTags.includes(currentTag.value));
+
+   
+const removeSavedTag = (tag) => {
+  const updatedTags = storePop.savedTags.filter((savedTag) => savedTag !== tag); // Фильтруем теги
+  storePop.savedTags = updatedTags; // Обновляем массив сохранённых тегов в store
+  localStorage.setItem("savedTags", JSON.stringify(updatedTags)); // Сохраняем изменения в localStorage
+  console.log("Тег удалён:", tag); // Лог для проверки
+};
 
     // Действия
     const activeChannelId = computed(() => channelStore.activeChannelId); // Достаём ID активного канала
@@ -401,28 +406,30 @@ export default {
       store.sendToTelegram(item, activeChannelId.value);
     };
 
-    // const sendToTelegram = (item) => store.sendToTelegram(item, activeChannelId.value);
-    // const toggleSaveTag = (tag) => store.toggleSaveTag(tag);
+
     const scrollToTop = () => store.scrollToTop(tagsList.value);
-    const sendChatIdAndTagId = () => {
-      // Реализуйте логику автоматической отправки данных
-    };
+    // const sendChatIdAndTagId = () => {
+    //   // Реализуйте логику автоматической отправки данных
+    // };
 
     onMounted(() => {
-      popularStore.loadSavedTags();
+      storePop.loadSavedTags(); // Загружаем сохранённые теги
+  if (storePop.savedTags.length > 0) {
+    currentTag.value = storePop.savedTags[0]; // Устанавливаем первый тег как текущий
+  }
+
     });
 
     return {
-      // savedTags,
-      // toggleSaveTag,
-      // removeSavedTag,
+      selectTag,
+      currentTag,
+      savedTags,
       sortedTags,
-      // isTagSaved,
-      // currentTag,
-      // tags,
-      // tags,
-      autopilotActive,
-      toggleAutopilot,
+      removeSavedTag,
+      isTagSaved,
+      toggleSaveTag,
+      // autopilotActive,
+      // toggleAutopilot,
       query,
       tags: computed(() => store.tags),
       news: computed(() => store.news),
@@ -431,18 +438,16 @@ export default {
       totalTags: computed(() => store.totalTags),
       progress: computed(() => store.progress),
       image: computed(() => store.image),
-      // sortedTags: computed(() => store.sortedTags),
-      // currentTag: computed(() => store.currentTag),
-      // isTagSaved: computed(() => store.isTagSaved),
+     
       searchTags,
       fetchNews,
       clearNews,
       sendToTelegram,
-      // toggleSaveTag,
+      
 
       scrollToTop,
       tagsList,
-      sendChatIdAndTagId,
+      // sendChatIdAndTagId,
       formatDateTime: store.formatDateTime,
       activeChannelId,
       editableItem,
@@ -505,7 +510,7 @@ a {
 .scrollable-tags-list {
   max-height: 300px;
   overflow-y: auto;
-  padding: 10px;
+  /* padding: 10px; */
 }
 
 .tag-item {
@@ -564,11 +569,11 @@ a {
 }
 
 .saved-tags {
-  margin: 10px 0;
+font-size: 14px;
 }
 .saved-tag {
-  margin: 5px 0;
-  font-weight: bold;
+ 
+  
 }
 .save-tag-btn {
   margin-left: 10px;

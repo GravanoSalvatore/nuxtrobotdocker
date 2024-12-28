@@ -731,7 +731,7 @@ a {
 .scrollable-tags-list {
   max-height: 310px;
   overflow-y: auto;
-  padding: 10px;
+  /* padding: 10px; */
 }
 
 .tag-item {
