@@ -116,7 +116,7 @@
 <script>
 import axios from "axios";
 
-import SavedTagsMenu from "../../components/SavedTagsMenu.vue";
+//import SavedTagsMenu from "../../components/SavedTagsMenu.vue";
 import NewsList from "../../components/NewsList.vue";
 import { useCategoryStore } from "../../stores/categories"; // Импортируем созданный магазин
 import { useChannelStore } from "../../stores/channelStore";
@@ -141,7 +141,7 @@ export default {
   components: {
     // closed,
     // crypto,
-    SavedTagsMenu,
+    // SavedTagsMenu,
     NewsList,
     // editor
   },

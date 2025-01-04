@@ -36,9 +36,9 @@
     <!-- Список тегов -->
     <div class="tags-list">
       <div class="tags-lis" v-if="tags.length > 0" >
-        <div style="color: cornflowerblue" class="fw-bold text-center">
+        <!-- <div style="color: cornflowerblue" class="fw-bold text-center">
           Total: {{ tags.length }}
-        </div>
+        </div> -->
         <div
           class="scrollable-tags-list rounded"
           ref="tagsList"
@@ -49,7 +49,7 @@
         <button
   v-for="tag in sortedTags"
   :key="tag.id"
-  class="btn-danger2 m-1"
+  class="btn-danger2 "
   @click="() => { selectTag(tag.name); fetchNews(tag.name); }"
 >
   {{ tag.name }} -
@@ -73,11 +73,11 @@
     <div v-if="news.length > 0" class="news-list">
       <div style="position: relative">
          <!-- Сохранённые теги -->
-         <div class="saved-tags">
+         <div class="saved-tags mb-1">
           <span
             v-for="tag in savedTags"
             :key="tag"
-            class="badge bg-success saved-tag pointer m-1"
+            class="badge bg-success saved-tag pointer "
             @click="fetchNews(tag)"
           >
             {{ tag }}
@@ -88,7 +88,7 @@
           </span>
         </div>
         
-       
+        <h4 class="fw-bold mt-2">{{ currentTag }}</h4>
         <button
     class="btn-danger1 me-2"
     :class="{ 'btn-danger': isTagSaved }"
@@ -98,7 +98,15 @@
   </button>
 
         
-        <!-- Button trigger modal -->
+  <button
+          @click="toggleAutopilot"
+          :class="[
+            'btn-danger1 fw-bold me-2',
+            { 'btn-primary': autopilotActive },
+          ]"
+        >
+          {{ autopilotActive ? "Stop Autopilot" : "Start Autopilot" }}
+        </button>
         <button
           type="button"
           class="btn-danger1"
@@ -146,6 +154,7 @@
           class="bi bi-x-circle pointer"
         ></i>
       </div>
+
       <!-- Индикатор загрузки -->
       <div v-if="loading" class="text-center">
         <div class="spinner-border text-primary" role="status">
@@ -209,8 +218,108 @@
     </div>
 
     <!-- Модальное окно для редактирования -->
-
     <div
+        class="modal fade"
+        id="editModal"
+        tabindex="-1"
+        aria-labelledby="editModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-body">
+              <div>
+                <!-- Кнопка для открытия компонента -->
+                <button @click="toggleSetting" class="btn">
+                  <i class="bi bi-sliders"></i>
+                </button>
+
+                <!-- Анимированный блок с настройками -->
+                <transition name="fade">
+                  <div v-if="showSetting" class="setting-container">
+                    <setting />
+                    <!-- Кнопка для закрытия -->
+                    <!-- <button @click="toggleSetting" class="btn btn-danger mt-3">Close</button> -->
+                  </div>
+                </transition>
+              </div>
+              <div class="mb-3">
+                <div class="text-center mt-3">
+                  <img
+                    :src="editableItem.tempImageUrl || editableItem.urlToImage"
+                    class="img-fluid"
+                    alt="Preview"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="editImageFile" class="form-label"
+                    >Upload Image</label
+                  >
+                  <input
+                    id="editImageFile"
+                    type="file"
+                    @change="uploadImage"
+                    class="form-control"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="editImage" class="form-label">Image URL</label>
+                  <input
+                    id="editImage"
+                    type="text"
+                    v-model="editableItem.tempImageUrl"
+                    class="form-control"
+                  />
+                </div>
+                <label for="editTitle" class="form-label">Title</label>
+                <input
+                  id="editTitle"
+                  type="text"
+                  v-model="editableItem.title"
+                  class="form-control"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="editDescription" class="form-label"
+                  >Description</label
+                >
+                <textarea
+                  id="editDescription"
+                  v-model="editableItem.description"
+                  class="form-control"
+                ></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="editContent" class="form-label">Content</label>
+                <textarea
+                  id="editContent"
+                  v-model="editableItem.content"
+                  class="form-control"
+                ></textarea>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn-danger1" data-bs-dismiss="modal">
+                Close
+              </button>
+              <button
+                type="button"
+                class="btn-danger1"
+                @click="saveChanges"
+                data-bs-dismiss="modal"
+              >
+                Save changes
+              </button>
+              <button @click="sendToTelegram(item)" class="btn-danger1 mt-2">
+                Send to Telegram
+                <i style="color: cornflowerblue" class="bi bi-telegram"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- <div
       class="modal fade"
       id="editModal"
       tabindex="-1"
@@ -296,7 +405,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -314,7 +423,10 @@ export default {
     const store = useTagStore();
     const channelStore = useChannelStore();
     const storePop = useTopPopularStore();
-   
+    const showSetting = ref(false);
+    const toggleSetting = () => {
+      showSetting.value = !showSetting.value;
+    };
     // const autopilotInterval = ref(null);
     // const autopilotActive = ref(false);
 
@@ -322,6 +434,7 @@ export default {
     
     const sortedTags = computed(() => store.sortedTags);
     const savedTags = computed(() => storePop.savedTags);
+    //const currentTag = computed(() => storePop.currentTag);
     const currentTag = ref(""); // Текущий выбранный тег
     const selectTag = (tagName) => {
   currentTag.value = tagName;
@@ -426,6 +539,8 @@ const toggleSaveTag = () => {
     });
 
     return {
+      showSetting,
+      toggleSetting,
       savedTags: computed(() => storePop.savedTags),
       selectTag,
       currentTag,
@@ -575,11 +690,17 @@ a {
 }
 
 .saved-tags {
-font-size: 14px;
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-top: 10px;
 }
+
 .saved-tag {
- 
-  
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-size: 10px;
 }
 .save-tag-btn {
   margin-left: 10px;

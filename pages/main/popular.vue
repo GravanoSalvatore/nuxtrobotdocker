@@ -106,21 +106,26 @@
     <!-- Список тегов -->
     <div v-else class="tags-list">
       <div class="tags-lis" v-if="tags.length > 0">
-        <div style="color: cornflowerblue" class="text-center">
+        <!-- <div style="color: cornflowerblue" class="text-center">
           Total: {{ tags.length }}
-        </div>
+        </div> -->
 
-        <div class="scrollable-tags-list rounded" ref="tagsList">
+        <div  class="scrollable-tags-list rounded" ref="tagsList">
           <button
-            v-for="tag in filteredSortedTags"
+         
+          v-for="tag in filteredSortedTags"
             :key="tag.id"
             class="btn-danger2"
             @click="fetchNews(tag.name)"
+          >
+          <span
+        
           >
             {{ tag.name }}
             <span class="rounded" style="padding: 5px">
               {{ tag.popularity }}
             </span>
+          </span>
           </button>
         </div>
       </div>
@@ -257,7 +262,7 @@
             ></i>
           </span>
         </div>
-
+        <h4 class="fw-bold mt-2">{{ currentTag }}</h4>
         <!-- Кнопка сохранения текущего тега -->
         <button
           class="btn-danger1 me-2"
@@ -320,7 +325,7 @@
           class="bi bi-x-circle pointer"
         ></i>
       </div>
-
+     
       <!-- Список новостей -->
       <!-- <div class="row row-cols-1 row-cols-md-3 g-3 mt-3">
         <div v-for="item in news" :key="item.id" class="col">
@@ -694,7 +699,7 @@ export default {
 }
 
 .saved-tag .bi-x-circle {
-  margin-left: 5px;
+  
   color: red;
 }
 .saved-tag:hover {
@@ -794,10 +799,10 @@ a {
 }
 
 .saved-tags {
-  margin: 10px 0;
+  margin: 5px 0;
 }
 .saved-tag {
-  margin: 5px 0;
+  /* margin: 5px 0; */
   font-weight: bold;
 }
 .save-tag-btn {

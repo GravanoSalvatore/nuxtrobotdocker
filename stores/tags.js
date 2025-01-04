@@ -94,7 +94,65 @@ export const useTagStore = defineStore("tagStore", {
         this.loading = false;
       }
     },
-
+    // async searchTags() {
+    //   if (this.query.trim() === "") {
+    //     this.tags = [];
+    //     this.news = [];
+    //     return;
+    //   }
+    
+    //   this.loading = true;
+    //   this.tags = [];
+    //   this.progress = 0;
+    
+    //   try {
+    //     const pageSize = 100; // Размер страницы
+    //     const maxPages = 10; // Максимум 30 страниц (3000 тегов)
+    //     let totalFetched = 0;
+    
+    //     for (let page = 1; page <= maxPages; page++) {
+    //       const response = await axios.get(
+    //         `https://4v-news-api.azurewebsites.net/Tags/Search`,
+    //         {
+    //           params: {
+    //             SiteId: 1,
+    //             Page: page,
+    //             PageSize: pageSize,
+    //             Query: this.query,
+    //           },
+    //         }
+    //       );
+    
+    //       const fetchedTags = response.data.items;
+    
+    //       if (fetchedTags.length === 0) {
+    //         // Если текущая страница пустая, выходим из цикла
+    //         break;
+    //       }
+    
+    //       this.tags.push(...fetchedTags); // Добавляем полученные теги в общий массив
+    //       totalFetched += fetchedTags.length;
+    
+    //       if (fetchedTags.length < pageSize) {
+    //         // Если данных меньше, чем `pageSize`, значит, теги закончились
+    //         break;
+    //       }
+    
+    //       // Обновляем прогресс
+    //       this.progress = Math.min((page / maxPages) * 100, 100);
+    //     }
+    
+    //     this.totalTags = totalFetched; // Обновляем общее количество тегов
+    //   } catch (error) {
+    //     console.error("Ошибка при поиске тегов:", error);
+    //     this.tags = [];
+    //   } finally {
+    //     this.loading = false;
+    //     this.progress = 100; // Устанавливаем прогресс на 100%
+    //   }
+    // },
+    
+    
     async fetchNews(tagName) {
       try {
         const response = await axios.get(
