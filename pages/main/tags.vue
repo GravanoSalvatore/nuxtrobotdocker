@@ -40,7 +40,7 @@
           Total: {{ tags.length }}
         </div> -->
         <div
-          class="scrollable-tags-list rounded"
+          class="scrollable-tags-list rounded px-1"
           ref="tagsList"
           style="max-height: 300px; overflow-y: auto"
         >
@@ -72,6 +72,7 @@
     <!-- Список новостей -->
     <div v-if="news.length > 0" class="news-list">
       <div style="position: relative">
+        <h4 class="fw-bold ">{{ currentTag }}</h4>
          <!-- Сохранённые теги -->
          <div class="saved-tags mb-1">
           <span
@@ -88,7 +89,7 @@
           </span>
         </div>
         
-        <h4 class="fw-bold mt-2">{{ currentTag }}</h4>
+
         <button
     class="btn-danger1 me-2"
     :class="{ 'btn-danger': isTagSaved }"
@@ -149,7 +150,7 @@
           </div>
         </div>
         <i
-          style="position: absolute; right: 0; top: -25px"
+          style="position: absolute; right: 0; top: -20px"
           @click="clearNews"
           class="bi bi-x-circle pointer"
         ></i>
@@ -691,7 +692,7 @@ a {
 
 .saved-tags {
   display: flex;
-  gap: 5px;
+  gap: 2px;
   flex-wrap: wrap;
   margin-top: 10px;
 }

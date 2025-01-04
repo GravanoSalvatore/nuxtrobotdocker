@@ -110,7 +110,7 @@
           Total: {{ tags.length }}
         </div> -->
 
-        <div  class="scrollable-tags-list rounded" ref="tagsList">
+        <div  class="scrollable-tags-list rounded px-1" ref="tagsList">
           <button
          
           v-for="tag in filteredSortedTags"
@@ -122,7 +122,7 @@
         
           >
             {{ tag.name }}
-            <span class="rounded" style="padding: 5px">
+            <span class="rounded" style="padding: px">
               {{ tag.popularity }}
             </span>
           </span>
@@ -138,9 +138,60 @@
       </div> -->
     </div>
 
-    <br />
-    <!-- Индикатор загрузки новостей -->
-    <div v-if="loadingNews" class="text-center">
+   
+    
+
+    <div v-if="news.length > 0" class="news-list">
+      <!-- <div style="color:cornflowerblue" class="fw-bold text-center ">
+       Total: {{ news.length }}
+        </div> -->
+      <div style="position: relative">
+        <h4 class="fw-bold ">{{ currentTag }}</h4>
+        <!-- Сохранённые теги -->
+        <div class="saved-tags">
+          <span
+            v-for="tag in savedTags"
+            :key="tag"
+            class="badge bg-success saved-tag"
+            @click="fetchNews(tag)"
+          >
+            {{ tag }}
+            <i
+              @click.stop="removeSavedTag(tag)"
+              class="bi bi-x-circle pointer text-white"
+            ></i>
+          </span>
+        </div>
+      
+        <!-- Кнопка сохранения текущего тега -->
+        <button
+          class="btn-danger1 me-2"
+          :class="{ 'btn-danger': isTagSaved }"
+          @click="toggleSaveTag(currentTag)"
+        >
+          {{ isTagSaved ? "Delete" : "Save" }}
+        </button>
+
+        <!-- Другие кнопки -->
+        <button
+          @click="toggleAutopilot"
+          :class="[
+            'btn-danger1 fw-bold me-2',
+            { 'btn-primary': autopilotActive },
+          ]"
+        >
+          {{ autopilotActive ? "Stop Autopilot" : "Start Autopilot" }}
+        </button>
+        <button
+          type="button"
+          class="btn-danger1"
+          data-bs-toggle="modal"
+          data-bs-target="#staticBackdrop"
+        >
+          Setting
+        </button>
+<!-- Индикатор загрузки новостей -->
+<div v-if="loadingNews" class="text-center">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="32"
@@ -241,56 +292,6 @@
         </rect>
       </svg>
     </div>
-
-    <div v-if="news.length > 0" class="news-list">
-      <!-- <div style="color:cornflowerblue" class="fw-bold text-center ">
-       Total: {{ news.length }}
-        </div> -->
-      <div style="position: relative">
-        <!-- Сохранённые теги -->
-        <div class="saved-tags">
-          <span
-            v-for="tag in savedTags"
-            :key="tag"
-            class="badge bg-success saved-tag"
-            @click="fetchNews(tag)"
-          >
-            {{ tag }}
-            <i
-              @click.stop="removeSavedTag(tag)"
-              class="bi bi-x-circle pointer text-white"
-            ></i>
-          </span>
-        </div>
-        <h4 class="fw-bold mt-2">{{ currentTag }}</h4>
-        <!-- Кнопка сохранения текущего тега -->
-        <button
-          class="btn-danger1 me-2"
-          :class="{ 'btn-danger': isTagSaved }"
-          @click="toggleSaveTag(currentTag)"
-        >
-          {{ isTagSaved ? "Delete" : "Save" }}
-        </button>
-
-        <!-- Другие кнопки -->
-        <button
-          @click="toggleAutopilot"
-          :class="[
-            'btn-danger1 fw-bold me-2',
-            { 'btn-primary': autopilotActive },
-          ]"
-        >
-          {{ autopilotActive ? "Stop Autopilot" : "Start Autopilot" }}
-        </button>
-        <button
-          type="button"
-          class="btn-danger1"
-          data-bs-toggle="modal"
-          data-bs-target="#staticBackdrop"
-        >
-          Setting
-        </button>
-
         <!-- Модальное окно -->
         <div
           class="modal fade"
@@ -320,7 +321,7 @@
         </div>
 
         <i
-          style="position: absolute; right: 0; top: -25px"
+          style="position: absolute; right: 0; top:0"
           @click="clearNews"
           class="bi bi-x-circle pointer"
         ></i>
@@ -686,7 +687,7 @@ export default {
 
 .saved-tags {
   display: flex;
-  gap: 5px;
+  gap: 2px;
   flex-wrap: wrap;
   margin-top: 10px;
 }
@@ -756,7 +757,7 @@ a {
 }
 
 .news-list {
-  margin-top: 20px;
+  /* margin-top: 20px; */
 }
 
 .card-body {

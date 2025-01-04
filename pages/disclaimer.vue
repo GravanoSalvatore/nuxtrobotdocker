@@ -31,7 +31,7 @@
     </div>
     <div class="footer">
       <p>Thank you for using our service!</p>
-      <p>Best regards, <strong>team</strong>.</p>
+      <p>Best regards, <strong>team</strong><a href="https://fourv.tech" target="_blank"><span class="fs-2 fw-bold"> 4V</span></a>.</p>
     </div>
   </div>
 </template>

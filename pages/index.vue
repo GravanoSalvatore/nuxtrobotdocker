@@ -13,10 +13,10 @@
       </div>
     </div>
     <div class="container ">
-    <h4 style=""  v-if="isDesktop" ><span style="" class="fw-bold">4V.ROBOT </span><span style="font-size: 16px;"> is an indispensable assistant for channel administration. Create channels on popular social media platforms and automate the process with our bot.
+    <h6 style=""  v-if="isDesktop" ><span style="" class="">4V.ROBOT </span><span style="font-size: 16px;"> Bot developed by <a href="https://fourv.tech" target="_blank"><span class="fs-2 fw-bold">4V</span></a>  is an indispensable assistant for channel administration. Create channels on popular social media platforms and automate the process with our bot.
       <br/> <span style="" >4V.ROBOT </span>integrates elements of artificial intelligence to optimize bot performance and provides integration with various social networks such as Telegram, Twitter*, and Facebook*. These bots allow users to receive instant news updates and automate social media content management.
     </span>
-    <p style="color: cornflowerblue;font-size: 18px;">* Under development</p></h4>
+    <p style="color: cornflowerblue;font-size: 18px;">* Under development</p></h6>
    
     </div>
 </div>

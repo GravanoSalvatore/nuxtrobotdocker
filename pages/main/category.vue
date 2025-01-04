@@ -87,7 +87,7 @@
         <p>Total: {{ sortedFilteredTags.length }}</p>
       </div>
       <div class="over tags-lis">
-        <div class="">
+        <div class="px-2">
           <button
             style="font-size: 12px"
             class="btn-danger2"

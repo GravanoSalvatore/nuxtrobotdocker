@@ -34,7 +34,7 @@
       <!-- <span class="navbar-toggler-icon"></span>
       </button> -->
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
+        <!-- <ul class="navbar-nav">
           <li class="nav-item">
             <NuxtLink
               class="nav-link"
@@ -62,7 +62,83 @@
               Personal account
             </NuxtLink>
           </li>
-        </ul>
+        </ul> -->
+        <div class="container">
+              <div class="row align-items-center">
+                <!-- Социальные иконки -->
+                <div class="col-md-12 text-center text-md-start mb-3 mb-md-0">
+                  <div
+                    class="d-flex justify-content-center justify-content-md-start"
+                  >
+                    <a style="color:var(--bs-body-color);" href="#" class="me-3 fs-6 " aria-label="Facebook">
+                      <i class="bi bi-facebook"></i>
+                    </a>
+                    <a style="color:var(--bs-body-color);" href="#" class="me-3 fs-6" aria-label="Twitter">
+                      <i class="bi bi-twitter"></i>
+                    </a>
+                    <a style="color:var(--bs-body-color);" href="#" class="me-3 fs-6" aria-label="Instagram">
+                      <i class="bi bi-instagram"></i>
+                    </a>
+                    <a style="color:var(--bs-body-color);" href="#" class="me-3 fs-6" aria-label="LinkedIn">
+                      <i class="bi bi-telegram"></i>
+                    </a>
+                    <a style="color:var(--bs-body-color);" href="#" class="fs-6 me-3 " aria-label="YouTube">
+                      <i class="bi bi-youtube"></i>
+                    </a>
+                    <a style="color:var(--bs-body-color);" href="#" class="fs-6 me-3" aria-label="YouTube">
+                      <i class="bi bi-reddit"></i>
+                    </a>
+                  </div>
+                </div>
+                <!-- <div class="col-md-12 text-center text-md-start mb-3 mb-md-0">
+                  <div
+                    class="d-flex justify-content-center justify-content-md-start"
+                  >
+                    <a  href="#" class="me-3 fs-6 text-primary" aria-label="Facebook">
+                      <i class="bi bi-facebook"></i>
+                    </a>
+                    <a href="#" class="me-3 fs-6" aria-label="Twitter">
+                      <i class="bi bi-twitter"></i>
+                    </a>
+                    <a style="color:var(--bs-body-color);" href="#" class="me-3 fs-6" aria-label="Instagram">
+                      <i class="bi bi-instagram"></i>
+                    </a>
+                    <a href="#" class="me-3 fs-6" aria-label="LinkedIn">
+                      <i class="bi bi-telegram"></i>
+                    </a>
+                    <a href="#" class="fs-6 me-3 text-danger" aria-label="YouTube">
+                      <i class="bi bi-youtube"></i>
+                    </a>
+                    <a style="color:var(--bs-body-color);" href="#" class="fs-6 me-3" aria-label="YouTube">
+                      <i class="bi bi-reddit"></i>
+                    </a>
+                  </div>
+                </div> -->
+                
+                <!-- Поле для обратной связи -->
+                <!-- <div class="col-md-12 mb-3 mb-md-0">
+                  <form @submit.prevent="sendFeedback"> -->
+                    <!-- <div class="input-group ">
+                    <input
+                      type="email"
+                      class="form-control"
+                      placeholder="Ваш email"
+                      aria-label="Email"
+                      v-model="email"
+                      required
+                    />
+                    <button class="btn-danger1" type="submit">feedback</button>
+                  </div> -->
+                  <!-- </form>
+                </div> -->
+
+                <!-- Адрес -->
+                <!-- <div class="col-md-12 text-center text-md-end mt-4">
+                <p class="mb-0 fw-bold">fourv@gmail.com 4V company.</p>
+              </div> -->
+              </div>
+            </div>
+          
       </div>
     </div>
   </nav>
@@ -124,10 +200,10 @@
             <!-- <Pay /> -->
           </div>
 
-          <footer class="">
+          <!-- <footer class="">
             <div class="container">
               <div class="row align-items-center">
-                <!-- Социальные иконки -->
+              
                 <div class="col-md-12 text-center text-md-start mb-3 mb-md-0">
                   <div
                     class="d-flex justify-content-center justify-content-md-start"
@@ -166,17 +242,17 @@
                       required
                     />
                     <button class="btn-danger1" type="submit">feedback</button>
-                  </div> -->
-                  <!-- </form>
-                </div> -->
+                  </div> 
+                   </form>
+                </div>
 
-                <!-- Адрес -->
-                <!-- <div class="col-md-12 text-center text-md-end mt-4">
+               
+                <div class="col-md-12 text-center text-md-end mt-4">
                 <p class="mb-0 fw-bold">fourv@gmail.com 4V company.</p>
-              </div> -->
+              </div> 
               </div>
             </div>
-          </footer>
+          </footer> -->
         </div>
 
         <!-- Сохранённые теги -->
@@ -262,6 +338,7 @@
     <div style="position: relative" class="news-list">
      
      <div class="mt-4" v-if="news.length > 0">
+      <h4 class="fw-bold ">{{ currentTag }}</h4>
       <button
   class="btn-danger1 me-2"
   :class="{ 'btn-danger': isTagSaved(currentTag) }"
@@ -437,7 +514,7 @@
         </p>
       </div>
 
-      <div v-else class="row g-4 mt-2">
+      <div v-else class="row">
         <div
           v-for="item in news"
           :key="item.id"
@@ -923,7 +1000,7 @@ caret-color: yellow;
 
 .saved-tags {
   display: flex;
-  gap: 5px;
+  gap: 2px;
   flex-wrap: wrap;
   margin-top: 10px;
 }
