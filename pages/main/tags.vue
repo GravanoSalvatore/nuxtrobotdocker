@@ -90,12 +90,12 @@
         
        
         <button
-  class="btn-danger1 me-2"
-  :class="{ 'btn-danger': isTagSaved }"
-  @click="toggleSaveTag(currentTag)"
->
-  {{ isTagSaved ? "Delete" : "Save" }}
-</button>
+    class="btn-danger1 me-2"
+    :class="{ 'btn-danger': isTagSaved }"
+    @click="toggleSaveTag(currentTag)"
+  >
+    {{ isTagSaved ? "Delete" : "Save" }}
+  </button>
 
         
         <!-- Button trigger modal -->
@@ -328,27 +328,32 @@ export default {
   console.log("Текущий тег установлен:", tagName);
 };
 
-// Вызываем метод сохранения/удаления тега
-const toggleSaveTag = () => {
-  if (!currentTag.value.trim()) {
-    console.error("Текущий тег пустой, невозможно сохранить.");
-    return;
-  }
-  storePop.toggleSaveTag(currentTag.value); // Передаём текущий тег в метод store
-  console.log("Тег сохранён/удалён:", currentTag.value);
-};
+
 
 
 // Проверяем, сохранён ли текущий тег
 const isTagSaved = computed(() => storePop.savedTags.includes(currentTag.value));
 
    
-const removeSavedTag = (tag) => {
-  const updatedTags = storePop.savedTags.filter((savedTag) => savedTag !== tag); // Фильтруем теги
-  storePop.savedTags = updatedTags; // Обновляем массив сохранённых тегов в store
-  localStorage.setItem("savedTags", JSON.stringify(updatedTags)); // Сохраняем изменения в localStorage
-  console.log("Тег удалён:", tag); // Лог для проверки
-};
+const toggleSaveTag = () => {
+      if (!currentTag.value.trim()) {
+        console.error("Текущий тег пустой, невозможно сохранить.");
+        return;
+      }
+      storePop.toggleSaveTag(currentTag.value);
+      console.log("Тег сохранён/удалён:", currentTag.value);
+    };
+
+    // Удаление тега из списка сохранённых
+    const removeSavedTag = (tag) => {
+      const updatedTags = storePop.savedTags.filter(
+        (savedTag) => savedTag !== tag
+      );
+      storePop.savedTags = updatedTags;
+      localStorage.setItem("savedTags", JSON.stringify(updatedTags));
+      console.log("Тег удалён:", tag);
+    };
+
 
     // Действия
     const activeChannelId = computed(() => channelStore.activeChannelId); // Достаём ID активного канала
@@ -421,6 +426,7 @@ const removeSavedTag = (tag) => {
     });
 
     return {
+      savedTags: computed(() => storePop.savedTags),
       selectTag,
       currentTag,
       savedTags,

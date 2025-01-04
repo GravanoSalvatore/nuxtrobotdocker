@@ -34,23 +34,54 @@ export const useTopPopularStore = defineStore("topPopularStore", {
     },
   },
   actions: {
+    // loadSavedTags() {
+    //   const saved = localStorage.getItem("savedTags");
+    //   if (saved) {
+    //     this.savedTags = JSON.parse(saved);
+    //   }
+    // }
     loadSavedTags() {
       const saved = localStorage.getItem("savedTags");
-      if (saved) {
-        this.savedTags = JSON.parse(saved);
-      }
-    },
+      this.savedTags = saved ? JSON.parse(saved) : [];
+      console.log("Теги загружены из localStorage:", this.savedTags);
+    }
+    ,
+    // toggleSaveTag(tag) {
+    //   // Проверяем, существует ли тег в savedTags
+    //   if (this.savedTags.includes(tag)) {
+    //     // Если существует, удаляем тег
+    //     this.savedTags = this.savedTags.filter((savedTag) => savedTag !== tag);
+    //     console.log("Тег удалён:", tag);
+    //   } else {
+    //     // Если не существует, добавляем тег
+    //     this.savedTags.push(tag);
+    //     console.log("Тег сохранён:", tag);
+    //   }
+    //   // Сохраняем изменения в localStorage
+    //   localStorage.setItem("savedTags", JSON.stringify(this.savedTags));
+    // }
     toggleSaveTag(tag) {
-      if (this.isTagSaved) {
+      if (this.savedTags.includes(tag)) {
         this.savedTags = this.savedTags.filter((savedTag) => savedTag !== tag);
-        localStorage.setItem("savedTags", JSON.stringify(this.savedTags));
-        console.log("Тег удалён:", tag);
       } else {
         this.savedTags.push(tag);
-        localStorage.setItem("savedTags", JSON.stringify(this.savedTags));
-        console.log("Тег сохранён:", tag);
       }
-    },
+      localStorage.setItem("savedTags", JSON.stringify(this.savedTags));
+      console.log("Теги обновлены:", this.savedTags);
+    }
+    
+,    
+    // toggleSaveTag(tag) {
+    //   if (this.isTagSaved) {
+    //     this.savedTags = this.savedTags.filter((savedTag) => savedTag !== tag);
+    //     localStorage.setItem("savedTags", JSON.stringify(this.savedTags));
+    //     console.log("Тег удалён:", tag);
+    //   } else {
+    //     this.savedTags.push(tag);
+    //     localStorage.setItem("savedTags", JSON.stringify(this.savedTags));
+    //     console.log("Тег сохранён:", tag);
+    //   }
+    // },
     async fetchTags() {
       
 

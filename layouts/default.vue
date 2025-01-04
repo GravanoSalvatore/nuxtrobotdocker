@@ -89,13 +89,13 @@
       <Icon
         v-if="!themeStore.isDark"
         name="meteocons:clear-day"
-        style="font-size: 30px; margin-left: 20px"
+        style="font-size: 20px; margin-left: 20px; margin-top:5px"
       />
 
       <Icon
         v-else
         name="meteocons:clear-night"
-        style="font-size: 30px; margin-left: 20px"
+        style="font-size: 20px; margin-left: 20px; margin-top:5px"
       />
     </button>
     <Grid />
@@ -121,7 +121,7 @@
               </h2>
             </div>
             <br />
-            <Pay />
+            <!-- <Pay /> -->
           </div>
 
           <footer class="">
@@ -180,7 +180,28 @@
         </div>
 
         <!-- Сохранённые теги -->
-        <div class="saved-tags">
+         <div class="saved-tags-container">
+
+          <div 
+            style =""
+            class="saved-tags">
+            <span
+              v-for="tag in savedTags"
+              :key="tag"
+              class="badge bg-success saved-tag"
+              @click="handleTagClick(tag)"
+            >
+              {{ tag }}
+              <i
+                @click.stop="removeSavedTag(tag)"
+                class="bi bi-x-circle pointer text-white"
+              ></i>
+            </span>
+          </div>
+        </div>
+        <!-- <div 
+        style =""
+        class="saved-tags">
           <span
             v-for="tag in savedTags"
             :key="tag"
@@ -195,7 +216,7 @@
           </span>
         </div>
 
-        
+         -->
       </div>
 
       <!-- Правая колонка -->
@@ -239,6 +260,66 @@
     </div>
     <!-- Список новостей -->
     <div style="position: relative" class="news-list">
+     
+     <div class="mt-4" v-if="news.length > 0">
+      <button
+  class="btn-danger1 me-2"
+  :class="{ 'btn-danger': isTagSaved(currentTag) }"
+  @click="toggleSaveTag(currentTag)"
+>
+  {{ isTagSaved(currentTag) ? "Delete" : "Save" }}
+</button>
+
+
+
+        <button
+          @click="toggleAutopilot"
+          :class="[
+            'btn-danger1 fw-bold me-2',
+            { 'btn-primary': autopilotActive },
+          ]"
+        >
+          {{ autopilotActive ? "Stop Autopilot" : "Start Autopilot" }}
+        </button>
+        <button
+          type="button"
+          class="btn-danger1"
+          data-bs-toggle="modal"
+          data-bs-target="#staticBackdrop"
+        >
+          Setting
+        </button>
+      </div>
+        <!-- Модальное окно -->
+        <div
+          class="modal fade"
+          id="staticBackdrop"
+          data-bs-backdrop="static"
+          data-bs-keyboard="false"
+          tabindex="-1"
+          aria-labelledby="staticBackdropLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-body">
+                <setting />
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn-danger1"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
       <div
         v-if="news.length > 0"
         style="color: cornflowerblue"
@@ -422,7 +503,7 @@
 </template>
 
 <script>
-//import Pay from '@/components/Pay.vue'
+//import Setting from '@/components/Setting.vue'
 //import { useTopPopularStore } from "../stores/popular";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
@@ -462,6 +543,39 @@ export default {
     const popularStore = useTopPopularStore();
     const themeStore = useThemeStore();
     const channelStore = useChannelStore();
+
+
+
+    const currentTag = ref("");
+    const toggleSaveTag = (tag) => {
+      if (!tag.trim()) {
+        console.error("Текущий тег пустой, невозможно сохранить/удалить.");
+        return;
+      }
+      popularStore.toggleSaveTag(tag);
+      console.log(`${isTagSaved(tag) ? "Удалён" : "Сохранён"} тег: ${tag}`);
+    };
+
+    // Выбрать тег из сохранённых
+    const handleTagClick = async (tag) => {
+      try {
+        currentTag.value = tag; // Установить текущий тег
+        console.log(`Текущий тег изменён на: ${tag}`);
+        await fetchNews(tag); // Загрузить новости по тегу
+        console.log(`Новости для тега "${tag}" успешно загружены.`);
+      } catch (error) {
+        console.error(`Ошибка загрузки новостей для тега "${tag}":`, error);
+      }
+    };
+
+
+const isTagSaved = (tag) => popularStore.savedTags.includes(tag);
+
+    const removeSavedTag = (tag) => {
+      popularStore.toggleSaveTag(tag); // Используем хранилище
+    };
+
+
     const savedTags = computed(() => themeStore.savedTags);
     const tags = computed(() => themeStore.tags);
     const news = computed(() => themeStore.news);
@@ -491,9 +605,9 @@ export default {
     //   console.log("Тег удалён:", tag);
     // };
 
-    const removeSavedTag = (tag) => {
-      themeStore.toggleSaveTag(tag); // Обновляем теги через метод Pinia
-    };
+    // const removeSavedTag = (tag) => {
+    //   themeStore.toggleSaveTag(tag); // Обновляем теги через метод Pinia
+    // };
 
     const activeIndex = ref(null);
     const router = useRouter();
@@ -562,15 +676,15 @@ export default {
       }
       activeIndex.value = index;
     };
-    const handleTagClick = async (tag) => {
-      try {
-        popularStore.clearNews();
-        await themeStore.fetchNews(tag); // Загружаем новости по тегу
-        console.log(`Новости для тега "${tag}" успешно загружены.`);
-      } catch (error) {
-        console.error(`Ошибка загрузки новостей для тега "${tag}":`, error);
-      }
-    };
+    // const handleTagClick = async (tag) => {
+    //   try {
+    //     popularStore.clearNews();
+    //     await themeStore.fetchNews(tag); // Загружаем новости по тегу
+    //     console.log(`Новости для тега "${tag}" успешно загружены.`);
+    //   } catch (error) {
+    //     console.error(`Ошибка загрузки новостей для тега "${tag}":`, error);
+    //   }
+    // };
     const closeModal = () => {
       showModal.value = false; // Закрыть модальное окно
       console.log("Модальное окно закрыто");
@@ -583,6 +697,10 @@ export default {
       console.error("Ошибка загрузки темы:", error);
     }
     onMounted(() => {
+      popularStore.loadSavedTags();
+      if (popularStore.savedTags.length > 0) {
+        currentTag.value = popularStore.savedTags[0]; // Устанавливаем первый тег как текущий
+      }
       themeStore.loadSavedTags(); // Загружаем сохранённые теги
       channelStore.loadChannels();
       themeStore.startSyncingSavedTags(); 
@@ -590,8 +708,12 @@ export default {
     // Данные для аккордеона
 
     return {
+      currentTag,
+      isTagSaved,
+      toggleSaveTag,
       removeSavedTag,
-      savedTags,
+      savedTags: computed(() => popularStore.savedTags),
+   
       tags,
       sendToTelegram,
       activeChannelId,
@@ -614,6 +736,14 @@ export default {
 </script>
 
 <style lang="css" scoped>
+.saved-tags-container{
+  overflow-x:hidden;
+  overflow-y:auto;
+  height:200px
+}
+/* .saved-tags-container :hover{
+  height: 100% !important;
+} */
 .nav-link {
   transition: color 0.3s ease;
 }
