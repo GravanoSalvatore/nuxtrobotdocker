@@ -5,15 +5,7 @@
       <NuxtLink class="navbar-brand" to="/"
         ><img style="max-width: 200px" src="@/assets/img/4vrobot.png"
       /></NuxtLink>
-      <!-- <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      > -->
+
       <svg
         class="navbar-toggler"
         xmlns="http://www.w3.org/2000/svg"
@@ -34,124 +26,71 @@
       <!-- <span class="navbar-toggler-icon"></span>
       </button> -->
       <div class="collapse navbar-collapse" id="navbarNav">
-        <!-- <ul class="navbar-nav">
-          <li class="nav-item">
-            <NuxtLink
-              class="nav-link"
-              :class="{ active: $route.path === '/' }"
-              to="/"
-            >
-              Home
-            </NuxtLink>
-          </li>
-          <li class="nav-item">
-            <NuxtLink
-              class="nav-link"
-              :class="{ active: $route.path === '/doc' }"
-              to="/doc"
-            >
-              Documentation
-            </NuxtLink>
-          </li>
-          <li class="nav-item">
-            <NuxtLink
-              class="nav-link"
-              :class="{ active: $route.path === '/terms' }"
-              to="/terms"
-            >
-              Personal account
-            </NuxtLink>
-          </li>
-        </ul> -->
         <div class="container">
-              <div class="row align-items-center">
-                <!-- Социальные иконки -->
-                <div class="col-md-12 text-center text-md-start mb-3 mb-md-0">
-                  <div
-                    class="d-flex justify-content-center justify-content-md-start"
-                  >
-                    <a style="color:var(--bs-body-color);" href="#" class="me-3 fs-6 " aria-label="Facebook">
-                      <i class="bi bi-facebook"></i>
-                    </a>
-                    <a style="color:var(--bs-body-color);" href="#" class="me-3 fs-6" aria-label="Twitter">
-                      <i class="bi bi-twitter"></i>
-                    </a>
-                    <a style="color:var(--bs-body-color);" href="#" class="me-3 fs-6" aria-label="Instagram">
-                      <i class="bi bi-instagram"></i>
-                    </a>
-                    <a style="color:var(--bs-body-color);" href="#" class="me-3 fs-6" aria-label="LinkedIn">
-                      <i class="bi bi-telegram"></i>
-                    </a>
-                    <a style="color:var(--bs-body-color);" href="#" class="fs-6 me-3 " aria-label="YouTube">
-                      <i class="bi bi-youtube"></i>
-                    </a>
-                    <a style="color:var(--bs-body-color);" href="#" class="fs-6 me-3" aria-label="YouTube">
-                      <i class="bi bi-reddit"></i>
-                    </a>
-                  </div>
-                </div>
-                <!-- <div class="col-md-12 text-center text-md-start mb-3 mb-md-0">
-                  <div
-                    class="d-flex justify-content-center justify-content-md-start"
-                  >
-                    <a  href="#" class="me-3 fs-6 text-primary" aria-label="Facebook">
-                      <i class="bi bi-facebook"></i>
-                    </a>
-                    <a href="#" class="me-3 fs-6" aria-label="Twitter">
-                      <i class="bi bi-twitter"></i>
-                    </a>
-                    <a style="color:var(--bs-body-color);" href="#" class="me-3 fs-6" aria-label="Instagram">
-                      <i class="bi bi-instagram"></i>
-                    </a>
-                    <a href="#" class="me-3 fs-6" aria-label="LinkedIn">
-                      <i class="bi bi-telegram"></i>
-                    </a>
-                    <a href="#" class="fs-6 me-3 text-danger" aria-label="YouTube">
-                      <i class="bi bi-youtube"></i>
-                    </a>
-                    <a style="color:var(--bs-body-color);" href="#" class="fs-6 me-3" aria-label="YouTube">
-                      <i class="bi bi-reddit"></i>
-                    </a>
-                  </div>
-                </div> -->
-                
-                <!-- Поле для обратной связи -->
-                <!-- <div class="col-md-12 mb-3 mb-md-0">
-                  <form @submit.prevent="sendFeedback"> -->
-                    <!-- <div class="input-group ">
-                    <input
-                      type="email"
-                      class="form-control"
-                      placeholder="Ваш email"
-                      aria-label="Email"
-                      v-model="email"
-                      required
-                    />
-                    <button class="btn-danger1" type="submit">feedback</button>
-                  </div> -->
-                  <!-- </form>
-                </div> -->
-
-                <!-- Адрес -->
-                <!-- <div class="col-md-12 text-center text-md-end mt-4">
-                <p class="mb-0 fw-bold">fourv@gmail.com 4V company.</p>
-              </div> -->
+          <div class="row align-items-center">
+            <!-- Социальные иконки -->
+            <div class="col-md-12 text-center text-md-start mb-3 mb-md-0">
+              <div
+                class="d-flex justify-content-center justify-content-md-start"
+              >
+                <a
+                  style="color: var(--bs-body-color)"
+                  href="#"
+                  class="me-3 fs-6"
+                  aria-label="Facebook"
+                >
+                  <i class="bi bi-facebook"></i>
+                </a>
+                <a
+                  style="color: var(--bs-body-color)"
+                  href="#"
+                  class="me-3 fs-6"
+                  aria-label="Twitter"
+                >
+                  <i class="bi bi-twitter"></i>
+                </a>
+                <a
+                  style="color: var(--bs-body-color)"
+                  href="#"
+                  class="me-3 fs-6"
+                  aria-label="Instagram"
+                >
+                  <i class="bi bi-instagram"></i>
+                </a>
+                <a
+                  style="color: var(--bs-body-color)"
+                  href="#"
+                  class="me-3 fs-6"
+                  aria-label="LinkedIn"
+                >
+                  <i class="bi bi-telegram"></i>
+                </a>
+                <a
+                  style="color: var(--bs-body-color)"
+                  href="#"
+                  class="fs-6 me-3"
+                  aria-label="YouTube"
+                >
+                  <i class="bi bi-youtube"></i>
+                </a>
+                <a
+                  style="color: var(--bs-body-color)"
+                  href="#"
+                  class="fs-6 me-3"
+                  aria-label="YouTube"
+                >
+                  <i class="bi bi-reddit"></i>
+                </a>
               </div>
             </div>
-          
+          </div>
+        </div>
       </div>
     </div>
   </nav>
   <div class="container">
     <div class="">
-      <NuxtLink style="text-decoration: none; margin-left:" to="/">
-        <!-- <h5
-        style="color: cornflowerblue; padding-left: 20px"
-        class="fw-bold pointer my-4"
-      >
-        4V.ROBOT
-      </h5> -->
-      </NuxtLink>
+      <NuxtLink style="text-decoration: none; margin-left:" to="/"> </NuxtLink>
     </div>
     <button
       class="theme-toggle-btn"
@@ -165,13 +104,13 @@
       <Icon
         v-if="!themeStore.isDark"
         name="meteocons:clear-day"
-        style="font-size: 20px; margin-left: 20px; margin-top:5px"
+        style="font-size: 20px; margin-left: 20px; margin-top: 5px"
       />
 
       <Icon
         v-else
         name="meteocons:clear-night"
-        style="font-size: 20px; margin-left: 20px; margin-top:5px"
+        style="font-size: 20px; margin-left: 20px; margin-top: 5px"
       />
     </button>
     <Grid />
@@ -199,68 +138,11 @@
             <br />
             <!-- <Pay /> -->
           </div>
-
-          <!-- <footer class="">
-            <div class="container">
-              <div class="row align-items-center">
-              
-                <div class="col-md-12 text-center text-md-start mb-3 mb-md-0">
-                  <div
-                    class="d-flex justify-content-center justify-content-md-start"
-                  >
-                    <a href="#" class="me-3 fs-4" aria-label="Facebook">
-                      <i class="bi bi-facebook"></i>
-                    </a>
-                    <a href="#" class="me-3 fs-4" aria-label="Twitter">
-                      <i class="bi bi-twitter"></i>
-                    </a>
-                    <a href="#" class="me-3 fs-4" aria-label="Instagram">
-                      <i class="bi bi-instagram"></i>
-                    </a>
-                    <a href="#" class="me-3 fs-4" aria-label="LinkedIn">
-                      <i class="bi bi-telegram"></i>
-                    </a>
-                    <a href="#" class="fs-4 me-3" aria-label="YouTube">
-                      <i class="bi bi-youtube"></i>
-                    </a>
-                    <a href="#" class="fs-4 me-3" aria-label="YouTube">
-                      <i class="bi bi-reddit"></i>
-                    </a>
-                  </div>
-                </div>
-                
-                <!-- Поле для обратной связи -->
-                <!-- <div class="col-md-12 mb-3 mb-md-0">
-                  <form @submit.prevent="sendFeedback"> -->
-                    <!-- <div class="input-group ">
-                    <input
-                      type="email"
-                      class="form-control"
-                      placeholder="Ваш email"
-                      aria-label="Email"
-                      v-model="email"
-                      required
-                    />
-                    <button class="btn-danger1" type="submit">feedback</button>
-                  </div> 
-                   </form>
-                </div>
-
-               
-                <div class="col-md-12 text-center text-md-end mt-4">
-                <p class="mb-0 fw-bold">fourv@gmail.com 4V company.</p>
-              </div> 
-              </div>
-            </div>
-          </footer> -->
         </div>
 
         <!-- Сохранённые теги -->
-         <div class="saved-tags-container">
-
-          <div 
-            style =""
-            class="saved-tags">
+        <div class="saved-tags-container">
+          <div style="" class="saved-tags">
             <span
               v-for="tag in savedTags"
               :key="tag"
@@ -336,18 +218,15 @@
     </div>
     <!-- Список новостей -->
     <div style="position: relative" class="news-list">
-     
-     <div class="mt-4" v-if="news.length > 0">
-      <h4 class="fw-bold ">{{ currentTag }}</h4>
-      <button
-  class="btn-danger1 me-2"
-  :class="{ 'btn-danger': isTagSaved(currentTag) }"
-  @click="toggleSaveTag(currentTag)"
->
-  {{ isTagSaved(currentTag) ? "Delete" : "Save" }}
-</button>
-
-
+      <div class="mt-4" v-if="news.length > 0">
+        <h4 class="fw-bold">{{ currentTag }}</h4>
+        <button
+          class="btn-danger1 me-2"
+          :class="{ 'btn-danger': isTagSaved(currentTag) }"
+          @click="toggleSaveTag(currentTag)"
+        >
+          {{ isTagSaved(currentTag) ? "Delete" : "Save" }}
+        </button>
 
         <button
           @click="toggleAutopilot"
@@ -358,52 +237,46 @@
         >
           {{ autopilotActive ? "Stop Autopilot" : "Start Autopilot" }}
         </button>
-        <button
+        <!-- <button
           type="button"
           class="btn-danger1"
           data-bs-toggle="modal"
           data-bs-target="#staticBackdrop"
         >
           Setting
-        </button>
+        </button> -->
       </div>
-        <!-- Модальное окно -->
-        <div
-          class="modal fade"
-          id="staticBackdrop"
-          data-bs-backdrop="static"
-          data-bs-keyboard="false"
-          tabindex="-1"
-          aria-labelledby="staticBackdropLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-body">
-                <setting />
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn-danger1"
-                  data-bs-dismiss="modal"
-                >
-                  Close
-                </button>
-              </div>
+      <!-- Модальное окно -->
+      <div
+        class="modal fade"
+        id="staticBackdrop"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-body">
+              <setting />
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn-danger1" data-bs-dismiss="modal">
+                Close
+              </button>
             </div>
           </div>
         </div>
+      </div>
 
-
-
-      <div
+      <!-- <div
         v-if="news.length > 0"
         style="color: cornflowerblue"
         class="text-center"
       >
         Total: {{ news.length }}
-      </div>
+      </div> -->
       <i
         v-if="news.length > 0"
         style="position: absolute; right: 0; top: -25px"
@@ -563,25 +436,136 @@
                   </div>
                 </div>
                 <button @click="openEditModal(item)" class="btn-danger1 mt-2">
-                  Edit
+                  Editing and sending
                 </button>
-                <button @click="sendToTelegram(item)" class="btn-danger1 mt-2">
+                <!-- <button @click="sendToTelegram(item)" class="btn-danger1 mt-2">
                   Telegram
                   <i style="color: cornflowerblue" class="bi bi-telegram"></i>
-                </button>
+                </button> -->
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <!-- Модальное окно -->
+    <div
+      class="modal fade"
+      id="editModal"
+      tabindex="-1"
+      aria-labelledby="editModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div>
+              <!-- Кнопка для открытия компонента -->
+              <button @click="toggleSetting" class="btn">
+                <i class="bi bi-sliders"></i>
+              </button>
+              <i
+          style="position: absolute; right: 0; top: 0"
+          
+          class="bi bi-x-circle pointer" data-bs-dismiss="modal"
+        ></i>
+              <!-- Анимированный блок с настройками -->
+              <transition name="fade">
+                <div v-if="showSetting" class="setting-container">
+                  <setting />
+                  <!-- Кнопка для закрытия -->
+                  <!-- <button @click="toggleSetting" class="btn btn-danger mt-3">Close</button> -->
+                </div>
+              </transition>
+            </div>
+            <div class="mb-3">
+              <div class="text-center mt-3">
+                <img
+                  :src="editableItem.tempImageUrl || editableItem.urlToImage"
+                  class="img-fluid"
+                  alt="Preview"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="editImageFile" class="form-label"
+                  >Upload Image</label
+                >
+                <input
+                  id="editImageFile"
+                  type="file"
+                  @change="uploadImage"
+                  class="form-control"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="editImage" class="form-label">Image URL</label>
+                <input
+                  id="editImage"
+                  type="text"
+                  v-model="editableItem.tempImageUrl"
+                  class="form-control"
+                />
+              </div>
+              <label for="editTitle" class="form-label">Title</label>
+              <input
+                id="editTitle"
+                type="text"
+                v-model="editableItem.title"
+                class="form-control"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="editDescription" class="form-label"
+                >Description</label
+              >
+              <textarea
+                id="editDescription"
+                v-model="editableItem.description"
+                class="form-control"
+              ></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="editContent" class="form-label">Content</label>
+              <textarea
+                id="editContent"
+                v-model="editableItem.content"
+                class="form-control"
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <!-- <button type="button" class="btn-danger1" data-bs-dismiss="modal">
+              Close
+            </button> -->
+            <button
+              type="button"
+              class="btn-danger1"
+              @click="saveChanges"
+              
+            >
+              Save changes
+            </button>
+            <button
+  @click="sendToTelegram(editableItem)"
+  class="btn-danger1 "
+>
+  Send to Telegram
+  <i style="color:  cornflowerblue" class="bi bi-telegram"></i>
+</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
   <!-- </TonConnectUIProvider> -->
 </template>
 
 <script>
 //import Setting from '@/components/Setting.vue'
 //import { useTopPopularStore } from "../stores/popular";
+import axios from 'axios'
 import { useRouter } from "vue-router";
 import { ref } from "vue";
 import { useTopPopularStore } from "../../stores/popular";
@@ -620,8 +604,23 @@ export default {
     const popularStore = useTopPopularStore();
     const themeStore = useThemeStore();
     const channelStore = useChannelStore();
-
-
+    themeStore.setThemeFromStorage();
+    const editableItem = ref({});
+    const showSetting = ref(false);
+    const toggleSetting = () => {
+      showSetting.value = !showSetting.value;
+    };
+    const openEditModal = (item) => {
+      editableItem.value = { ...item };
+      const modal = new bootstrap.Modal(document.getElementById("editModal"));
+      modal.show();
+    };
+    const saveChanges = () => {
+      const index = news.value.findIndex((n) => n.id === editableItem.value.id);
+      if (index !== -1) {
+        news.value[index] = { ...editableItem.value };
+      }
+    };
 
     const currentTag = ref("");
     const toggleSaveTag = (tag) => {
@@ -645,13 +644,11 @@ export default {
       }
     };
 
-
-const isTagSaved = (tag) => popularStore.savedTags.includes(tag);
+    const isTagSaved = (tag) => popularStore.savedTags.includes(tag);
 
     const removeSavedTag = (tag) => {
       popularStore.toggleSaveTag(tag); // Используем хранилище
     };
-
 
     const savedTags = computed(() => themeStore.savedTags);
     const tags = computed(() => themeStore.tags);
@@ -663,15 +660,41 @@ const isTagSaved = (tag) => popularStore.savedTags.includes(tag);
       themeStore.clearNews();
       localNews.value = [];
     };
+    // const sendToTelegram = (item) => {
+    //   if (!activeChannelId.value) {
+    //     alert("Выберите канал для отправки новостей!");
+    //     return;
+    //   }
+
+    //   themeStore.sendToTelegram(item, activeChannelId.value);
+    // };
     const sendToTelegram = (item) => {
       if (!activeChannelId.value) {
         alert("Выберите канал для отправки новостей!");
         return;
       }
 
-      themeStore.sendToTelegram(item, activeChannelId.value);
-    };
+      const message = `<b>${item.title}</b>\n${item.description}\n<a href="${item.url}">Читать полностью</a>`;
+      const data = {
+        chat_id: activeChannelId.value,
+        text: message,
+        parse_mode: "HTML",
+      };
 
+      axios
+        .post(`https://api.telegram.org/bot${popularStore.botToken}/sendMessage`, data)
+        .then((response) => {
+          console.log(
+            "Сообщение успешно отправлено в Telegram:",
+            response.data
+          );
+          alert("Сообщение отправлено!");
+        })
+        .catch((error) => {
+          console.error("Ошибка отправки сообщения:", error);
+          alert(`Ошибка отправки: ${error.message}`);
+        });
+    };
     const fetchNews = async (tagName) => {
       await themeStore.fetchNews(tagName);
       localNews.value = themeStore.news.map((item) => ({ ...item })); // Локальная копия новостей
@@ -780,17 +803,22 @@ const isTagSaved = (tag) => popularStore.savedTags.includes(tag);
       }
       themeStore.loadSavedTags(); // Загружаем сохранённые теги
       channelStore.loadChannels();
-      themeStore.startSyncingSavedTags(); 
+      themeStore.startSyncingSavedTags();
     });
     // Данные для аккордеона
 
     return {
+      showSetting,
+      toggleSetting,
+      editableItem,
+      openEditModal,
+      saveChanges,
       currentTag,
       isTagSaved,
       toggleSaveTag,
       removeSavedTag,
       savedTags: computed(() => popularStore.savedTags),
-   
+
       tags,
       sendToTelegram,
       activeChannelId,
@@ -813,10 +841,10 @@ const isTagSaved = (tag) => popularStore.savedTags.includes(tag);
 </script>
 
 <style lang="css" scoped>
-.saved-tags-container{
-  overflow-x:hidden;
-  overflow-y:auto;
-  height:200px
+.saved-tags-container {
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 200px;
 }
 /* .saved-tags-container :hover{
   height: 100% !important;

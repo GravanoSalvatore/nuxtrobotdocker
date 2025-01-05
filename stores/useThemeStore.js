@@ -37,7 +37,7 @@ import axios from "axios";
 
 export const useThemeStore = defineStore("theme", {
   state: () => ({
-    isDark: false,
+    isDark: true,
     tags: [],
     news: [],
     loadingTags: false,
@@ -83,7 +83,8 @@ export const useThemeStore = defineStore("theme", {
     setThemeFromStorage() {
       if (typeof window !== "undefined") {
         const storedTheme = localStorage.getItem("theme");
-        if (storedTheme === "dark") {
+        if (storedTheme === "dark" || !storedTheme) {
+          // Если тема в хранилище - dark или отсутствует
           this.isDark = true;
           document.body.classList.add("dark-theme");
           document.body.classList.remove("light-theme");
@@ -94,27 +95,14 @@ export const useThemeStore = defineStore("theme", {
           document.body.classList.remove("dark-theme");
           document.documentElement.setAttribute("data-bs-theme", "light");
         }
+      } else {
+        // Для серверной стороны (SSR)
+        this.isDark = true;
       }
     },
+    
 
-    // loadSavedTags() {
-    //   const saved = localStorage.getItem("savedTags");
-    //   if (saved) {
-    //     this.savedTags = JSON.parse(saved);
-    //   }
-    // },
-
-    // toggleSaveTag(tag) {
-    //   if (this.isTagSaved) {
-    //     this.savedTags = this.savedTags.filter((savedTag) => savedTag !== tag);
-    //     localStorage.setItem("savedTags", JSON.stringify(this.savedTags));
-    //     console.log("Тег удалён:", tag);
-    //   } else {
-    //     this.savedTags.push(tag);
-    //     localStorage.setItem("savedTags", JSON.stringify(this.savedTags));
-    //     console.log("Тег сохранён:", tag);
-    //   }
-    // },
+    
     loadSavedTags() {
       const saved = localStorage.getItem('savedTags');
       this.savedTags = saved ? JSON.parse(saved) : [];

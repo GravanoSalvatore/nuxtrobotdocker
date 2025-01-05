@@ -110,22 +110,19 @@
           Total: {{ tags.length }}
         </div> -->
 
-        <div  class="scrollable-tags-list rounded px-1" ref="tagsList">
+        <div class="scrollable-tags-list rounded px-1" ref="tagsList">
           <button
-         
-          v-for="tag in filteredSortedTags"
+            v-for="tag in filteredSortedTags"
             :key="tag.id"
             class="btn-danger2"
             @click="fetchNews(tag.name)"
           >
-          <span
-        
-          >
-            {{ tag.name }}
-            <span class="rounded" style="padding: px">
-              {{ tag.popularity }}
+            <span>
+              {{ tag.name }}
+              <span class="rounded" style="padding: px">
+                {{ tag.popularity }}
+              </span>
             </span>
-          </span>
           </button>
         </div>
       </div>
@@ -138,15 +135,12 @@
       </div> -->
     </div>
 
-   
-    
-
     <div v-if="news.length > 0" class="news-list">
       <!-- <div style="color:cornflowerblue" class="fw-bold text-center ">
        Total: {{ news.length }}
         </div> -->
       <div style="position: relative">
-        <h4 class="fw-bold ">{{ currentTag }}</h4>
+        <h4 class="fw-bold">{{ currentTag }}</h4>
         <!-- Сохранённые теги -->
         <div class="saved-tags">
           <span
@@ -162,7 +156,7 @@
             ></i>
           </span>
         </div>
-      
+
         <!-- Кнопка сохранения текущего тега -->
         <button
           class="btn-danger1 me-2"
@@ -182,116 +176,116 @@
         >
           {{ autopilotActive ? "Stop Autopilot" : "Start Autopilot" }}
         </button>
-        <button
+        <!-- <button
           type="button"
           class="btn-danger1"
           data-bs-toggle="modal"
           data-bs-target="#staticBackdrop"
         >
           Setting
-        </button>
-<!-- Индикатор загрузки новостей -->
-<div v-if="loadingNews" class="text-center">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="32"
-        height="32"
-        viewBox="0 0 24 24"
-      >
-        <rect width="2.8" height="12" x="1" y="6" fill="currentColor">
-          <animate
-            id="svgSpinnersBarsScale0"
-            attributeName="y"
-            begin="0;svgSpinnersBarsScale1.end-0.1s"
-            calcMode="spline"
-            dur="0.6s"
-            keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-            values="6;1;6"
-          />
-          <animate
-            attributeName="height"
-            begin="0;svgSpinnersBarsScale1.end-0.1s"
-            calcMode="spline"
-            dur="0.6s"
-            keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-            values="12;22;12"
-          />
-        </rect>
-        <rect width="2.8" height="12" x="5.8" y="6" fill="currentColor">
-          <animate
-            attributeName="y"
-            begin="svgSpinnersBarsScale0.begin+0.1s"
-            calcMode="spline"
-            dur="0.6s"
-            keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-            values="6;1;6"
-          />
-          <animate
-            attributeName="height"
-            begin="svgSpinnersBarsScale0.begin+0.1s"
-            calcMode="spline"
-            dur="0.6s"
-            keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-            values="12;22;12"
-          />
-        </rect>
-        <rect width="2.8" height="12" x="10.6" y="6" fill="currentColor">
-          <animate
-            attributeName="y"
-            begin="svgSpinnersBarsScale0.begin+0.2s"
-            calcMode="spline"
-            dur="0.6s"
-            keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-            values="6;1;6"
-          />
-          <animate
-            attributeName="height"
-            begin="svgSpinnersBarsScale0.begin+0.2s"
-            calcMode="spline"
-            dur="0.6s"
-            keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-            values="12;22;12"
-          />
-        </rect>
-        <rect width="2.8" height="12" x="15.4" y="6" fill="currentColor">
-          <animate
-            attributeName="y"
-            begin="svgSpinnersBarsScale0.begin+0.3s"
-            calcMode="spline"
-            dur="0.6s"
-            keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-            values="6;1;6"
-          />
-          <animate
-            attributeName="height"
-            begin="svgSpinnersBarsScale0.begin+0.3s"
-            calcMode="spline"
-            dur="0.6s"
-            keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-            values="12;22;12"
-          />
-        </rect>
-        <rect width="2.8" height="12" x="20.2" y="6" fill="currentColor">
-          <animate
-            id="svgSpinnersBarsScale1"
-            attributeName="y"
-            begin="svgSpinnersBarsScale0.begin+0.4s"
-            calcMode="spline"
-            dur="0.6s"
-            keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-            values="6;1;6"
-          />
-          <animate
-            attributeName="height"
-            begin="svgSpinnersBarsScale0.begin+0.4s"
-            calcMode="spline"
-            dur="0.6s"
-            keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-            values="12;22;12"
-          />
-        </rect>
-      </svg>
-    </div>
+        </button> -->
+        <!-- Индикатор загрузки новостей -->
+        <div v-if="loadingNews" class="text-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+          >
+            <rect width="2.8" height="12" x="1" y="6" fill="currentColor">
+              <animate
+                id="svgSpinnersBarsScale0"
+                attributeName="y"
+                begin="0;svgSpinnersBarsScale1.end-0.1s"
+                calcMode="spline"
+                dur="0.6s"
+                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
+                values="6;1;6"
+              />
+              <animate
+                attributeName="height"
+                begin="0;svgSpinnersBarsScale1.end-0.1s"
+                calcMode="spline"
+                dur="0.6s"
+                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
+                values="12;22;12"
+              />
+            </rect>
+            <rect width="2.8" height="12" x="5.8" y="6" fill="currentColor">
+              <animate
+                attributeName="y"
+                begin="svgSpinnersBarsScale0.begin+0.1s"
+                calcMode="spline"
+                dur="0.6s"
+                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
+                values="6;1;6"
+              />
+              <animate
+                attributeName="height"
+                begin="svgSpinnersBarsScale0.begin+0.1s"
+                calcMode="spline"
+                dur="0.6s"
+                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
+                values="12;22;12"
+              />
+            </rect>
+            <rect width="2.8" height="12" x="10.6" y="6" fill="currentColor">
+              <animate
+                attributeName="y"
+                begin="svgSpinnersBarsScale0.begin+0.2s"
+                calcMode="spline"
+                dur="0.6s"
+                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
+                values="6;1;6"
+              />
+              <animate
+                attributeName="height"
+                begin="svgSpinnersBarsScale0.begin+0.2s"
+                calcMode="spline"
+                dur="0.6s"
+                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
+                values="12;22;12"
+              />
+            </rect>
+            <rect width="2.8" height="12" x="15.4" y="6" fill="currentColor">
+              <animate
+                attributeName="y"
+                begin="svgSpinnersBarsScale0.begin+0.3s"
+                calcMode="spline"
+                dur="0.6s"
+                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
+                values="6;1;6"
+              />
+              <animate
+                attributeName="height"
+                begin="svgSpinnersBarsScale0.begin+0.3s"
+                calcMode="spline"
+                dur="0.6s"
+                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
+                values="12;22;12"
+              />
+            </rect>
+            <rect width="2.8" height="12" x="20.2" y="6" fill="currentColor">
+              <animate
+                id="svgSpinnersBarsScale1"
+                attributeName="y"
+                begin="svgSpinnersBarsScale0.begin+0.4s"
+                calcMode="spline"
+                dur="0.6s"
+                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
+                values="6;1;6"
+              />
+              <animate
+                attributeName="height"
+                begin="svgSpinnersBarsScale0.begin+0.4s"
+                calcMode="spline"
+                dur="0.6s"
+                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
+                values="12;22;12"
+              />
+            </rect>
+          </svg>
+        </div>
         <!-- Модальное окно -->
         <div
           class="modal fade"
@@ -321,12 +315,12 @@
         </div>
 
         <i
-          style="position: absolute; right: 0; top:0"
+          style="position: absolute; right: 0; top: 0"
           @click="clearNews"
           class="bi bi-x-circle pointer"
         ></i>
       </div>
-     
+
       <!-- Список новостей -->
       <!-- <div class="row row-cols-1 row-cols-md-3 g-3 mt-3">
         <div v-for="item in news" :key="item.id" class="col">
@@ -409,12 +403,12 @@
                 </div>
               </div>
               <button @click="openEditModal(item)" class="btn-danger1 mt-2">
-                Edit
+                Editing and sending
               </button>
-              <button @click="sendToTelegram(item)" class="btn-danger1 mt-2">
+              <!-- <button @click="sendToTelegram(item)" class="btn-danger1 mt-2">
                 Telegram
                 <i style="color: cornflowerblue" class="bi bi-telegram"></i>
-              </button>
+              </button> -->
             </div>
           </div>
         </div>
@@ -435,7 +429,11 @@
                 <button @click="toggleSetting" class="btn">
                   <i class="bi bi-sliders"></i>
                 </button>
-
+                <i
+          style="position: absolute; right: 5px; top: 3px"
+          
+          class="bi bi-x-circle pointer" data-bs-dismiss="modal"
+        ></i>
                 <!-- Анимированный блок с настройками -->
                 <transition name="fade">
                   <div v-if="showSetting" class="setting-container">
@@ -502,18 +500,14 @@
             </div>
 
             <div class="modal-footer">
-              <button type="button" class="btn-danger1" data-bs-dismiss="modal">
-                Close
-              </button>
-              <button
-                type="button"
-                class="btn-danger1"
-                @click="saveChanges"
-                data-bs-dismiss="modal"
-              >
+             
+              <button type="button" class="btn-danger1" @click="saveChanges">
                 Save changes
               </button>
-              <button @click="sendToTelegram(item)" class="btn-danger1 mt-2">
+              <button
+                @click="sendToTelegram(editableItem)"
+                class="btn-danger1 "
+              >
                 Send to Telegram
                 <i style="color: cornflowerblue" class="bi bi-telegram"></i>
               </button>
@@ -526,23 +520,29 @@
 </template>
 
 <script>
-
+import axios from "axios";
 import { useTopPopularStore } from "../../stores/popular";
 import { computed, onMounted, ref } from "vue";
 import { useChannelStore } from "@/stores/channelStore";
-import Setting from '@/components/Setting.vue'
+import Setting from "@/components/Setting.vue";
 export default {
-  components:{Setting},
+  components: { Setting },
   setup() {
     const store = useTopPopularStore(); // Использование store
     const channelStore = useChannelStore(); // Store для работы с каналами
 
     const editableItem = ref({});
+    // const openEditModal = (item) => {
+    //   editableItem.value = { ...item };
+    //   const modal = new bootstrap.Modal(document.getElementById("editModal"));
+    //   modal.show();
+    // };
     const openEditModal = (item) => {
       editableItem.value = { ...item };
       const modal = new bootstrap.Modal(document.getElementById("editModal"));
       modal.show();
     };
+
     const saveChanges = () => {
       const index = store.news.findIndex(
         (news) => news.id === editableItem.value.id
@@ -609,23 +609,50 @@ export default {
       localStorage.setItem("savedTags", JSON.stringify(store.savedTags)); // Сохраняем изменения в localStorage
       console.log("Тег удалён:", tag);
     };
-
     const sendToTelegram = (item) => {
       if (!activeChannelId.value) {
         alert("Выберите канал для отправки новостей!");
         return;
       }
 
-      const editedItem = {
-        ...item,
-        title: item.title?.trim() || "", // Если title null или undefined, используем пустую строку
-        description: item.description?.trim() || "",
-        content: item.content?.trim() || "",
+      const message = `<b>${item.title}</b>\n${item.description}\n<a href="${item.url}">Читать полностью</a>`;
+      const data = {
+        chat_id: activeChannelId.value,
+        text: message,
+        parse_mode: "HTML",
       };
 
-      // Отправляем сообщение
-      store.sendToTelegram(editedItem, activeChannelId.value);
+      axios
+        .post(`https://api.telegram.org/bot${store.botToken}/sendMessage`, data)
+        .then((response) => {
+          console.log(
+            "Сообщение успешно отправлено в Telegram:",
+            response.data
+          );
+          alert("Сообщение отправлено!");
+        })
+        .catch((error) => {
+          console.error("Ошибка отправки сообщения:", error);
+          alert(`Ошибка отправки: ${error.message}`);
+        });
     };
+
+    // const sendToTelegram = (item) => {
+    //   if (!activeChannelId.value) {
+    //     alert("Выберите канал для отправки новостей!");
+    //     return;
+    //   }
+
+    //   const editedItem = {
+    //     ...item,
+    //     title: item.title?.trim() || "", // Если title null или undefined, используем пустую строку
+    //     description: item.description?.trim() || "",
+    //     content: item.content?.trim() || "",
+    //   };
+
+    //   // Отправляем сообщение
+    //   store.sendToTelegram(editedItem, activeChannelId.value);
+    // };
 
     // Инициализация при загрузке компонента
     onMounted(() => {
@@ -700,7 +727,6 @@ export default {
 }
 
 .saved-tag .bi-x-circle {
-  
   color: red;
 }
 .saved-tag:hover {

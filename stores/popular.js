@@ -60,7 +60,7 @@
 //       // Сохраняем изменения в localStorage
 //       localStorage.setItem("savedTags", JSON.stringify(this.savedTags));
 //     }
-// ,    
+// ,
 //     // toggleSaveTag(tag) {
 //     //   if (this.isTagSaved) {
 //     //     this.savedTags = this.savedTags.filter((savedTag) => savedTag !== tag);
@@ -73,7 +73,6 @@
 //     //   }
 //     // },
 //     async fetchTags() {
-      
 
 //       this.loading = true;
 //       this.tags = [];
@@ -281,8 +280,7 @@ export const useTopPopularStore = defineStore("topPopularStore", {
       const saved = localStorage.getItem("savedTags");
       this.savedTags = saved ? JSON.parse(saved) : [];
       console.log("Теги загружены из localStorage:", this.savedTags);
-    }
-    ,
+    },
     toggleSaveTag(tag) {
       // Проверяем, существует ли тег в savedTags
       if (this.savedTags.includes(tag)) {
@@ -296,8 +294,7 @@ export const useTopPopularStore = defineStore("topPopularStore", {
       }
       // Сохраняем изменения в localStorage
       localStorage.setItem("savedTags", JSON.stringify(this.savedTags));
-    }
-,    
+    },
     // toggleSaveTag(tag) {
     //   if (this.isTagSaved) {
     //     this.savedTags = this.savedTags.filter((savedTag) => savedTag !== tag);
@@ -310,8 +307,6 @@ export const useTopPopularStore = defineStore("topPopularStore", {
     //   }
     // },
     async fetchTags() {
-      
-
       this.loading = true;
       this.tags = [];
       this.progress = 0;
