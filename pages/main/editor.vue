@@ -170,7 +170,7 @@
           />
           <button
             @click="$refs.fileInput.click()"
-            class="btn-danger3 btn-sm flex-grow-1"
+            class="btn-danger1 btn-sm flex-grow-1"
           >
             <i class="bi bi-upload"></i> Upload
           </button>
@@ -184,7 +184,7 @@
             style="display: none"
           />
           <button
-            class="btn-danger3 btn-sm dropdown-toggle flex-grow-1"
+            class="btn-danger1 btn-sm dropdown-toggle flex-grow-1"
             type="button"
             data-bs-toggle="dropdown"
           >
@@ -216,7 +216,7 @@
           <button
             @click="startRecording"
             :disabled="isRecording"
-            class="pointer btn-danger3 btn-sm flex-grow-1"
+            class="pointer btn-danger1 btn-sm flex-grow-1"
           >
             <i class="bi bi-mic"></i> Record
           </button>
@@ -224,7 +224,7 @@
           <button
             @click="pauseRecording"
             :disabled="!isRecording"
-            class="pointer btn-danger3 btn-sm flex-grow-1"
+            class="pointer btn-danger1 btn-sm flex-grow-1"
           >
             <i class="bi bi-pause"></i> Pause
           </button>
@@ -232,19 +232,19 @@
           <button
             @click="stopRecording"
             :disabled="!isRecording"
-            class="btn-danger3 btn-sm flex-grow-1"
+            class="btn-danger1 btn-sm flex-grow-1"
           >
             <i class="bi bi-stop"></i> Stop
           </button>
 
           <!-- Кнопка для отправки отложенного сообщения -->
-          <button class="btn-danger3" @click="scheduleMessage">
+          <button class="btn-danger1" @click="scheduleMessage">
             Cron <i class="bi bi-send"></i>
           </button>
           <!-- Кнопка отправки -->
           <button
             @click="sendMessage"
-            class="btn-danger3 ms-2"
+            class="btn-danger1 ms-2"
             :disabled="!message && !uploadedFiles.length"
           >
             <i class="bi bi-send ml-1"></i>
@@ -926,18 +926,7 @@ export default {
   margin-top: 10px;
 }
 
-.btn-danger1 {
-  /* background-color: #dc3545;
-  color: #fff; */
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  transition: background-color 0.2s ease;
-}
 
-.btn-danger1:hover {
-  background-color: #c82333;
-}
 .gif-item {
   border: 2px solid transparent;
   cursor: pointer;

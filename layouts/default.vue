@@ -103,8 +103,8 @@
     >
       <Icon
         v-if="!themeStore.isDark"
-        name="meteocons:clear-day"
-        style="font-size: 20px; margin-left: 20px; margin-top: 5px"
+        name="meteocons:clear-day-fill"
+        style="font-size: 20px; margin-left: 20px; margin-top: 5px;color:black"
       />
 
       <Icon
@@ -219,7 +219,7 @@
     <!-- Список новостей -->
     <div style="position: relative" class="news-list">
       <div class="mt-4" v-if="news.length > 0">
-        <h4 class="fw-bold">{{ currentTag }}</h4>
+        <h5 class="fw-bold mt-1">{{ currentTag }}: {{ news.length }}</h5>
         <button
           class="btn-danger1 me-2"
           :class="{ 'btn-danger': isTagSaved(currentTag) }"
@@ -507,12 +507,12 @@
                 />
               </div>
               <label for="editTitle" class="form-label">Title</label>
-              <input
+              <textarea
                 id="editTitle"
                 type="text"
                 v-model="editableItem.title"
-                class="form-control"
-              />
+                class="form-control">
+              </textarea>
             </div>
             <div class="mb-3">
               <label for="editDescription" class="form-label"

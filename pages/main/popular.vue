@@ -140,7 +140,7 @@
        Total: {{ news.length }}
         </div> -->
       <div style="position: relative">
-        <h4 class="fw-bold">{{ currentTag }}</h4>
+        <h5 class="fw-bold mt-1">{{ currentTag }}: {{ news.length }}</h5>
         <!-- Сохранённые теги -->
         <div class="saved-tags">
           <span
@@ -472,12 +472,12 @@
                   />
                 </div>
                 <label for="editTitle" class="form-label">Title</label>
-                <input
+                <textarea
                   id="editTitle"
                   type="text"
                   v-model="editableItem.title"
                   class="form-control"
-                />
+                ></textarea>
               </div>
               <div class="mb-3">
                 <label for="editDescription" class="form-label"
