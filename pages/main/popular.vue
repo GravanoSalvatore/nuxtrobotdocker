@@ -492,10 +492,12 @@
               <div class="mb-3">
                 <label for="editContent" class="form-label">Content</label>
                 <textarea
-                  id="editContent"
-                  v-model="editableItem.content"
-                  class="form-control"
-                ></textarea>
+  id="editContent"
+  v-model="editableItem.content"
+  class="form-control"
+></textarea>
+<p v-html="editableItem.content || 'Контент отсутствует'"></p>
+
               </div>
             </div>
 
@@ -530,8 +532,15 @@ export default {
   setup() {
     const store = useTopPopularStore(); // Использование store
     const channelStore = useChannelStore(); // Store для работы с каналами
-
-    const editableItem = ref({});
+    const editableItem = ref({
+  title: "",
+  description: "",
+  content: "",
+  tempImageUrl: "",
+  urlToImage: "",
+  id: null,
+});
+    // const editableItem = ref({});
     // const openEditModal = (item) => {
     //   editableItem.value = { ...item };
     //   const modal = new bootstrap.Modal(document.getElementById("editModal"));
@@ -610,32 +619,62 @@ export default {
       console.log("Тег удалён:", tag);
     };
     const sendToTelegram = (item) => {
-      if (!activeChannelId.value) {
-        alert("Выберите канал для отправки новостей!");
-        return;
-      }
+  if (!activeChannelId.value) {
+    alert("Выберите канал для отправки новостей!");
+    return;
+  }
 
-      const message = `<b>${item.title}</b>\n${item.description}\n<a href="${item.url}">Читать полностью</a>`;
-      const data = {
-        chat_id: activeChannelId.value,
-        text: message,
-        parse_mode: "HTML",
-      };
+  // Проверяем, есть ли description и content
+  const description = item.description ? item.description : "";
+  const content = item.content ? item.content : "";
 
-      axios
-        .post(`https://api.telegram.org/bot${store.botToken}/sendMessage`, data)
-        .then((response) => {
-          console.log(
-            "Сообщение успешно отправлено в Telegram:",
-            response.data
-          );
-          alert("Сообщение отправлено!");
-        })
-        .catch((error) => {
-          console.error("Ошибка отправки сообщения:", error);
-          alert(`Ошибка отправки: ${error.message}`);
-        });
-    };
+  // Формируем сообщение
+  const message = `<b>${item.title}</b>\n${description}\n${content}\n<a href="${item.url}">Читать полностью</a>`;
+
+  const data = {
+    chat_id: activeChannelId.value,
+    text: message,
+    parse_mode: "HTML",
+  };
+
+  axios
+    .post(`https://api.telegram.org/bot${store.botToken}/sendMessage`, data)
+    .then((response) => {
+      console.log("Сообщение успешно отправлено в Telegram:", response.data);
+      alert("Сообщение отправлено!");
+    })
+    .catch((error) => {
+      console.error("Ошибка отправки сообщения:", error);
+      alert(`Ошибка отправки: ${error.message}`);
+    });
+};
+    // const sendToTelegram = (item) => {
+    //   if (!activeChannelId.value) {
+    //     alert("Выберите канал для отправки новостей!");
+    //     return;
+    //   }
+
+    //   const message = `<b>${item.title}</b>\n${item.description}\n<a href="${item.url}">Читать полностью</a>`;
+    //   const data = {
+    //     chat_id: activeChannelId.value,
+    //     text: message,
+    //     parse_mode: "HTML",
+    //   };
+
+    //   axios
+    //     .post(`https://api.telegram.org/bot${store.botToken}/sendMessage`, data)
+    //     .then((response) => {
+    //       console.log(
+    //         "Сообщение успешно отправлено в Telegram:",
+    //         response.data
+    //       );
+    //       alert("Сообщение отправлено!");
+    //     })
+    //     .catch((error) => {
+    //       console.error("Ошибка отправки сообщения:", error);
+    //       alert(`Ошибка отправки: ${error.message}`);
+    //     });
+    // };
 
     // const sendToTelegram = (item) => {
     //   if (!activeChannelId.value) {

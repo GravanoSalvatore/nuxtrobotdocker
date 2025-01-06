@@ -239,14 +239,14 @@
 
           <!-- Кнопка для отправки отложенного сообщения -->
           <button class="btn-danger1" @click="scheduleMessage">
-            Cron <i class="bi bi-send"></i>
+            Delayed sending <i class="bi bi-send"></i>
           </button>
           <!-- Кнопка отправки -->
           <button
             @click="sendMessage"
-            class="btn-danger1 ms-2"
+            class="btn-danger1 "
             :disabled="!message && !uploadedFiles.length"
-          >
+          >Send to telegram
             <i class="bi bi-send ml-1"></i>
           </button>
         </div>
@@ -271,7 +271,7 @@ export default {
     const channelStore = useChannelStore();
     const botToken = channelStore.botToken;
     const showEmojiPicker = ref(false);
-    // const emojiSearchQuery = ref('');
+    
     // Переключение видимости Emoji Picker
     const toggleEmojiPicker = () => {
       console.log("Текущий статус showEmojiPicker:", showEmojiPicker.value);
@@ -356,42 +356,77 @@ export default {
     });
 
     // Метод запланированной отправки сообщения
-    const scheduleMessage = async () => {
-      if (!isScheduleValid.value) {
-        alert("Добавьте текст или файл и укажите дату и время!");
-        return;
-      }
+//     const scheduleMessage = async () => {
+//   if (!isScheduleValid.value) {
+//     alert("Добавьте текст или файл и укажите дату и время!");
+//     return;
+//   }
 
-      const scheduledAt = `${scheduledDate.value}T${scheduledTime.value}`;
-      const payload = {
-        message: message.value.trim(),
-        scheduledAt,
-        botToken: channelStore.botToken,
-        chatId: channelStore.activeChannelId || channelStore.channels[0]?.id,
-        files: uploadedFiles.value.map((file) => ({
-          name: file.file.name,
-          type: file.type,
-        })),
-      };
+//   const scheduledAt = `${scheduledDate.value}T${scheduledTime.value}`;
+//   const payload = {
+//     message: message.value.trim(),
+//     scheduledAt,
+//     botToken: channelStore.botToken,
+//     chatId: channelStore.activeChannelId || channelStore.channels[0]?.id,
+//     files: uploadedFiles.value.map((file) => ({
+//       name: file.file.name,
+//       type: file.type,
+//     })),
+//   };
 
-      console.log(
-        "Отправка на сервер с данными:",
-        JSON.stringify(payload, null, 2)
-      );
+//   console.log("[CLIENT] Отправка на сервер с данными:", JSON.stringify(payload, null, 2));
 
-      try {
-        const response = await axios.post("/api/schedule", payload);
-        console.log("Ответ от сервера:", response.data);
-        alert(response.data.message || "Сообщение успешно запланировано!");
-        clearInputs();
-      } catch (error) {
-        console.error(
-          "Ошибка при планировании:",
-          error.response?.data || error.message
-        );
-        alert("Ошибка планирования. Проверьте данные и повторите.");
-      }
-    };
+//   try {
+//     const response = await axios.post("/api/schedule", payload);
+//     console.log("[CLIENT] Ответ от сервера:", response.data);
+//     alert(response.data.message || "Сообщение успешно запланировано!");
+//     clearInputs();
+//   } catch (error) {
+//     console.error("[ERROR] Ошибка при планировании:", error.response?.data || error.message);
+//     alert("Ошибка планирования. Проверьте данные и повторите.");
+//   }
+// };
+const scheduleMessage = async () => {
+  if (!isScheduleValid.value) {
+    alert("Добавьте текст или файл и укажите дату и время!");
+    return;
+  }
+
+  const scheduledAt = `${scheduledDate.value}T${scheduledTime.value}`;
+  const filesData = await Promise.all(
+    uploadedFiles.value.map(async (file) => {
+      const data = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result.split(",")[1]); // Получаем Base64
+        reader.onerror = reject;
+        reader.readAsDataURL(file.file);
+      });
+
+      return { name: file.file.name, type: file.file.type, data };
+    })
+  );
+
+  const payload = {
+    message: message.value.trim(),
+    scheduledAt,
+    botToken: channelStore.botToken,
+    chatId: channelStore.activeChannelId || channelStore.channels[0]?.id,
+    files: filesData, // Отправляем файлы в формате Base64
+  };
+
+  console.log("[CLIENT] Отправка на сервер с данными:", JSON.stringify(payload, null, 2));
+
+  try {
+    const response = await axios.post("/api/schedule", payload);
+    console.log("[CLIENT] Ответ от сервера:", response.data);
+    alert(response.data.message || "Сообщение успешно запланировано!");
+    clearInputs();
+  } catch (error) {
+    console.error("[ERROR] Ошибка при планировании:", error.response?.data || error.message);
+    alert("Ошибка планирования. Проверьте данные и повторите.");
+  }
+};
+
 
     // Метод загрузки файлов
     const handleFileUpload = (event) => {

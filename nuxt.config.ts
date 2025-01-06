@@ -82,13 +82,5 @@ export default defineNuxtConfig({
     
   ],
   
-  // icon: {
-  //   serverBundle: {
-  //     collections: ['uil', 'mdi'] // <!--- this
-  //   }
-  // }
-  runtimeConfig: {
-    public: {
-      OPENAI_API_KEY: process.env.OPENAI_API_KEY || '',
-    },}
+  
 })

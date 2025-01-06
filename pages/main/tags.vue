@@ -493,11 +493,19 @@
               </div>
               <div class="mb-3">
                 <label for="editContent" class="form-label">Content</label>
-                <textarea
+                <!-- <textarea
                   id="editContent"
                   v-model="editableItem.content"
                   class="form-control"
-                ></textarea>
+                ></textarea> -->
+                <textarea
+  id="editContent"
+  v-model="editableItem.content"
+  class="form-control"
+></textarea>
+<p v-html="editableItem.content || 'Контент отсутствует'"></p>
+
+
               </div>
             </div>
 
@@ -677,7 +685,16 @@ const toggleSaveTag = () => {
     const activeChannelId = computed(() => channelStore.activeChannelId); // Достаём ID активного канала
 
     const tagsList = ref(null);
-    const editableItem = ref({});
+    const editableItem = ref({
+  title: "",
+  description: "",
+  content: "",
+  tempImageUrl: "",
+  urlToImage: "",
+  id: null,
+});
+
+    //const editableItem = ref({});
     const query = computed({
       get: () => store.query,
       set: (value) => (store.query = value),
@@ -761,10 +778,13 @@ const sendToTelegram = (item) => {
     return;
   }
 
-  // Логируем данные перед отправкой
-  console.log("Отправка данных:", item);
+  // Проверяем, есть ли description и content
+  const description = item.description ? item.description : "";
+  const content = item.content ? item.content : "";
 
-  const message = `<b>${item.title}</b>\n${item.description}\n<a href="${item.url}">Читать полностью</a>`;
+  // Формируем сообщение
+  const message = `<b>${item.title}</b>\n${description}\n${content}\n<a href="${item.url}">Читать полностью</a>`;
+
   const data = {
     chat_id: activeChannelId.value,
     text: message,
@@ -782,6 +802,34 @@ const sendToTelegram = (item) => {
       alert(`Ошибка отправки: ${error.message}`);
     });
 };
+
+// const sendToTelegram = (item) => {
+//   if (!activeChannelId.value) {
+//     alert("Выберите канал для отправки новостей!");
+//     return;
+//   }
+
+//   // Логируем данные перед отправкой
+//   console.log("Отправка данных:", item);
+
+//   const message = `<b>${item.title}</b>\n${item.description}\n${item.content}\n<a href="${item.url}">Читать полностью</a>`;
+//   const data = {
+//     chat_id: activeChannelId.value,
+//     text: message,
+//     parse_mode: "HTML",
+//   };
+
+//   axios
+//     .post(`https://api.telegram.org/bot${store.botToken}/sendMessage`, data)
+//     .then((response) => {
+//       console.log("Сообщение успешно отправлено в Telegram:", response.data);
+//       alert("Сообщение отправлено!");
+//     })
+//     .catch((error) => {
+//       console.error("Ошибка отправки сообщения:", error);
+//       alert(`Ошибка отправки: ${error.message}`);
+//     });
+// };
 
     const scrollToTop = () => store.scrollToTop(tagsList.value);
     // const sendChatIdAndTagId = () => {
