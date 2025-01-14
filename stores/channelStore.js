@@ -51,8 +51,15 @@ export const useChannelStore = defineStore('channelStore', {
         name: 'ROBOTON',     // Имя канала по умолчанию
       },
     ],
+   
     activeChannelId: null, // Начально активный канал не выбран
   }),
+  getters: {
+    activeChannelName(state) {
+      const activeChannel = state.channels.find(channel => channel.id === state.activeChannelId);
+      return activeChannel ? activeChannel.name : 'Unknown Channel';
+    },
+  },
   actions: {
     loadChannels() {
       if (process.client) {
@@ -100,6 +107,7 @@ export const useChannelStore = defineStore('channelStore', {
     },
     saveToLocalStorage() {
       localStorage.setItem('telegramChannels', JSON.stringify(this.channels));
+      localStorage.setItem('activeChannelId', this.activeChannelId);
     },
   },
 });

@@ -352,28 +352,6 @@ export const useTopPopularStore = defineStore("topPopularStore", {
       }
     },
 
-    // async fetchTags() {
-    //   this.loadingTags = true; // Показываем индикатор загрузки тегов
-    //   try {
-    //     const response = await axios.get('https://4v-news-api.azurewebsites.net/Tags/Search', {
-    //       params: {
-    //         SiteId: 1,
-    //         Page: 1,
-    //         PageSize: 100,
-    //       },
-    //     });
-    //     if (response.data && response.data.items) {
-    //       this.tags = response.data.items.filter(tag => tag.name !== "0");
-    //     } else {
-    //       console.error("Теги не найдены:", response);
-    //     }
-    //   } catch (error) {
-    //     console.error("Ошибка при загрузке тегов:", error);
-    //     this.tags = [];
-    //   } finally {
-    //     this.loadingTags = false; // Скрываем индикатор загрузки тегов
-    //   }
-    // },
 
     async fetchNews(tagName) {
       this.loadingNews = true; // Показываем индикатор загрузки новостей

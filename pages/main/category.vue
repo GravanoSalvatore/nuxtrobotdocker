@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <!-- Active channel ID: {{ activeChannelId }}   -->
-    <div class="categories">
+    <div class="categories" style="">
       <crypto v-if="selectedCategory === 'Криптовалюты'" />
       <button class="btn-danger3" @click="selectCategory('Новости')">
         News
@@ -322,7 +322,10 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped >
+.btn-danger3{
+  font-size:11px;
+}
 .tag-count {
   margin: 10px 0;
   font-weight: bold;
@@ -383,7 +386,7 @@ color: white; */
 .category-btn,
 .language-btn,
 .tag-btn {
-  margin: 5px;
+  /* margin: 5px; */
   padding: 10px 20px;
   cursor: pointer;
 

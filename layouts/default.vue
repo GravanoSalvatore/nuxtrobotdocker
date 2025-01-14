@@ -5,7 +5,9 @@
       <NuxtLink class="navbar-brand" to="/"
         ><img style="max-width: 200px" src="@/assets/img/4vrobot.png"
       /></NuxtLink>
-
+      <span style="font-size: 11px" class="text-success fw-bold">
+        {{ activeChannelName }} {{ activeChannelId }}
+      </span>
       <svg
         class="navbar-toggler"
         xmlns="http://www.w3.org/2000/svg"
@@ -26,7 +28,66 @@
       <!-- <span class="navbar-toggler-icon"></span>
       </button> -->
       <div class="collapse navbar-collapse" id="navbarNav">
-        <div class="container">
+       
+      </div>
+      </div>
+  </nav>
+  <div class="container">
+    <div class="">
+      <NuxtLink style="text-decoration: none; margin-left:" to="/"> </NuxtLink>
+    </div>
+    <button
+      class="theme-toggle-btn"
+      @click="themeStore.toggleTheme"
+      :title="
+        themeStore.isDark
+          ? 'Переключить на светлую тему'
+          : 'Переключить на тёмную тему'
+      "
+    >
+      <Icon
+        v-if="!themeStore.isDark"
+        name="meteocons:clear-day-fill"
+        style="
+          font-size: 20px;
+          margin-left: 20px;
+          margin-top: 5px;
+          color: black;
+        "
+      />
+
+      <Icon
+        v-else
+        name="meteocons:clear-night"
+        style="font-size: 20px; margin-left: 20px; margin-top: 5px"
+      />
+    </button>
+    <Grid />
+    <div class="row">
+      <!-- Левая колонка -->
+      <div class="col-12 col-md-3 fixed-sidebar mb-4 mb-md-0">
+        <div class="sidebar-content">
+          <div class="accordion accordion-flush" id="accordionFlushExample">
+            <div
+              v-for="(item, index) in accordionItems"
+              :key="index"
+              class="accordion-item"
+            >
+              <h2 class="accordion-header">
+                <button
+                  :class="{ 'active-item': activeIndex === index }"
+                  @click="handleItemClick(item, index)"
+                  class="accordion-button pointer"
+                >
+                  <div class="card-icon me-2" v-html="item.icon"></div>
+                  <span style="color:">{{ item.title }}</span>
+                </button>
+              </h2>
+            </div>
+            <br />
+           
+          </div>
+          <div class="container">
           <div class="row align-items-center">
             <!-- Социальные иконки -->
             <div class="col-md-12 text-center text-md-start mb-3 mb-md-0">
@@ -85,59 +146,7 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </nav>
-  <div class="container">
-    <div class="">
-      <NuxtLink style="text-decoration: none; margin-left:" to="/"> </NuxtLink>
-    </div>
-    <button
-      class="theme-toggle-btn"
-      @click="themeStore.toggleTheme"
-      :title="
-        themeStore.isDark
-          ? 'Переключить на светлую тему'
-          : 'Переключить на тёмную тему'
-      "
-    >
-      <Icon
-        v-if="!themeStore.isDark"
-        name="meteocons:clear-day-fill"
-        style="font-size: 20px; margin-left: 20px; margin-top: 5px;color:black"
-      />
-
-      <Icon
-        v-else
-        name="meteocons:clear-night"
-        style="font-size: 20px; margin-left: 20px; margin-top: 5px"
-      />
-    </button>
-    <Grid />
-    <div class="row">
-      <!-- Левая колонка -->
-      <div class="col-12 col-md-3 fixed-sidebar mb-4 mb-md-0">
-        <div class="sidebar-content">
-          <div class="accordion accordion-flush" id="accordionFlushExample">
-            <div
-              v-for="(item, index) in accordionItems"
-              :key="index"
-              class="accordion-item"
-            >
-              <h2 class="accordion-header">
-                <button
-                  :class="{ 'active-item': activeIndex === index }"
-                  @click="handleItemClick(item, index)"
-                  class="accordion-button pointer"
-                >
-                  <div class="card-icon me-2" v-html="item.icon"></div>
-                  <span style="color:">{{ item.title }}</span>
-                </button>
-              </h2>
-            </div>
-            <br />
-            <!-- <Pay /> -->
-          </div>
+    
         </div>
 
         <!-- Сохранённые теги -->
@@ -157,24 +166,6 @@
             </span>
           </div>
         </div>
-        <!-- <div 
-        style =""
-        class="saved-tags">
-          <span
-            v-for="tag in savedTags"
-            :key="tag"
-            class="badge bg-success saved-tag"
-            @click="handleTagClick(tag)"
-          >
-            {{ tag }}
-            <i
-              @click.stop="removeSavedTag(tag)"
-              class="bi bi-x-circle pointer text-white"
-            ></i>
-          </span>
-        </div>
-
-         -->
       </div>
 
       <!-- Правая колонка -->
@@ -465,10 +456,10 @@
                 <i class="bi bi-sliders"></i>
               </button>
               <i
-          style="position: absolute; right: 0; top: 0"
-          
-          class="bi bi-x-circle pointer" data-bs-dismiss="modal"
-        ></i>
+                style="position: absolute; right: 0; top: 0"
+                class="bi bi-x-circle pointer"
+                data-bs-dismiss="modal"
+              ></i>
               <!-- Анимированный блок с настройками -->
               <transition name="fade">
                 <div v-if="showSetting" class="setting-container">
@@ -511,7 +502,8 @@
                 id="editTitle"
                 type="text"
                 v-model="editableItem.title"
-                class="form-control">
+                class="form-control"
+              >
               </textarea>
             </div>
             <div class="mb-3">
@@ -538,21 +530,13 @@
             <!-- <button type="button" class="btn-danger1" data-bs-dismiss="modal">
               Close
             </button> -->
-            <button
-              type="button"
-              class="btn-danger1"
-              @click="saveChanges"
-              
-            >
+            <button type="button" class="btn-danger1" @click="saveChanges">
               Save changes
             </button>
-            <button
-  @click="sendToTelegram(editableItem)"
-  class="btn-danger1 "
->
-  Send to Telegram
-  <i style="color:  cornflowerblue" class="bi bi-telegram"></i>
-</button>
+            <button @click="sendToTelegram(editableItem)" class="btn-danger1">
+              Send to Telegram
+              <i style="color: cornflowerblue" class="bi bi-telegram"></i>
+            </button>
           </div>
         </div>
       </div>
@@ -565,7 +549,7 @@
 <script>
 //import Setting from '@/components/Setting.vue'
 //import { useTopPopularStore } from "../stores/popular";
-import axios from 'axios'
+import axios from "axios";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
 import { useTopPopularStore } from "../../stores/popular";
@@ -605,6 +589,7 @@ export default {
     const themeStore = useThemeStore();
     const channelStore = useChannelStore();
     themeStore.setThemeFromStorage();
+
     const editableItem = ref({});
     const showSetting = ref(false);
     const toggleSetting = () => {
@@ -621,8 +606,8 @@ export default {
         news.value[index] = { ...editableItem.value };
       }
     };
-
     const currentTag = ref("");
+    const channels = computed(() => channelStore.channels);
     const toggleSaveTag = (tag) => {
       if (!tag.trim()) {
         console.error("Текущий тег пустой, невозможно сохранить/удалить.");
@@ -656,6 +641,8 @@ export default {
     const localNews = ref([]);
     const loadingNews = computed(() => themeStore.loadingNews);
     const activeChannelId = computed(() => channelStore.activeChannelId); // Получаем activeChannelId
+    const activeChannelName = computed(() => channelStore.activeChannelName);
+
     const clearNews = () => {
       themeStore.clearNews();
       localNews.value = [];
@@ -696,35 +683,41 @@ export default {
     //     });
     // };
     const sendToTelegram = (item) => {
-  if (!activeChannelId.value) {
-    alert("Выберите канал для отправки новостей!");
-    return;
-  }
+      if (!activeChannelId.value) {
+        alert("Выберите канал для отправки новостей!");
+        return;
+      }
 
-  // Проверяем, есть ли description и content
-  const description = item.description ? item.description : "";
-  const content = item.content ? item.content : "";
+      // Проверяем, есть ли description и content
+      const description = item.description ? item.description : "";
+      const content = item.content ? item.content : "";
 
-  // Формируем сообщение
-  const message = `<b>${item.title}</b>\n${description}\n${content}\n<a href="${item.url}">Читать полностью</a>`;
+      // Формируем сообщение
+      const message = `<b>${item.title}</b>\n${description}\n${content}\n<a href="${item.url}">Читать полностью</a>`;
 
-  const data = {
-    chat_id: activeChannelId.value,
-    text: message,
-    parse_mode: "HTML",
-  };
+      const data = {
+        chat_id: activeChannelId.value,
+        text: message,
+        parse_mode: "HTML",
+      };
 
-  axios
-    .post(`https://api.telegram.org/bot${popularStore.botToken}/sendMessage`, data)
-    .then((response) => {
-      console.log("Сообщение успешно отправлено в Telegram:", response.data);
-      alert("Сообщение отправлено!");
-    })
-    .catch((error) => {
-      console.error("Ошибка отправки сообщения:", error);
-      alert(`Ошибка отправки: ${error.message}`);
-    });
-};
+      axios
+        .post(
+          `https://api.telegram.org/bot${popularStore.botToken}/sendMessage`,
+          data
+        )
+        .then((response) => {
+          console.log(
+            "Сообщение успешно отправлено в Telegram:",
+            response.data
+          );
+          alert("Сообщение отправлено!");
+        })
+        .catch((error) => {
+          console.error("Ошибка отправки сообщения:", error);
+          alert(`Ошибка отправки: ${error.message}`);
+        });
+    };
     const fetchNews = async (tagName) => {
       await themeStore.fetchNews(tagName);
       localNews.value = themeStore.news.map((item) => ({ ...item })); // Локальная копия новостей
@@ -838,6 +831,7 @@ export default {
     // Данные для аккордеона
 
     return {
+      activeChannelName,
       showSetting,
       toggleSetting,
       editableItem,
@@ -848,7 +842,7 @@ export default {
       toggleSaveTag,
       removeSavedTag,
       savedTags: computed(() => popularStore.savedTags),
-
+      channels,
       tags,
       sendToTelegram,
       activeChannelId,
@@ -1023,7 +1017,7 @@ footer a:hover {
   justify-content: center;
   transition: background-color 0.3s ease;
   position: absolute; /* Абсолютное позиционирование */
-  top: 10px; /* Отступ сверху */
+  top: 0px; /* Отступ сверху */
   right: 0px; /* Отступ справа */
   z-index: 1000; /* Убедитесь, что кнопка поверх контента */
 }
@@ -1043,7 +1037,12 @@ footer a:hover {
     right: 0px; /* Меньший отступ справа */
   }
 }
-
+@media (max-width: 394px) {
+  .theme-toggle-btn {
+    top: 5px; /* Отступ ниже кнопки тоггл-меню */
+    right: 0px; /* Меньший отступ справа */
+  }
+}
 /* .theme-icon {
 transition: transform 0.3s ease;
 caret-color: yellow;

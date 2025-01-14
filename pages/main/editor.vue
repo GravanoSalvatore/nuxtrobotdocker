@@ -9,8 +9,6 @@
         rows="6"
       ></textarea>
 
-    
-
       <!-- Кнопка отображения Emoji Picker -->
       <client-only>
         <i
@@ -21,18 +19,17 @@
         ></i>
 
         <!-- Emoji Picker -->
-        <div  class= "position-relative"> 
-        <div
-          v-if="showEmojiPicker"
-          class= " emoji-picker-container mt-2 d-flex justify-content-center align-items-center"
-        >
-        
-          <emoji-picker
-          style="z-index: 10000;top:0"
-            class="custom-emoji-picker position-absolute "
-            @emoji-click="addEmoji"
-          ></emoji-picker>
-        </div>
+        <div class="position-relative">
+          <div
+            v-if="showEmojiPicker"
+            class="emoji-picker-container mt-2 d-flex justify-content-center align-items-center"
+          >
+            <emoji-picker
+              style="z-index: 10000; top: 0"
+              class="custom-emoji-picker position-absolute"
+              @emoji-click="addEmoji"
+            ></emoji-picker>
+          </div>
         </div>
       </client-only>
       <!-- Новая функция: Выбор даты и времени -->
@@ -42,6 +39,7 @@
         class="form-control mt-2"
         placeholder="Search GIF..."
       />
+
       <div class="schedule-controls mt-2">
         <!-- <label for="schedule-date">Schedule Date:</label> -->
         <input
@@ -128,22 +126,59 @@
           controls
         ></audio>
       </div>
-      <svg
-        class=""
-        v-if="searchResults.length"
-        @click="closeGifResults"
-        xmlns="http://www.w3.org/2000/svg"
-        width="32"
-        height="32"
-        viewBox="0 0 24 24"
-      >
-        <path
-          fill="currentColor"
-          d="M15.59 7L12 10.59L8.41 7L7 8.41L10.59 12L7 15.59L8.41 17L12 13.41L15.59 17L17 15.59L13.41 12L17 8.41L15.59 7Z"
+      <!-- Предварительный просмотр выбранного GIF -->
+      <!-- <div v-if="selectedGif" class="gif-preview mt-3">
+  <h3>Preview GIF:</h3>
+  <div class="position-relative">
+    <img
+      :src="selectedGif"
+      alt="Selected GIF"
+      class="img-thumbnail"
+      style="max-width: 100%; border: 1px solid #ccc; border-radius: 8px;"
+    />
+   
+    <button
+      @click="clearSelectedGif"
+      class="btn btn-danger btn-sm position-absolute"
+      style="top: 0; right: 0;"
+    >
+      <i class="bi bi-x-circle"></i>
+    </button>
+  </div>
+</div> -->
+      <div v-if="selectedGif" class="gif-preview mt-3 position-relative">
+        <img
+          :src="selectedGif"
+          alt="Selected GIF"
+          class="img-thumbnail"
+          style="max-width: 100%; border: 1px solid #ccc; border-radius: 8px"
         />
-      </svg>
+        <!-- Кнопка удаления GIF -->
+        <button
+          @click="clearSelectedGif"
+          class="btn btn-danger btn-sm position-absolute delete-gif-btn"
+        >
+          <i class="bi bi-x-circle"></i>
+        </button>
+      </div>
+
       <!-- <button v-if="searchResults.length" @click="closeGifResults" class="btn-close btn-sm float-end" aria-label="Close"></button> -->
-      <div class="gif-search mt-3">
+      <div style="position: relative" class="gif-search mt-3">
+        <svg
+          style="position: absolute; right: 0; top: -20px"
+          class="pointer"
+          v-if="searchResults.length"
+          @click="closeGifResults"
+          xmlns="http://www.w3.org/2000/svg"
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+        >
+          <path
+            fill="currentColor"
+            d="M15.59 7L12 10.59L8.41 7L7 8.41L10.59 12L7 15.59L8.41 17L12 13.41L15.59 17L17 15.59L13.41 12L17 8.41L15.59 7Z"
+          />
+        </svg>
         <div v-if="searchResults.length" class="gif-results mt-3">
           <div
             v-for="gif in searchResults"
@@ -154,8 +189,72 @@
             <img :src="gif.images.fixed_height_small.url" alt="GIF" />
           </div>
         </div>
+        <div class="d-flex justify-content-center mt-3">
+          <!-- <button
+      v-if="!isLoading"
+      @click="searchGifs(true)"
+      class="btn btn-primary"
+    >
+      Load More
+    </button> -->
+          <svg
+            class="pointer"
+            v-if="searchResults.length"
+            @click="searchGifs(true)"
+            xmlns="http://www.w3.org/2000/svg"
+            width="42"
+            height="42"
+            viewBox="0 0 24 24"
+          >
+            <circle cx="4" cy="12" r="1.5" fill="cornflowerblue">
+              <animate
+                attributeName="r"
+                dur="0.75s"
+                repeatCount="indefinite"
+                values="1.5;3;1.5"
+              />
+            </circle>
+            <circle cx="12" cy="12" r="3" fill="cornflowerblue">
+              <animate
+                attributeName="r"
+                dur="0.75s"
+                repeatCount="indefinite"
+                values="3;1.5;3"
+              />
+            </circle>
+            <circle cx="20" cy="12" r="1.5" fill="cornflowerblue">
+              <animate
+                attributeName="r"
+                dur="0.75s"
+                repeatCount="indefinite"
+                values="1.5;3;1.5"
+              />
+            </circle>
+          </svg>
+          <!-- Индикатор загрузки -->
+          <!-- <div v-if="isLoading" class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div> -->
+        </div>
       </div>
-
+      <!-- Новая функция: Видео с веб-камеры -->
+      <div v-if="recordedVideo" class="video-preview mt-3">
+        <h3>Preview Video:</h3>
+        <video
+          :src="recordedVideo"
+          controls
+          class="video-preview"
+          style="
+            width: 100%;
+            max-width: 600px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+          "
+        ></video>
+        <button @click="clearRecordedVideo" class="btn btn-danger btn-sm mt-2">
+          Удалить видео
+        </button>
+      </div>
       <!-- Панель управления медиа -->
       <div class="media-controls mt-3">
         <!-- Кнопки загрузки медиа -->
@@ -237,6 +336,21 @@
             <i class="bi bi-stop"></i> Stop
           </button>
 
+          <button
+            @click="startVideoRecording"
+            :disabled="isVideoRecording"
+            class="btn-danger1 btn-sm flex-grow-1"
+          >
+            <i class="bi bi-camera-video"></i> Record Video
+          </button>
+
+          <button
+            @click="stopVideoRecording"
+            :disabled="!isVideoRecording"
+            class="btn-danger1 btn-sm flex-grow-1"
+          >
+            <i class="bi bi-stop"></i> Stop Recording
+          </button>
           <!-- Кнопка для отправки отложенного сообщения -->
           <button class="btn-danger1" @click="scheduleMessage">
             Delayed sending <i class="bi bi-send"></i>
@@ -244,9 +358,10 @@
           <!-- Кнопка отправки -->
           <button
             @click="sendMessage"
-            class="btn-danger1 "
+            class="btn-danger1"
             :disabled="!message && !uploadedFiles.length"
-          >Send to telegram
+          >
+            Send to telegram
             <i class="bi bi-send ml-1"></i>
           </button>
         </div>
@@ -271,7 +386,58 @@ export default {
     const channelStore = useChannelStore();
     const botToken = channelStore.botToken;
     const showEmojiPicker = ref(false);
-    
+
+    const isVideoRecording = ref(false);
+    const recordedVideo = ref(null);
+    let videoRecorder = null;
+    let videoStream = null;
+    let videoChunks = [];
+    // Начать запись видео
+    const startVideoRecording = async () => {
+      try {
+        videoStream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+        });
+        videoRecorder = new MediaRecorder(videoStream);
+        videoChunks = [];
+
+        videoRecorder.ondataavailable = (event) => {
+          if (event.data.size > 0) {
+            videoChunks.push(event.data);
+          }
+        };
+
+        videoRecorder.onstop = () => {
+          const videoBlob = new Blob(videoChunks, { type: "video/webm" });
+          recordedVideo.value = URL.createObjectURL(videoBlob);
+          uploadedFiles.value.push({
+            file: videoBlob,
+            preview: recordedVideo.value,
+            type: "video/webm",
+          });
+        };
+
+        videoRecorder.start();
+        isVideoRecording.value = true;
+      } catch (error) {
+        console.error("Ошибка доступа к камере:", error);
+      }
+    };
+
+    // Остановить запись видео
+    const stopVideoRecording = () => {
+      if (videoRecorder) {
+        videoRecorder.stop();
+        videoStream.getTracks().forEach((track) => track.stop());
+        isVideoRecording.value = false;
+      }
+    };
+
+    // Очистить записанное видео
+    const clearRecordedVideo = () => {
+      recordedVideo.value = null;
+    };
+
     // Переключение видимости Emoji Picker
     const toggleEmojiPicker = () => {
       console.log("Текущий статус showEmojiPicker:", showEmojiPicker.value);
@@ -331,6 +497,9 @@ export default {
     const scheduledTime = ref("");
     const message = ref("");
     const uploadedFiles = ref([]);
+
+    const isLoading = ref(false);
+    const offset = ref(0);
     const gifSearchQuery = ref("");
     const searchResults = ref([]);
     const selectedGif = ref(null);
@@ -356,77 +525,82 @@ export default {
     });
 
     // Метод запланированной отправки сообщения
-//     const scheduleMessage = async () => {
-//   if (!isScheduleValid.value) {
-//     alert("Добавьте текст или файл и укажите дату и время!");
-//     return;
-//   }
+    //     const scheduleMessage = async () => {
+    //   if (!isScheduleValid.value) {
+    //     alert("Добавьте текст или файл и укажите дату и время!");
+    //     return;
+    //   }
 
-//   const scheduledAt = `${scheduledDate.value}T${scheduledTime.value}`;
-//   const payload = {
-//     message: message.value.trim(),
-//     scheduledAt,
-//     botToken: channelStore.botToken,
-//     chatId: channelStore.activeChannelId || channelStore.channels[0]?.id,
-//     files: uploadedFiles.value.map((file) => ({
-//       name: file.file.name,
-//       type: file.type,
-//     })),
-//   };
+    //   const scheduledAt = `${scheduledDate.value}T${scheduledTime.value}`;
+    //   const payload = {
+    //     message: message.value.trim(),
+    //     scheduledAt,
+    //     botToken: channelStore.botToken,
+    //     chatId: channelStore.activeChannelId || channelStore.channels[0]?.id,
+    //     files: uploadedFiles.value.map((file) => ({
+    //       name: file.file.name,
+    //       type: file.type,
+    //     })),
+    //   };
 
-//   console.log("[CLIENT] Отправка на сервер с данными:", JSON.stringify(payload, null, 2));
+    //   console.log("[CLIENT] Отправка на сервер с данными:", JSON.stringify(payload, null, 2));
 
-//   try {
-//     const response = await axios.post("/api/schedule", payload);
-//     console.log("[CLIENT] Ответ от сервера:", response.data);
-//     alert(response.data.message || "Сообщение успешно запланировано!");
-//     clearInputs();
-//   } catch (error) {
-//     console.error("[ERROR] Ошибка при планировании:", error.response?.data || error.message);
-//     alert("Ошибка планирования. Проверьте данные и повторите.");
-//   }
-// };
-const scheduleMessage = async () => {
-  if (!isScheduleValid.value) {
-    alert("Добавьте текст или файл и укажите дату и время!");
-    return;
-  }
+    //   try {
+    //     const response = await axios.post("/api/schedule", payload);
+    //     console.log("[CLIENT] Ответ от сервера:", response.data);
+    //     alert(response.data.message || "Сообщение успешно запланировано!");
+    //     clearInputs();
+    //   } catch (error) {
+    //     console.error("[ERROR] Ошибка при планировании:", error.response?.data || error.message);
+    //     alert("Ошибка планирования. Проверьте данные и повторите.");
+    //   }
+    // };
+    const scheduleMessage = async () => {
+      if (!isScheduleValid.value) {
+        alert("Добавьте текст или файл и укажите дату и время!");
+        return;
+      }
 
-  const scheduledAt = `${scheduledDate.value}T${scheduledTime.value}`;
-  const filesData = await Promise.all(
-    uploadedFiles.value.map(async (file) => {
-      const data = await new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result.split(",")[1]); // Получаем Base64
-        reader.onerror = reject;
-        reader.readAsDataURL(file.file);
-      });
+      const scheduledAt = `${scheduledDate.value}T${scheduledTime.value}`;
+      const filesData = await Promise.all(
+        uploadedFiles.value.map(async (file) => {
+          const data = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result.split(",")[1]); // Получаем Base64
+            reader.onerror = reject;
+            reader.readAsDataURL(file.file);
+          });
 
-      return { name: file.file.name, type: file.file.type, data };
-    })
-  );
+          return { name: file.file.name, type: file.file.type, data };
+        })
+      );
 
-  const payload = {
-    message: message.value.trim(),
-    scheduledAt,
-    botToken: channelStore.botToken,
-    chatId: channelStore.activeChannelId || channelStore.channels[0]?.id,
-    files: filesData, // Отправляем файлы в формате Base64
-  };
+      const payload = {
+        message: message.value.trim(),
+        scheduledAt,
+        botToken: channelStore.botToken,
+        chatId: channelStore.activeChannelId || channelStore.channels[0]?.id,
+        files: filesData, // Отправляем файлы в формате Base64
+      };
 
-  console.log("[CLIENT] Отправка на сервер с данными:", JSON.stringify(payload, null, 2));
+      console.log(
+        "[CLIENT] Отправка на сервер с данными:",
+        JSON.stringify(payload, null, 2)
+      );
 
-  try {
-    const response = await axios.post("/api/schedule", payload);
-    console.log("[CLIENT] Ответ от сервера:", response.data);
-    alert(response.data.message || "Сообщение успешно запланировано!");
-    clearInputs();
-  } catch (error) {
-    console.error("[ERROR] Ошибка при планировании:", error.response?.data || error.message);
-    alert("Ошибка планирования. Проверьте данные и повторите.");
-  }
-};
-
+      try {
+        const response = await axios.post("/api/schedule", payload);
+        console.log("[CLIENT] Ответ от сервера:", response.data);
+        alert(response.data.message || "Сообщение успешно запланировано!");
+        clearInputs();
+      } catch (error) {
+        console.error(
+          "[ERROR] Ошибка при планировании:",
+          error.response?.data || error.message
+        );
+        alert("Ошибка планирования. Проверьте данные и повторите.");
+      }
+    };
 
     // Метод загрузки файлов
     const handleFileUpload = (event) => {
@@ -699,14 +873,63 @@ const scheduleMessage = async () => {
       selectedGif.value = null;
     };
 
-    const searchGifs = async () => {
-      console.log("Поиск GIF начался с запросом:", gifSearchQuery.value);
+    const clearSelectedGif = () => {
+      console.log("Очистка выбранного GIF");
+      selectedGif.value = null;
+    };
+
+    console.log("gifSearchQuery:", gifSearchQuery.value);
+    console.log("offset:", offset.value);
+    console.log("isLoading:", isLoading.value);
+    console.log("uploadedFiles:", uploadedFiles.value);
+    console.log("scheduledDate:", scheduledDate.value);
+    console.log("scheduledTime:", scheduledTime.value);
+
+    // const searchGifs = async () => {
+    //   console.log("Поиск GIF начался с запросом:", gifSearchQuery.value);
+    //   if (!gifSearchQuery.value.trim()) {
+    //     console.warn("Пустой поисковый запрос!");
+    //     searchResults.value = [];
+    //     return;
+    //   }
+
+    //   try {
+    //     const response = await axios.get(
+    //       `https://api.giphy.com/v1/gifs/search`,
+    //       {
+    //         params: {
+    //           api_key: "fADq5TfaTTfCcdSmI7jd3znNii8C1SqA",
+    //           q: gifSearchQuery.value,
+    //           limit: 49,
+    //         },
+    //       }
+    //     );
+    //     searchResults.value = response.data.data.map((gif) => ({
+    //       ...gif,
+    //       isSelected: false,
+    //     }));
+    //     console.log("Найдено GIF:", searchResults.value.length);
+    //   } catch (error) {
+    //     console.error(
+    //       "Ошибка поиска GIF:",
+    //       error.response?.data || error.message
+    //     );
+    //   }
+    // };
+    const searchGifs = async (loadMore = false) => {
       if (!gifSearchQuery.value.trim()) {
         console.warn("Пустой поисковый запрос!");
         searchResults.value = [];
         return;
       }
 
+      if (!loadMore) {
+        // Сбрасываем offset, если это новый запрос
+        offset.value = 0;
+        searchResults.value = [];
+      }
+
+      isLoading.value = true; // Показываем индикатор загрузки
       try {
         const response = await axios.get(
           `https://api.giphy.com/v1/gifs/search`,
@@ -714,22 +937,30 @@ const scheduleMessage = async () => {
             params: {
               api_key: "fADq5TfaTTfCcdSmI7jd3znNii8C1SqA",
               q: gifSearchQuery.value,
-              limit: 49,
+              limit: 50,
+              offset: offset.value, // Указываем текущий offset
             },
           }
         );
-        searchResults.value = response.data.data.map((gif) => ({
+
+        const newResults = response.data.data.map((gif) => ({
           ...gif,
           isSelected: false,
         }));
-        console.log("Найдено GIF:", searchResults.value.length);
+
+        // Если это подгрузка, добавляем новые GIF в конец массива
+        searchResults.value = [...searchResults.value, ...newResults];
+        offset.value += 50; // Увеличиваем offset на 50
       } catch (error) {
         console.error(
           "Ошибка поиска GIF:",
           error.response?.data || error.message
         );
+      } finally {
+        isLoading.value = false; // Скрываем индикатор загрузки
       }
     };
+
     onMounted(() => {
       applyThemeToEmojiPicker();
     });
@@ -745,6 +976,21 @@ const scheduleMessage = async () => {
     };
 
     return {
+      clearSelectedGif,
+      selectGif, // Добавил метод selectGif
+      searchGifs,
+      selectedGif,
+      gifSearchQuery,
+      searchGifs, // Метод для поиска GIF
+      offset, // Offset для подгрузки
+      isLoading, // Состояние загрузки GIF
+
+      isVideoRecording,
+      recordedVideo,
+      startVideoRecording,
+      stopVideoRecording,
+      clearRecordedVideo,
+
       theme,
       // emojiSearchQuery,
       canSendNow,
@@ -755,7 +1001,7 @@ const scheduleMessage = async () => {
       // canSchedule,
       scheduleMessage,
       addEmoji,
-      selectGif, // Добавил метод selectGif
+
       clearRecordedAudio,
       isRecording,
       recordedAudio,
@@ -767,11 +1013,11 @@ const scheduleMessage = async () => {
       handleFileUpload,
       removeFile,
       resetAllFields,
-      searchGifs,
+
       uploadedFiles,
-      gifSearchQuery,
+
       searchResults,
-      selectedGif,
+
       options,
       message,
       closeGifResults,
@@ -781,8 +1027,40 @@ const scheduleMessage = async () => {
 </script>
 
 <style scoped>
-/* Общие стили для Emoji Picker */
+.gif-preview {
+  position: relative; /* Устанавливаем позиционирование для наложения кнопки */
+  display: inline-block;
+}
 
+.gif-preview img {
+  display: block; /* Убираем лишние отступы вокруг картинки */
+}
+
+.delete-gif-btn {
+  position: absolute; /* Абсолютное позиционирование внутри контейнера */
+  top: 5px; /* Отступ сверху */
+  right: 5px; /* Отступ справа */
+  z-index: 10; /* Располагаем над GIF */
+  background-color: rgba(220, 53, 69, 0.8); /* Полупрозрачный красный фон */
+  border: none; /* Без границ */
+  color: #fff; /* Белый цвет текста */
+  padding: 5px; /* Отступы внутри кнопки */
+  border-radius: 50%; /* Круглая форма кнопки */
+  cursor: pointer; /* Курсор-указатель */
+  transition: background-color 0.3s ease; /* Плавный эффект при наведении */
+}
+
+.delete-gif-btn:hover {
+  background-color: rgba(200, 35, 51, 0.9); /* Более яркий цвет при наведении */
+}
+
+/* Общие стили для Emoji Picker */
+.video-preview {
+  width: 100%;
+  max-width: 600px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+}
 .btn-primary {
   background-color: #007bff;
   border: none;
@@ -841,13 +1119,14 @@ const scheduleMessage = async () => {
 }
 .gif-item {
   cursor: pointer;
-  width: 100px;
-  height: 100px;
+  width: 50px;
+  height: 50px;
   overflow: hidden;
   border-radius: 8px;
   border: 2px solid transparent;
   transition: border-color 0.3s;
 }
+
 .gif-item:hover {
   border-color: #dc3545;
 }
@@ -961,7 +1240,6 @@ const scheduleMessage = async () => {
   margin-top: 10px;
 }
 
-
 .gif-item {
   border: 2px solid transparent;
   cursor: pointer;
@@ -971,8 +1249,6 @@ const scheduleMessage = async () => {
   border-color: red;
 }
 
-
- 
 /* Внутри <style> блока */
 emoji-picker {
   --border-radius: 10px;
@@ -992,14 +1268,4 @@ emoji-picker {
     /* --emoji-size:3 rem; */
   }
 }
-
-
-
-
-
-
-
-
-
-
 </style>

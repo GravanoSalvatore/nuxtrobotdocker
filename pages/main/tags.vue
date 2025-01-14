@@ -932,7 +932,7 @@ a {
 }
 
 .tags-lis {
-  box-shadow: 0px 8px 16px rgba(19, 93, 147, 0.3);
+  /* box-shadow: 0px 8px 16px rgba(19, 93, 147, 0.3); */
   border-radius: 20px;
 }
 
