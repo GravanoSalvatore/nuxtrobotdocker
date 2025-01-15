@@ -540,23 +540,40 @@
         }
       };
   
+      // onMounted(() => {
+      //   channelStore.loadChannels();
+      //   console.log("Application loaded. Channels:", channels.value);
+      //   channels.value.forEach(async (channel) => {
+      //     console.log(`Channel: ${channel.name}, ID: ${channel.id}`);
+      //     if (!channel.photo) {
+      //       const photo = await fetchChannelPhoto(channel.id);
+      //       if (photo) {
+      //         channel.photo = photo;
+      //         console.log(`Fetched photo URL for channel ${channel.name}: ${photo}`);
+      //       } else {
+      //         console.log(`No photo available for channel ${channel.name}.`);
+      //       }
+      //     }
+      //   });
+      // });
       onMounted(() => {
-        channelStore.loadChannels();
-        console.log("Application loaded. Channels:", channels.value);
-        channels.value.forEach(async (channel) => {
-          console.log(`Channel: ${channel.name}, ID: ${channel.id}`);
-          if (!channel.photo) {
-            const photo = await fetchChannelPhoto(channel.id);
-            if (photo) {
-              channel.photo = photo;
-              console.log(`Fetched photo URL for channel ${channel.name}: ${photo}`);
-            } else {
-              console.log(`No photo available for channel ${channel.name}.`);
-            }
-          }
-        });
-      });
-      
+  channelStore.loadChannels();
+  console.log("Application loaded. Channels:", channels.value);
+  
+  channels.value.forEach(async (channel) => {
+    if (!channel.photo) {
+      console.log(`Fetching photo for channel: ${channel.name}`);
+      const photo = await fetchChannelPhoto(channel.id);
+      if (photo) {
+        channel.photo = photo;
+        console.log(`Fetched photo URL for channel ${channel.name}: ${photo}`);
+      } else {
+        console.log(`No photo available for channel ${channel.name}.`);
+      }
+    }
+  });
+});
+
       return {
         fetchChannelPhoto,
         defaultPhoto,

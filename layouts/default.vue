@@ -186,6 +186,7 @@
         <div class="modal-dialog form">
           <div class="modal-content">
             <button
+            style="font-size:9px"
               type="button"
               class="btn-close position-absolute top-0 end-0 me-2 mt-2"
               aria-label="Close"
