@@ -2,105 +2,14 @@
   <div class="container">
     <!-- Индикатор загрузки -->
     <div v-if="loading" class="text-center">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="32"
-        height="32"
-        viewBox="0 0 24 24"
-      >
-        <rect width="2.8" height="12" x="1" y="6" fill="currentColor">
-          <animate
-            id="svgSpinnersBarsScale0"
-            attributeName="y"
-            begin="0;svgSpinnersBarsScale1.end-0.1s"
-            calcMode="spline"
-            dur="0.6s"
-            keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-            values="6;1;6"
-          />
-          <animate
-            attributeName="height"
-            begin="0;svgSpinnersBarsScale1.end-0.1s"
-            calcMode="spline"
-            dur="0.6s"
-            keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-            values="12;22;12"
-          />
-        </rect>
-        <rect width="2.8" height="12" x="5.8" y="6" fill="currentColor">
-          <animate
-            attributeName="y"
-            begin="svgSpinnersBarsScale0.begin+0.1s"
-            calcMode="spline"
-            dur="0.6s"
-            keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-            values="6;1;6"
-          />
-          <animate
-            attributeName="height"
-            begin="svgSpinnersBarsScale0.begin+0.1s"
-            calcMode="spline"
-            dur="0.6s"
-            keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-            values="12;22;12"
-          />
-        </rect>
-        <rect width="2.8" height="12" x="10.6" y="6" fill="currentColor">
-          <animate
-            attributeName="y"
-            begin="svgSpinnersBarsScale0.begin+0.2s"
-            calcMode="spline"
-            dur="0.6s"
-            keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-            values="6;1;6"
-          />
-          <animate
-            attributeName="height"
-            begin="svgSpinnersBarsScale0.begin+0.2s"
-            calcMode="spline"
-            dur="0.6s"
-            keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-            values="12;22;12"
-          />
-        </rect>
-        <rect width="2.8" height="12" x="15.4" y="6" fill="currentColor">
-          <animate
-            attributeName="y"
-            begin="svgSpinnersBarsScale0.begin+0.3s"
-            calcMode="spline"
-            dur="0.6s"
-            keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-            values="6;1;6"
-          />
-          <animate
-            attributeName="height"
-            begin="svgSpinnersBarsScale0.begin+0.3s"
-            calcMode="spline"
-            dur="0.6s"
-            keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-            values="12;22;12"
-          />
-        </rect>
-        <rect width="2.8" height="12" x="20.2" y="6" fill="currentColor">
-          <animate
-            id="svgSpinnersBarsScale1"
-            attributeName="y"
-            begin="svgSpinnersBarsScale0.begin+0.4s"
-            calcMode="spline"
-            dur="0.6s"
-            keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-            values="6;1;6"
-          />
-          <animate
-            attributeName="height"
-            begin="svgSpinnersBarsScale0.begin+0.4s"
-            calcMode="spline"
-            dur="0.6s"
-            keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-            values="12;22;12"
-          />
-        </rect>
-      </svg>
+      <svg 
+      
+      xmlns="http://www.w3.org/2000/svg" 
+      width="52" 
+      height="52" 
+      viewBox="0 0 24 24">
+      <path 
+      fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z" transform="matrix(0 0 0 0 12 12)"><animateTransform id="svgSpinnersPulseRingsMultiple0" attributeName="transform" begin="0;svgSpinnersPulseRingsMultiple2.end" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="translate" values="12 12;0 0"/><animateTransform additive="sum" attributeName="transform" begin="0;svgSpinnersPulseRingsMultiple2.end" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="scale" values="0;1"/><animate attributeName="opacity" begin="0;svgSpinnersPulseRingsMultiple2.end" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" values="1;0"/></path><path fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z" transform="matrix(0 0 0 0 12 12)"><animateTransform id="svgSpinnersPulseRingsMultiple1" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.2s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="translate" values="12 12;0 0"/><animateTransform additive="sum" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.2s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="scale" values="0;1"/><animate attributeName="opacity" begin="svgSpinnersPulseRingsMultiple0.begin+0.2s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" values="1;0"/></path><path fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z" transform="matrix(0 0 0 0 12 12)"><animateTransform id="svgSpinnersPulseRingsMultiple2" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.4s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="translate" values="12 12;0 0"/><animateTransform additive="sum" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.4s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="scale" values="0;1"/><animate attributeName="opacity" begin="svgSpinnersPulseRingsMultiple0.begin+0.4s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" values="1;0"/></path></svg>
     </div>
 
     <!-- Список тегов -->
@@ -178,105 +87,14 @@
         </button> -->
         <!-- Индикатор загрузки новостей -->
         <div v-if="loadingNews" class="text-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="32"
-            height="32"
-            viewBox="0 0 24 24"
-          >
-            <rect width="2.8" height="12" x="1" y="6" fill="currentColor">
-              <animate
-                id="svgSpinnersBarsScale0"
-                attributeName="y"
-                begin="0;svgSpinnersBarsScale1.end-0.1s"
-                calcMode="spline"
-                dur="0.6s"
-                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-                values="6;1;6"
-              />
-              <animate
-                attributeName="height"
-                begin="0;svgSpinnersBarsScale1.end-0.1s"
-                calcMode="spline"
-                dur="0.6s"
-                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-                values="12;22;12"
-              />
-            </rect>
-            <rect width="2.8" height="12" x="5.8" y="6" fill="currentColor">
-              <animate
-                attributeName="y"
-                begin="svgSpinnersBarsScale0.begin+0.1s"
-                calcMode="spline"
-                dur="0.6s"
-                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-                values="6;1;6"
-              />
-              <animate
-                attributeName="height"
-                begin="svgSpinnersBarsScale0.begin+0.1s"
-                calcMode="spline"
-                dur="0.6s"
-                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-                values="12;22;12"
-              />
-            </rect>
-            <rect width="2.8" height="12" x="10.6" y="6" fill="currentColor">
-              <animate
-                attributeName="y"
-                begin="svgSpinnersBarsScale0.begin+0.2s"
-                calcMode="spline"
-                dur="0.6s"
-                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-                values="6;1;6"
-              />
-              <animate
-                attributeName="height"
-                begin="svgSpinnersBarsScale0.begin+0.2s"
-                calcMode="spline"
-                dur="0.6s"
-                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-                values="12;22;12"
-              />
-            </rect>
-            <rect width="2.8" height="12" x="15.4" y="6" fill="currentColor">
-              <animate
-                attributeName="y"
-                begin="svgSpinnersBarsScale0.begin+0.3s"
-                calcMode="spline"
-                dur="0.6s"
-                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-                values="6;1;6"
-              />
-              <animate
-                attributeName="height"
-                begin="svgSpinnersBarsScale0.begin+0.3s"
-                calcMode="spline"
-                dur="0.6s"
-                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-                values="12;22;12"
-              />
-            </rect>
-            <rect width="2.8" height="12" x="20.2" y="6" fill="currentColor">
-              <animate
-                id="svgSpinnersBarsScale1"
-                attributeName="y"
-                begin="svgSpinnersBarsScale0.begin+0.4s"
-                calcMode="spline"
-                dur="0.6s"
-                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-                values="6;1;6"
-              />
-              <animate
-                attributeName="height"
-                begin="svgSpinnersBarsScale0.begin+0.4s"
-                calcMode="spline"
-                dur="0.6s"
-                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-                values="12;22;12"
-              />
-            </rect>
-          </svg>
+          <svg 
+      
+      xmlns="http://www.w3.org/2000/svg" 
+      width="52" 
+      height="52" 
+      viewBox="0 0 24 24">
+      <path 
+      fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z" transform="matrix(0 0 0 0 12 12)"><animateTransform id="svgSpinnersPulseRingsMultiple0" attributeName="transform" begin="0;svgSpinnersPulseRingsMultiple2.end" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="translate" values="12 12;0 0"/><animateTransform additive="sum" attributeName="transform" begin="0;svgSpinnersPulseRingsMultiple2.end" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="scale" values="0;1"/><animate attributeName="opacity" begin="0;svgSpinnersPulseRingsMultiple2.end" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" values="1;0"/></path><path fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z" transform="matrix(0 0 0 0 12 12)"><animateTransform id="svgSpinnersPulseRingsMultiple1" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.2s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="translate" values="12 12;0 0"/><animateTransform additive="sum" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.2s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="scale" values="0;1"/><animate attributeName="opacity" begin="svgSpinnersPulseRingsMultiple0.begin+0.2s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" values="1;0"/></path><path fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z" transform="matrix(0 0 0 0 12 12)"><animateTransform id="svgSpinnersPulseRingsMultiple2" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.4s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="translate" values="12 12;0 0"/><animateTransform additive="sum" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.4s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="scale" values="0;1"/><animate attributeName="opacity" begin="svgSpinnersPulseRingsMultiple0.begin+0.4s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" values="1;0"/></path></svg>
         </div>
         <!-- Модальное окно -->
         <div

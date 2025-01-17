@@ -3,10 +3,12 @@
   <!-- <TonConnectUIProvider :options="options"> -->
   <nav class="navbar navbar-expand-lg mb-4">
     <div class="container-fluid">
+      <div style="">
       <NuxtLink class="navbar-brand" to="/"
         ><img style="max-width: 200px" src="@/assets/img/4vrobot.png" />
-        <!-- <span class="position-absolute" style="font-size:14px;top:34px;">v1.0.1</span> -->
+      
       </NuxtLink>
+    </div>
       <span
         style="
           font-size: 13px;
@@ -38,6 +40,7 @@
         v-if="!themeStore.isDark"
         name="meteocons:clear-day-fill"
         style="
+       
           font-size: 20px;
           margin-left: 20px;
           margin-top: 5px;
@@ -79,31 +82,10 @@
         </div>
 
         <!-- Сохранённые теги -->
-         <!-- <div class="container">
-        <i @click="toggleSavedTags" class="bi bi-floppy2-fill"> Saved tags</i>
-         </div>
-        <div class="saved-tags-container">
-        
-          <div style="" class="saved-tags">
-            <span
-              v-for="tag in savedTags"
-              :key="tag"
-              class="badge bg-success saved-tag"
-              @click="handleTagClick(tag)"
-            >
-              {{ tag }}
-              <i
-                @click.stop="removeSavedTag(tag)"
-                class="bi bi-x-circle pointer text-white"
-              ></i>
-            </span>
-          </div>
-      
-      
-        </div> -->
-        <div class="container pl-4">
+       
+        <button v-if="savedTags.length > 0"   class="pl-4 btn-danger1">
         <i @click="toggleSavedTags" class="bi bi-floppy2-fill pointer "> Saved tags</i> 
-         </div>
+        </button>
     <div 
       v-show="showSavedTags" 
       class="saved-tags-container mt-2"
@@ -226,6 +208,7 @@
     </div>
     <!-- Список новостей -->
     <div style="position: relative" class="news-list">
+     
       <div class=" text-center" v-if="news.length > 0">
         <h5 class="fw-bold mt-1">{{ currentTag }}: {{ news.length }}</h5>
         <button
@@ -293,105 +276,14 @@
       ></i>
       <div v-if="loadingNews" class="text-center">
         <p>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="32"
-            height="32"
-            viewBox="0 0 24 24"
-          >
-            <rect width="2.8" height="12" x="1" y="6" fill="currentColor">
-              <animate
-                id="svgSpinnersBarsScale0"
-                attributeName="y"
-                begin="0;svgSpinnersBarsScale1.end-0.1s"
-                calcMode="spline"
-                dur="0.6s"
-                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-                values="6;1;6"
-              />
-              <animate
-                attributeName="height"
-                begin="0;svgSpinnersBarsScale1.end-0.1s"
-                calcMode="spline"
-                dur="0.6s"
-                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-                values="12;22;12"
-              />
-            </rect>
-            <rect width="2.8" height="12" x="5.8" y="6" fill="currentColor">
-              <animate
-                attributeName="y"
-                begin="svgSpinnersBarsScale0.begin+0.1s"
-                calcMode="spline"
-                dur="0.6s"
-                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-                values="6;1;6"
-              />
-              <animate
-                attributeName="height"
-                begin="svgSpinnersBarsScale0.begin+0.1s"
-                calcMode="spline"
-                dur="0.6s"
-                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-                values="12;22;12"
-              />
-            </rect>
-            <rect width="2.8" height="12" x="10.6" y="6" fill="currentColor">
-              <animate
-                attributeName="y"
-                begin="svgSpinnersBarsScale0.begin+0.2s"
-                calcMode="spline"
-                dur="0.6s"
-                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-                values="6;1;6"
-              />
-              <animate
-                attributeName="height"
-                begin="svgSpinnersBarsScale0.begin+0.2s"
-                calcMode="spline"
-                dur="0.6s"
-                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-                values="12;22;12"
-              />
-            </rect>
-            <rect width="2.8" height="12" x="15.4" y="6" fill="currentColor">
-              <animate
-                attributeName="y"
-                begin="svgSpinnersBarsScale0.begin+0.3s"
-                calcMode="spline"
-                dur="0.6s"
-                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-                values="6;1;6"
-              />
-              <animate
-                attributeName="height"
-                begin="svgSpinnersBarsScale0.begin+0.3s"
-                calcMode="spline"
-                dur="0.6s"
-                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-                values="12;22;12"
-              />
-            </rect>
-            <rect width="2.8" height="12" x="20.2" y="6" fill="currentColor">
-              <animate
-                id="svgSpinnersBarsScale1"
-                attributeName="y"
-                begin="svgSpinnersBarsScale0.begin+0.4s"
-                calcMode="spline"
-                dur="0.6s"
-                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-                values="6;1;6"
-              />
-              <animate
-                attributeName="height"
-                begin="svgSpinnersBarsScale0.begin+0.4s"
-                calcMode="spline"
-                dur="0.6s"
-                keySplines=".36,.61,.3,.98;.36,.61,.3,.98"
-                values="12;22;12"
-              />
-            </rect>
-          </svg>
+          <svg 
+      
+       xmlns="http://www.w3.org/2000/svg" 
+       width="52" 
+       height="52" 
+       viewBox="0 0 24 24">
+       <path 
+       fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z" transform="matrix(0 0 0 0 12 12)"><animateTransform id="svgSpinnersPulseRingsMultiple0" attributeName="transform" begin="0;svgSpinnersPulseRingsMultiple2.end" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="translate" values="12 12;0 0"/><animateTransform additive="sum" attributeName="transform" begin="0;svgSpinnersPulseRingsMultiple2.end" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="scale" values="0;1"/><animate attributeName="opacity" begin="0;svgSpinnersPulseRingsMultiple2.end" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" values="1;0"/></path><path fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z" transform="matrix(0 0 0 0 12 12)"><animateTransform id="svgSpinnersPulseRingsMultiple1" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.2s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="translate" values="12 12;0 0"/><animateTransform additive="sum" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.2s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="scale" values="0;1"/><animate attributeName="opacity" begin="svgSpinnersPulseRingsMultiple0.begin+0.2s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" values="1;0"/></path><path fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z" transform="matrix(0 0 0 0 12 12)"><animateTransform id="svgSpinnersPulseRingsMultiple2" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.4s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="translate" values="12 12;0 0"/><animateTransform additive="sum" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.4s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="scale" values="0;1"/><animate attributeName="opacity" begin="svgSpinnersPulseRingsMultiple0.begin+0.4s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" values="1;0"/></path></svg>
         </p>
       </div>
 
@@ -891,7 +783,7 @@ export default {
 .saved-tags-container {
   overflow-x: hidden;
   overflow-y: auto;
-  height: 250px;
+  height: 150px;
 }
 /* .saved-tags-container :hover{
   height: 100% !important;
@@ -924,6 +816,7 @@ export default {
   height: auto;
 }
 .modal-dialog1 {
+
   max-width: 330px;
   margin: 30px auto;
 }
@@ -932,7 +825,9 @@ modal-dialog {
   margin: 30px auto;
 }
 .modal-content {
+  border-radius: 5px;
   padding: 20px;
+  border:2px solid cornflowerblue;
 }
 
 .row {

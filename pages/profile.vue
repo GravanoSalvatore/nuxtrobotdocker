@@ -246,7 +246,7 @@
   
         <div v-if="isAuthenticated" class="alert text-center mt-3 ">
           Welcome {{ username }}!<br/>
-          <button class="btn btn-danger  mt-2" @click="logout">Выйти</button>
+          <button class="btn-danger  mt-2" @click="logout">Выйти</button>
         </div>
   
         <div v-if="errorMessage" class="alert alert-danger mt-3">
