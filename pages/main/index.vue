@@ -227,7 +227,7 @@
   
   .card-text,
   .card-title {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    /* font-family: Verdana, Geneva, Tahoma, sans-serif; */
     transition: color 0.3s ease;
     /* color: rgba(255, 255, 255, 0.8); */
   }

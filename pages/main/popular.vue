@@ -126,19 +126,11 @@
           </button>
         </div>
       </div>
-      <!-- <div v-else-if="loadingTags">
-        <v-progress-circular
-          indeterminate
-          color="primary"
-          size="50"
-        ></v-progress-circular>
-      </div> -->
+     
     </div>
 
     <div v-if="news.length > 0" class="news-list">
-      <!-- <div style="color:cornflowerblue" class="fw-bold text-center ">
-       Total: {{ news.length }}
-        </div> -->
+      
       <div style="position: relative">
         <h5 class="fw-bold mt-1">{{ currentTag }}: {{ news.length }}</h5>
         <!-- Сохранённые теги -->
@@ -168,14 +160,14 @@
 
         <!-- Другие кнопки -->
         <button
-          @click="toggleAutopilot"
-          :class="[
-            'btn-danger1 fw-bold me-2',
-            { 'btn-primary': autopilotActive },
-          ]"
-        >
-          {{ autopilotActive ? "Stop Autopilot" : "Start Autopilot" }}
-        </button>
+      @click="toggleAutopilot"
+      :class="[
+        'btn-danger1 fw-bold me-2',
+        { 'btn-primary': autopilotActive },
+      ]"
+    >
+      {{ autopilotActive ? "Stop Autopilot" : "Start Autopilot" }}
+    </button>
         <!-- <button
           type="button"
           class="btn-danger1"
@@ -321,44 +313,7 @@
         ></i>
       </div>
 
-      <!-- Список новостей -->
-      <!-- <div class="row row-cols-1 row-cols-md-3 g-3 mt-3">
-        <div v-for="item in news" :key="item.id" class="col">
-          <div class="card">
-            <img
-              v-if="item.tempImageUrl || item.urlToImage"
-              :src="item.tempImageUrl || item.urlToImage"
-              class="card-img-top"
-            />
-            <img v-else :src="image" class="card-img-top" />
-
-            <div class="card-body">
-              <div class="overlay">
-              <h5 class="card-title">
-                <a style="font-size: 12px;" :href="item.url" target="_blank">{{ item.sourceName }}</a>
-              </h5>
-              <p class="card-text">
-                <small class="text-muted">{{ formatDateTime(item.publishedAt) }}</small>
-              </p>
-              <p v-if="item.author" class="badge bg-primary" :style="{ 'max-width': '200px', 'white-space': 'nowrap', 'overflow': 'hidden', 'text-overflow': 'ellipsis' }">  
-  {{ item.author }}  
-</p>
-              <p v-else class="badge bg-secondary">Unknown</p>
-              <p style="color: cornflowerblue;" class="fw-bold">{{ item.title }}</p>
-              <p>{{ item.description }}</p>
-              <p v-html="item.content"></p>
-            </div>
-              <button @click="openEditModal(item)" class="btn-danger1 mt-2">
-                Edit
-              </button>
-              <button @click="sendToTelegram(item)" class="btn-danger1 mt-2">
-                Send to Telegram
-                <i class="bi bi-telegram"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div> -->
+      
       <div class="row row-cols-1 row-cols-md-3 g-3 mt-3">
         <div v-for="item in news" :key="item.id" class="col">
           <div class="car">
@@ -451,26 +406,7 @@
                     alt="Preview"
                   />
                 </div>
-                <div class="mb-3">
-                  <label for="editImageFile" class="form-label"
-                    >Upload Image</label
-                  >
-                  <input
-                    id="editImageFile"
-                    type="file"
-                    @change="uploadImage"
-                    class="form-control"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="editImage" class="form-label">Image URL</label>
-                  <input
-                    id="editImage"
-                    type="text"
-                    v-model="editableItem.tempImageUrl"
-                    class="form-control"
-                  />
-                </div>
+               
                 <label for="editTitle" class="form-label">Title</label>
                 <textarea
                   id="editTitle"
@@ -496,7 +432,7 @@
   v-model="editableItem.content"
   class="form-control"
 ></textarea>
-<p v-html="editableItem.content || 'Контент отсутствует'"></p>
+<!-- <p v-html="editableItem.content || 'Контент отсутствует'"></p> -->
 
               </div>
             </div>
@@ -532,6 +468,87 @@ export default {
   setup() {
     const store = useTopPopularStore(); // Использование store
     const channelStore = useChannelStore(); // Store для работы с каналами
+   
+    const currentTagId = ref(10); // Жестко заданный ID тега
+
+// Получение токена из куков
+const autopilotActive = ref(false);
+    const loadingAutopilot = ref(false);
+
+    // Функция для получения токена из куков
+    const getAuthTokenFromCookies = () => {
+      console.log("[TOKEN] Читаем куки...");
+      const cookieName = ".AspNetCore.Identity.Application=";
+      const cookies = document.cookie.split("; ");
+
+      for (const cookie of cookies) {
+        if (cookie.startsWith(cookieName)) {
+          const token = cookie.substring(cookieName.length);
+          console.log("[TOKEN] Найден токен:", token);
+          return token;
+        }
+      }
+      console.warn("[TOKEN] Токен не найден!");
+      return null;
+    };
+
+    // Функция для запуска автопостинга
+    const toggleAutopilot = async () => {
+  console.log("[AUTOPOSTING] Клик по кнопке, проверяем данные...");
+
+  if (!channelStore.activeChannelId) {
+    alert("Выберите канал для автопостинга!");
+    return;
+  }
+
+  const apiUrl = `https://4v-news-api.azurewebsites.net/AutoPosting?TelegramChatId=${channelStore.activeChannelId}`;
+
+  loadingAutopilot.value = true;
+  console.log("[AUTOPOSTING] Отправка запроса:", apiUrl);
+
+  try {
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      credentials: "include", // 🔥 Гарантируем, что куки передадутся
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    console.log("[AUTOPOSTING] Ответ сервера:", response);
+
+    if (!response.ok) {
+      console.error(`[AUTOPOSTING] Ошибка: статус ${response.status}`);
+      alert(`Ошибка автопостинга: ${response.status}`);
+      return;
+    }
+
+    const data = await response.json();
+    console.log("[AUTOPOSTING] Данные ответа:", data);
+
+    if (data.isSuccess) {
+      autopilotActive.value = !autopilotActive.value;
+      alert("Автопостинг успешно активирован!");
+    } else {
+      console.error("[AUTOPOSTING] Ошибка активации:", data.errors);
+      alert("Ошибка автопостинга: " + JSON.stringify(data.errors));
+    }
+  } catch (error) {
+    console.error("[AUTOPOSTING] Ошибка сети:", error);
+    alert("Ошибка сети: " + error.message);
+  } finally {
+    loadingAutopilot.value = false;
+  }
+};
+
+
+
+   
+   
+   
+   
+   
+   
     const editableItem = ref({
   title: "",
   description: "",
@@ -540,12 +557,9 @@ export default {
   urlToImage: "",
   id: null,
 });
-    // const editableItem = ref({});
-    // const openEditModal = (item) => {
-    //   editableItem.value = { ...item };
-    //   const modal = new bootstrap.Modal(document.getElementById("editModal"));
-    //   modal.show();
-    // };
+    
+
+
     const openEditModal = (item) => {
       editableItem.value = { ...item };
       const modal = new bootstrap.Modal(document.getElementById("editModal"));
@@ -648,58 +662,17 @@ export default {
       alert(`Ошибка отправки: ${error.message}`);
     });
 };
-    // const sendToTelegram = (item) => {
-    //   if (!activeChannelId.value) {
-    //     alert("Выберите канал для отправки новостей!");
-    //     return;
-    //   }
-
-    //   const message = `<b>${item.title}</b>\n${item.description}\n<a href="${item.url}">Читать полностью</a>`;
-    //   const data = {
-    //     chat_id: activeChannelId.value,
-    //     text: message,
-    //     parse_mode: "HTML",
-    //   };
-
-    //   axios
-    //     .post(`https://api.telegram.org/bot${store.botToken}/sendMessage`, data)
-    //     .then((response) => {
-    //       console.log(
-    //         "Сообщение успешно отправлено в Telegram:",
-    //         response.data
-    //       );
-    //       alert("Сообщение отправлено!");
-    //     })
-    //     .catch((error) => {
-    //       console.error("Ошибка отправки сообщения:", error);
-    //       alert(`Ошибка отправки: ${error.message}`);
-    //     });
-    // };
-
-    // const sendToTelegram = (item) => {
-    //   if (!activeChannelId.value) {
-    //     alert("Выберите канал для отправки новостей!");
-    //     return;
-    //   }
-
-    //   const editedItem = {
-    //     ...item,
-    //     title: item.title?.trim() || "", // Если title null или undefined, используем пустую строку
-    //     description: item.description?.trim() || "",
-    //     content: item.content?.trim() || "",
-    //   };
-
-    //   // Отправляем сообщение
-    //   store.sendToTelegram(editedItem, activeChannelId.value);
-    // };
-
-    // Инициализация при загрузке компонента
+    
+    
     onMounted(() => {
       store.loadSavedTags(); // Загружаем сохранённые теги
       fetchTags(); // Загружаем теги
     });
 
     return {
+      toggleAutopilot,
+      autopilotActive,
+      loadingAutopilot,
       filteredSortedTags,
       openEditModal,
       saveChanges,

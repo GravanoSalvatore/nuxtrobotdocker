@@ -453,7 +453,7 @@
             </span>
           
             <div>
-              <i  @click="handleRemoveChannel(index)" class="bi bi-x-circle"></i>
+              <i style="font-size: 11px;"  @click="handleRemoveChannel(index)" class="bi bi-x-circle pointer"></i>
         
 
             
@@ -590,7 +590,7 @@
   </script>
   
   <style scoped>
-.container {
+.container  {
   max-width: 600px;
   margin: 20px auto;
 }

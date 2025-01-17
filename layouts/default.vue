@@ -1,36 +1,25 @@
-<template lang="">
+<template >
+<div class="mb-4">
   <!-- <TonConnectUIProvider :options="options"> -->
   <nav class="navbar navbar-expand-lg mb-4">
     <div class="container-fluid">
       <NuxtLink class="navbar-brand" to="/"
-        ><img style="max-width: 200px" src="@/assets/img/4vrobot.png"
-      /></NuxtLink>
-      <span style="font-size: 11px" class="text-success fw-bold">
-        {{ activeChannelName }} {{ activeChannelId }}
-      </span>
-      <svg
-        class="navbar-toggler"
-        xmlns="http://www.w3.org/2000/svg"
-        width="52"
-        height="52"
-        viewBox="0 0 2048 2048"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        style="border: none !important"
+        ><img style="max-width: 200px" src="@/assets/img/4vrobot.png" />
+        <!-- <span class="position-absolute" style="font-size:14px;top:34px;">v1.0.1</span> -->
+      </NuxtLink>
+      <span
+        style="
+          font-size: 13px;
+          
+        "
+        class="text-success fw-bold"
       >
-        <path
-          fill="cornflowerblue"
-          d="M2048 128v128H0V128zM0 1664h2048v128H0zm0-768h2048v128H0zm0-384h2048v128H0zm0 768h2048v128H0z"
-        />
-      </svg>
-      <!-- <span class="navbar-toggler-icon"></span>
-      </button> -->
-      <div class="collapse navbar-collapse" id="navbarNav">
-       
-      </div>
-      </div>
+      Active channel: {{ activeChannelName }} 
+        <!-- {{ activeChannelId }} -->
+      </span>
+     
+      <div class="collapse navbar-collapse" id="navbarNav"></div>
+    </div>
   </nav>
   <div class="container">
     <div class="">
@@ -85,72 +74,16 @@
               </h2>
             </div>
             <br />
-           
           </div>
-          <div class="container">
-          <div class="row align-items-center">
-            <!-- Социальные иконки -->
-            <div class="col-md-12 text-center text-md-start mb-3 mb-md-0">
-              <div
-                class="d-flex justify-content-center justify-content-md-start"
-              >
-                <a
-                  style="color: var(--bs-body-color)"
-                  href="#"
-                  class="me-3 fs-6"
-                  aria-label="Facebook"
-                >
-                  <i class="bi bi-facebook"></i>
-                </a>
-                <a
-                  style="color: var(--bs-body-color)"
-                  href="#"
-                  class="me-3 fs-6"
-                  aria-label="Twitter"
-                >
-                  <i class="bi bi-twitter"></i>
-                </a>
-                <a
-                  style="color: var(--bs-body-color)"
-                  href="#"
-                  class="me-3 fs-6"
-                  aria-label="Instagram"
-                >
-                  <i class="bi bi-instagram"></i>
-                </a>
-                <a
-                  style="color: var(--bs-body-color)"
-                  href="#"
-                  class="me-3 fs-6"
-                  aria-label="LinkedIn"
-                >
-                  <i class="bi bi-telegram"></i>
-                </a>
-                <a
-                  style="color: var(--bs-body-color)"
-                  href="#"
-                  class="fs-6 me-3"
-                  aria-label="YouTube"
-                >
-                  <i class="bi bi-youtube"></i>
-                </a>
-                <a
-                  style="color: var(--bs-body-color)"
-                  href="#"
-                  class="fs-6 me-3"
-                  aria-label="YouTube"
-                >
-                  <i class="bi bi-reddit"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-    
+         
         </div>
 
         <!-- Сохранённые теги -->
+         <!-- <div class="container">
+        <i @click="toggleSavedTags" class="bi bi-floppy2-fill"> Saved tags</i>
+         </div>
         <div class="saved-tags-container">
+        
           <div style="" class="saved-tags">
             <span
               v-for="tag in savedTags"
@@ -165,7 +98,90 @@
               ></i>
             </span>
           </div>
-        </div>
+      
+      
+        </div> -->
+        <div class="container pl-4">
+        <i @click="toggleSavedTags" class="bi bi-floppy2-fill pointer "> Saved tags</i> 
+         </div>
+    <div 
+      v-show="showSavedTags" 
+      class="saved-tags-container mt-2"
+    >
+      <div class="saved-tags">
+        <span
+          v-for="tag in savedTags"
+          :key="tag"
+          class="badge bg-success saved-tag"
+          @click="handleTagClick(tag)"
+        >
+          {{ tag }}
+          <i
+            @click.stop="removeSavedTag(tag)"
+            class="bi bi-x-circle pointer text-white"
+          ></i>
+        </span>
+      </div>
+    </div>
+        <div class="container">
+            <div class="row align-items-center">
+              <!-- Социальные иконки -->
+              <div class="col-md-12  text-center text-md-start mb-3 mb-md-0">
+                <div
+                  class="d-flex  justify-content-center justify-content-md-start"
+                >
+                  <a
+                    style="color: var(--bs-body-color)"
+                    href="#"
+                    class="me-3 fs-6 mt-3"
+                    aria-label="Facebook"
+                  >
+                    <i class="bi bi-facebook"></i>
+                  </a>
+                  <a
+                    style="color: var(--bs-body-color)"
+                    href="#"
+                    class="me-3 fs-6 mt-3"
+                    aria-label="Twitter"
+                  >
+                    <i class="bi bi-twitter"></i>
+                  </a>
+                  <a
+                    style="color: var(--bs-body-color)"
+                    href="#"
+                    class="me-3 fs-6 mt-3"
+                    aria-label="Instagram"
+                  >
+                    <i class="bi bi-instagram"></i>
+                  </a>
+                  <a
+                    style="color: var(--bs-body-color)"
+                    href="#"
+                    class="me-3 fs-6 mt-3"
+                    aria-label="LinkedIn"
+                  >
+                    <i class="bi bi-telegram"></i>
+                  </a>
+                  <a
+                    style="color: var(--bs-body-color)"
+                    href="#"
+                    class="fs-6 me-3 mt-3"
+                    aria-label="YouTube"
+                  >
+                    <i class="bi bi-youtube"></i>
+                  </a>
+                  <a
+                    style="color: var(--bs-body-color)"
+                    href="#"
+                    class="fs-6 me-3 mt-3"
+                    aria-label="YouTube"
+                  >
+                    <i class="bi bi-reddit"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
       </div>
 
       <!-- Правая колонка -->
@@ -183,10 +199,10 @@
         aria-hidden="true"
         style="display: block; background:"
       >
-        <div class="modal-dialog form">
+        <div class="modal-dialog1 form">
           <div class="modal-content">
             <button
-            style="font-size:9px"
+              style="font-size: 9px"
               type="button"
               class="btn-close position-absolute top-0 end-0 me-2 mt-2"
               aria-label="Close"
@@ -210,7 +226,7 @@
     </div>
     <!-- Список новостей -->
     <div style="position: relative" class="news-list">
-      <div class="mt-4" v-if="news.length > 0">
+      <div class=" text-center" v-if="news.length > 0">
         <h5 class="fw-bold mt-1">{{ currentTag }}: {{ news.length }}</h5>
         <button
           class="btn-danger1 me-2"
@@ -478,8 +494,8 @@
                   alt="Preview"
                 />
               </div>
-              <div class="mb-3">
-                <label for="editImageFile" class="form-label"
+              <!-- <div class="mb-3"> -->
+              <!-- <label for="editImageFile" class="form-label"
                   >Upload Image</label
                 >
                 <input
@@ -488,8 +504,8 @@
                   @change="uploadImage"
                   class="form-control"
                 />
-              </div>
-              <div class="mb-3">
+              </div> -->
+              <!-- <div class="mb-3">
                 <label for="editImage" class="form-label">Image URL</label>
                 <input
                   id="editImage"
@@ -497,7 +513,7 @@
                   v-model="editableItem.tempImageUrl"
                   class="form-control"
                 />
-              </div>
+              </div> -->
               <label for="editTitle" class="form-label">Title</label>
               <textarea
                 id="editTitle"
@@ -543,7 +559,7 @@
       </div>
     </div>
   </div>
-
+</div>
   <!-- </TonConnectUIProvider> -->
 </template>
 
@@ -591,6 +607,10 @@ export default {
     const channelStore = useChannelStore();
     themeStore.setThemeFromStorage();
 
+    const showSavedTags = ref(false);
+    const toggleSavedTags = () => {
+      showSavedTags.value = !showSavedTags.value;
+    };
     const editableItem = ref({});
     const showSetting = ref(false);
     const toggleSetting = () => {
@@ -742,11 +762,11 @@ export default {
         icon: '<i class="bi bi-sliders"></i>',
         route: "/null",
       },
-      // {
-      //   title: "Posting",
-      //   icon: '<i class="bi bi-stickies"></i>',
-      //   route: "/main",
-      // },
+      {
+        title: "Profile",
+        icon: '<i class="bi bi-person-lines-fill"></i>',
+        route: "/profile",
+      },
       {
         title: "Invite friends",
         content: "Content for item #7.",
@@ -832,6 +852,8 @@ export default {
     // Данные для аккордеона
 
     return {
+      showSavedTags,
+      toggleSavedTags,
       activeChannelName,
       showSetting,
       toggleSetting,
@@ -869,7 +891,7 @@ export default {
 .saved-tags-container {
   overflow-x: hidden;
   overflow-y: auto;
-  height: 200px;
+  height: 250px;
 }
 /* .saved-tags-container :hover{
   height: 100% !important;
@@ -901,11 +923,14 @@ export default {
   width: 100%;
   height: auto;
 }
-.modal-dialog {
-  max-width: 600px;
+.modal-dialog1 {
+  max-width: 330px;
   margin: 30px auto;
 }
-
+modal-dialog {
+  max-width: auto;
+  margin: 30px auto;
+}
 .modal-content {
   padding: 20px;
 }

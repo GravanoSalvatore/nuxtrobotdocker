@@ -978,7 +978,7 @@ export default {
     return {
       clearSelectedGif,
       selectGif, // Добавил метод selectGif
-      searchGifs,
+      // searchGifs,
       selectedGif,
       gifSearchQuery,
       searchGifs, // Метод для поиска GIF

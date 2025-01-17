@@ -45,7 +45,7 @@ a{
   
   body {
       margin: 0;
-      font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      // font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     .pointer{
       cursor: pointer;
@@ -67,7 +67,8 @@ a{
   
   /* Переопределение переменных для темной темы */
   .dark-theme {
-    --bs-body-bg: rgba(9, 21, 32, 1);
+    // --bs-body-bg: rgba(9, 21, 32, 1);
+    --bs-body-bg: #01263f;
     --bs-body-color: #ffffff;
     --bs-primary: #1f77d0;
     --bs-secondary: #404b56;
@@ -112,13 +113,14 @@ a{
   .btn-danger1 {
     margin: 2px;
     z-index: 1;
-    color: white;
+    // color: white;
     font-weight: bold;
     font-size: 11px;
     padding: 3px 6px;
     border: 2px solid cornflowerblue;
     border-radius: 5px;
-     background: linear-gradient(135deg,#123c63 0%,#0a243d 50%, #291919 100%); 
+    background-color:var(--bs-body-bg) ;
+    //  background: linear-gradient(135deg,#123c63 0%,#0a243d 50%, #291919 100%); 
     background-size: 200% 200%;
     animation: marbleGradientAnimation 5s ease infinite;
     transition: transform 0.3s ease, box-shadow 0.3s ease;

@@ -453,7 +453,7 @@
                     alt="Preview"
                   />
                 </div>
-                <div class="mb-3">
+                <!-- <div class="mb-3">
                   <label for="editImageFile" class="form-label"
                     >Upload Image</label
                   >
@@ -472,7 +472,7 @@
                     v-model="editableItem.tempImageUrl"
                     class="form-control"
                   />
-                </div>
+                </div> -->
                 <label for="editTitle" class="form-label">Title</label>
                 <textarea
                   id="editTitle"
@@ -503,7 +503,7 @@
   v-model="editableItem.content"
   class="form-control"
 ></textarea>
-<p v-html="editableItem.content || 'Контент отсутствует'"></p>
+<!-- <p v-html="editableItem.content || 'Контент отсутствует'"></p> -->
 
 
               </div>
