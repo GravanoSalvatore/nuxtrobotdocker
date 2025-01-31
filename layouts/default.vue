@@ -9,7 +9,7 @@
         <img style="max-width: 200px" src="@/assets/img/4vrobot.png" />
      
       </NuxtLink>
-    </div>
+    </div> 
       <span
         style="
           font-size: 13px;
@@ -20,7 +20,8 @@
       Active channel: {{ activeChannelName }} 
         <!-- {{ activeChannelId }} -->
       </span>
-     
+    
+     <Ton/>
       <div class="collapse navbar-collapse" id="navbarNav"></div>
     </div>
   </nav>
@@ -55,6 +56,7 @@
         style="font-size: 20px; margin-left: 20px; margin-top: 5px"
       />
     </button>
+   
     <Grid />
     <div class="row">
       <!-- Левая колонка -->
@@ -81,10 +83,10 @@
           </div>
          
         </div>
-
+        
         <!-- Сохранённые теги -->
        
-      
+        <TonWallet />
         <div class="container">
             <div class="row align-items-center">
               <!-- Социальные иконки -->
@@ -297,7 +299,7 @@
                  <p v-else class="badge bg-secondary">Unknown</p>
                  <div>
                    <p style="color: cornflowerblue" class="fw-bold">
-                     {{ item.title }}
+                    <a :href="item.url" target="_blank">   {{ item.title }}</a>
                    </p>
                    <p>{{ item.description }}</p>
                    <p v-html="item.content"></p>

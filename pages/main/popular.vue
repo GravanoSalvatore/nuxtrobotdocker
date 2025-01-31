@@ -169,7 +169,7 @@
                 <p v-else class="badge bg-secondary">Unknown</p>
                 <div class="">
                   <p style="color: cornflowerblue" class="fw-bold">
-                    {{ item.title }}
+                 <a :href="item.url" target="_blank"> {{ item.title }}</a> 
                   </p>
                   <p>{{ item.description }}</p>
                   <p v-html="item.content"></p>
@@ -612,8 +612,11 @@ a {
   margin-top: 20px;
 }
 
-.news-list {
+.modal-content {
   /* margin-top: 20px; */
+  border-radius: 15px;
+  padding: 20px;
+  border:2px solid cornflowerblue;
 }
 
 .card-body {

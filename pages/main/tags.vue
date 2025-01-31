@@ -213,7 +213,7 @@
                 <p v-else class="badge bg-secondary">Unknown</p>
                 <div class="">
                   <p style="color: cornflowerblue" class="fw-bold">
-                    {{ item.title }}
+                    <a :href="item.url" target="_blank">   {{ item.title }}</a>
                   </p>
                   <p>{{ item.description }}</p>
                   <p v-html="item.content"></p>
@@ -848,5 +848,10 @@ a {
   display: flex;
   gap: 10px;
   margin-top: 10px;
+}
+.modal-content{
+  border-radius: 15px;
+  padding: 20px;
+  border:2px solid cornflowerblue;
 }
 </style>
