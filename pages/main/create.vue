@@ -1,11 +1,16 @@
 <template>
-    <div class="media-editor-container">
-    <h2 class="text-center">Very soon!</h2>
-    </div>
-  </template>
-  
-  <script>
- 
-  </script>
-  
-  
+  <div class="text-center fs-2">
+    Very soon
+  </div>
+</template>
+
+<script>
+export default {}
+</script>
+
+<style scoped>
+/* Убираем переменную и задаем статический цвет */
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(128, 0, 128, 0.3);
+}
+</style>

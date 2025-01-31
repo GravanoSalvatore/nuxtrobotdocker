@@ -5,8 +5,9 @@
     <div class="container-fluid">
       <div style="">
       <NuxtLink class="navbar-brand" to="/"
-        ><img style="max-width: 200px" src="@/assets/img/4vrobot.png" />
-      
+        > <img style="max-width: 30px" src="../assets/img/favicon.png">
+        <img style="max-width: 200px" src="@/assets/img/4vrobot.png" />
+     
       </NuxtLink>
     </div>
       <span
@@ -83,28 +84,7 @@
 
         <!-- Сохранённые теги -->
        
-        <button v-if="savedTags.length > 0"   class="pl-4 btn-danger1">
-        <i @click="toggleSavedTags" class="bi bi-floppy2-fill pointer "> Saved tags</i> 
-        </button>
-    <div 
-      v-show="showSavedTags" 
-      class="saved-tags-container mt-2"
-    >
-      <div class="saved-tags">
-        <span
-          v-for="tag in savedTags"
-          :key="tag"
-          class="badge bg-success saved-tag"
-          @click="handleTagClick(tag)"
-        >
-          {{ tag }}
-          <i
-            @click.stop="removeSavedTag(tag)"
-            class="bi bi-x-circle pointer text-white"
-          ></i>
-        </span>
-      </div>
-    </div>
+      
         <div class="container">
             <div class="row align-items-center">
               <!-- Социальные иконки -->
@@ -168,7 +148,184 @@
 
       <!-- Правая колонка -->
       <div class="col-12 col-md-9 p" ref="newsContainer">
+       
+          <div v-if="isHomePage">
+        <button  @click="toggleSavedTags" v-if="savedTags.length > 0"   class="pl-4 btn-danger1">
+        <i class="bi bi-floppy2-fill pointer "> Saved tags</i> 
+        </button>
+    <div 
+      v-show="showSavedTags" 
+      class="saved-tags-container mt-2"
+    >
+      <div class="saved-tags">
+        <span
+          v-for="tag in savedTags"
+          :key="tag"
+          class="badge bg-success saved-tag"
+          @click="handleTagClick(tag)"
+        >
+          {{ tag }}
+          <i
+            @click.stop="removeSavedTag(tag)"
+            class="bi bi-x-circle pointer text-white"
+          ></i>
+        </span>
+      </div>
+    </div>
+   
+  
+   <!-- Список новостей -->
+   <div style="position: relative" class="news-list">
+     
+     <div class=" text-center" v-if="news.length > 0">
+       <h5 class="fw-bold mt-1">{{ currentTag }}: {{ news.length }}</h5>
+       <button
+         class="btn-danger1 me-2"
+         :class="{ 'btn-danger': isTagSaved(currentTag) }"
+         @click="toggleSaveTag(currentTag)"
+       >
+         {{ isTagSaved(currentTag) ? "Delete" : "Save" }}
+       </button>
+
+       <button
+         @click="toggleAutopilot"
+         :class="[
+           'btn-danger1 fw-bold me-2',
+           { 'btn-primary': autopilotActive },
+         ]"
+       >
+         {{ autopilotActive ? "Stop Autopilot" : "Start Autopilot" }}
+       </button>
+       <!-- <button
+         type="button"
+         class="btn-danger1"
+         data-bs-toggle="modal"
+         data-bs-target="#staticBackdrop"
+       >
+         Setting
+       </button> -->
+     </div>
+     <!-- Модальное окно -->
+     <div
+       class="modal fade"
+       id="staticBackdrop"
+       data-bs-backdrop="static"
+       data-bs-keyboard="false"
+       tabindex="-1"
+       aria-labelledby="staticBackdropLabel"
+       aria-hidden="true"
+     >
+       <div class="modal-dialog">
+         <div class="modal-content">
+           <div class="modal-body">
+             <setting />
+           </div>
+           <div class="modal-footer">
+             <button type="button" class="btn-danger1" data-bs-dismiss="modal">
+               Close
+             </button>
+           </div>
+         </div>
+       </div>
+     </div>
+
+     <!-- <div
+       v-if="news.length > 0"
+       style="color: cornflowerblue"
+       class="text-center"
+     >
+       Total: {{ news.length }}
+     </div> -->
+     <i
+       v-if="news.length > 0"
+       style="position: absolute; right: 0; top: -25px"
+       @click="clearNews"
+       class="bi bi-x-circle pointer"
+     ></i>
+     <div v-if="loadingNews" class="text-center">
+       <p>
+         <svg 
+     
+      xmlns="http://www.w3.org/2000/svg" 
+      width="52" 
+      height="52" 
+      viewBox="0 0 24 24">
+      <path 
+      fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z" transform="matrix(0 0 0 0 12 12)"><animateTransform id="svgSpinnersPulseRingsMultiple0" attributeName="transform" begin="0;svgSpinnersPulseRingsMultiple2.end" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="translate" values="12 12;0 0"/><animateTransform additive="sum" attributeName="transform" begin="0;svgSpinnersPulseRingsMultiple2.end" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="scale" values="0;1"/><animate attributeName="opacity" begin="0;svgSpinnersPulseRingsMultiple2.end" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" values="1;0"/></path><path fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z" transform="matrix(0 0 0 0 12 12)"><animateTransform id="svgSpinnersPulseRingsMultiple1" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.2s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="translate" values="12 12;0 0"/><animateTransform additive="sum" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.2s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="scale" values="0;1"/><animate attributeName="opacity" begin="svgSpinnersPulseRingsMultiple0.begin+0.2s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" values="1;0"/></path><path fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z" transform="matrix(0 0 0 0 12 12)"><animateTransform id="svgSpinnersPulseRingsMultiple2" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.4s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="translate" values="12 12;0 0"/><animateTransform additive="sum" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.4s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="scale" values="0;1"/><animate attributeName="opacity" begin="svgSpinnersPulseRingsMultiple0.begin+0.4s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" values="1;0"/></path></svg>
+       </p>
+     </div>
+
+     <div v-else class="row">
+       <div
+         v-for="item in news"
+         :key="item.id"
+         class="col-12 col-md-6 col-lg-4 col-xl-4"
+       >
+         <div class="news-item border p-3 rounded">
+           <div class="car">
+             <img
+               v-if="item.tempImageUrl || item.urlToImage"
+               :src="item.tempImageUrl || item.urlToImage"
+               class="card-img-top c"
+             />
+             <img v-else :src="image" class="card-img-top c" />
+
+             <div class="card-body">
+               <div class="overlay">
+                 <h5 class="card-title">
+                   <a style="font-size: 12px" :href="item.url" target="_blank">
+                     {{ item.sourceName }}
+                   </a>
+                 </h5>
+                 <p class="card-text">
+                   <small class="text-muted">
+                     {{ formatDateTime(item.publishedAt) }}
+                   </small>
+                 </p>
+                 <p
+                   v-if="item.author"
+                   class="badge bg-primary"
+                   :style="{
+                     'max-width': '200px',
+                     'white-space': 'nowrap',
+                     overflow: 'hidden',
+                     'text-overflow': 'ellipsis',
+                   }"
+                 >
+                   {{ item.author }}
+                 </p>
+                 <p v-else class="badge bg-secondary">Unknown</p>
+                 <div>
+                   <p style="color: cornflowerblue" class="fw-bold">
+                     {{ item.title }}
+                   </p>
+                   <p>{{ item.description }}</p>
+                   <p v-html="item.content"></p>
+                 </div>
+               </div>
+               <button @click="openEditModal(item)" class="btn-danger1 mt-2">
+                 Editing and sending
+               </button>
+               <!-- <button @click="sendToTelegram(item)" class="btn-danger1 mt-2">
+                 Telegram
+                 <i style="color: cornflowerblue" class="bi bi-telegram"></i>
+               </button> -->
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+  
+  
+  
+  
+  
+  
+  
+  </div>
         <div class="row container p">
+      
           <NuxtPage />
         </div>
       </div>
@@ -200,154 +357,18 @@
             </div> -->
             <div class="modal-body">
               <!-- Ваш компонент -->
+              <Document />
               <Setting />
+              <Main />
+
+             
+
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- Список новостей -->
-    <div style="position: relative" class="news-list">
-     
-      <div class=" text-center" v-if="news.length > 0">
-        <h5 class="fw-bold mt-1">{{ currentTag }}: {{ news.length }}</h5>
-        <button
-          class="btn-danger1 me-2"
-          :class="{ 'btn-danger': isTagSaved(currentTag) }"
-          @click="toggleSaveTag(currentTag)"
-        >
-          {{ isTagSaved(currentTag) ? "Delete" : "Save" }}
-        </button>
-
-        <button
-          @click="toggleAutopilot"
-          :class="[
-            'btn-danger1 fw-bold me-2',
-            { 'btn-primary': autopilotActive },
-          ]"
-        >
-          {{ autopilotActive ? "Stop Autopilot" : "Start Autopilot" }}
-        </button>
-        <!-- <button
-          type="button"
-          class="btn-danger1"
-          data-bs-toggle="modal"
-          data-bs-target="#staticBackdrop"
-        >
-          Setting
-        </button> -->
-      </div>
-      <!-- Модальное окно -->
-      <div
-        class="modal fade"
-        id="staticBackdrop"
-        data-bs-backdrop="static"
-        data-bs-keyboard="false"
-        tabindex="-1"
-        aria-labelledby="staticBackdropLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-body">
-              <setting />
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn-danger1" data-bs-dismiss="modal">
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- <div
-        v-if="news.length > 0"
-        style="color: cornflowerblue"
-        class="text-center"
-      >
-        Total: {{ news.length }}
-      </div> -->
-      <i
-        v-if="news.length > 0"
-        style="position: absolute; right: 0; top: -25px"
-        @click="clearNews"
-        class="bi bi-x-circle pointer"
-      ></i>
-      <div v-if="loadingNews" class="text-center">
-        <p>
-          <svg 
-      
-       xmlns="http://www.w3.org/2000/svg" 
-       width="52" 
-       height="52" 
-       viewBox="0 0 24 24">
-       <path 
-       fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z" transform="matrix(0 0 0 0 12 12)"><animateTransform id="svgSpinnersPulseRingsMultiple0" attributeName="transform" begin="0;svgSpinnersPulseRingsMultiple2.end" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="translate" values="12 12;0 0"/><animateTransform additive="sum" attributeName="transform" begin="0;svgSpinnersPulseRingsMultiple2.end" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="scale" values="0;1"/><animate attributeName="opacity" begin="0;svgSpinnersPulseRingsMultiple2.end" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" values="1;0"/></path><path fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z" transform="matrix(0 0 0 0 12 12)"><animateTransform id="svgSpinnersPulseRingsMultiple1" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.2s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="translate" values="12 12;0 0"/><animateTransform additive="sum" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.2s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="scale" values="0;1"/><animate attributeName="opacity" begin="svgSpinnersPulseRingsMultiple0.begin+0.2s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" values="1;0"/></path><path fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z" transform="matrix(0 0 0 0 12 12)"><animateTransform id="svgSpinnersPulseRingsMultiple2" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.4s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="translate" values="12 12;0 0"/><animateTransform additive="sum" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.4s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="scale" values="0;1"/><animate attributeName="opacity" begin="svgSpinnersPulseRingsMultiple0.begin+0.4s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" values="1;0"/></path></svg>
-        </p>
-      </div>
-
-      <div v-else class="row">
-        <div
-          v-for="item in news"
-          :key="item.id"
-          class="col-12 col-md-6 col-lg-4 col-xl-3"
-        >
-          <div class="news-item border p-3 rounded">
-            <div class="car">
-              <img
-                v-if="item.tempImageUrl || item.urlToImage"
-                :src="item.tempImageUrl || item.urlToImage"
-                class="card-img-top c"
-              />
-              <img v-else :src="image" class="card-img-top c" />
-
-              <div class="card-body">
-                <div class="overlay">
-                  <h5 class="card-title">
-                    <a style="font-size: 12px" :href="item.url" target="_blank">
-                      {{ item.sourceName }}
-                    </a>
-                  </h5>
-                  <p class="card-text">
-                    <small class="text-muted">
-                      {{ formatDateTime(item.publishedAt) }}
-                    </small>
-                  </p>
-                  <p
-                    v-if="item.author"
-                    class="badge bg-primary"
-                    :style="{
-                      'max-width': '200px',
-                      'white-space': 'nowrap',
-                      overflow: 'hidden',
-                      'text-overflow': 'ellipsis',
-                    }"
-                  >
-                    {{ item.author }}
-                  </p>
-                  <p v-else class="badge bg-secondary">Unknown</p>
-                  <div>
-                    <p style="color: cornflowerblue" class="fw-bold">
-                      {{ item.title }}
-                    </p>
-                    <p>{{ item.description }}</p>
-                    <p v-html="item.content"></p>
-                  </div>
-                </div>
-                <button @click="openEditModal(item)" class="btn-danger1 mt-2">
-                  Editing and sending
-                </button>
-                <!-- <button @click="sendToTelegram(item)" class="btn-danger1 mt-2">
-                  Telegram
-                  <i style="color: cornflowerblue" class="bi bi-telegram"></i>
-                </button> -->
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+   
     <!-- Модальное окно -->
     <div
       class="modal fade"
@@ -498,6 +519,10 @@ export default {
     const themeStore = useThemeStore();
     const channelStore = useChannelStore();
     themeStore.setThemeFromStorage();
+    const route = useRoute();
+    const isHomePage = computed(() => route.path === "/");
+
+
 
     const showSavedTags = ref(false);
     const toggleSavedTags = () => {
@@ -744,6 +769,8 @@ export default {
     // Данные для аккордеона
 
     return {
+      isHomePage,
+
       showSavedTags,
       toggleSavedTags,
       activeChannelName,
@@ -781,9 +808,9 @@ export default {
 
 <style lang="css" scoped>
 .saved-tags-container {
-  overflow-x: hidden;
+  /* overflow-x: hidden;
   overflow-y: auto;
-  height: 150px;
+  height: 150px; */
 }
 /* .saved-tags-container :hover{
   height: 100% !important;
@@ -816,8 +843,8 @@ export default {
   height: auto;
 }
 .modal-dialog1 {
-
-  max-width: 330px;
+border-radius: 20px;
+  max-width: 650px;
   margin: 30px auto;
 }
 modal-dialog {
@@ -825,7 +852,7 @@ modal-dialog {
   margin: 30px auto;
 }
 .modal-content {
-  border-radius: 5px;
+  border-radius: 15px;
   padding: 20px;
   border:2px solid cornflowerblue;
 }
@@ -854,6 +881,8 @@ modal-dialog {
 }
 
 .navbar {
+
+
   /* background-color: #ffffff; */
   border-bottom: 1px solid cornflowerblue;
 }

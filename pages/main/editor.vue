@@ -115,7 +115,7 @@
           ></button>
         </div>
 
-        <audio
+        <!-- <audio
           style="
             max-width: 200px;
             height: 30px;
@@ -124,7 +124,7 @@
           "
           :src="recordedAudio"
           controls
-        ></audio>
+        ></audio> -->
       </div>
       <!-- Предварительный просмотр выбранного GIF -->
       <!-- <div v-if="selectedGif" class="gif-preview mt-3">
@@ -238,7 +238,7 @@
         </div>
       </div>
       <!-- Новая функция: Видео с веб-камеры -->
-      <div v-if="recordedVideo" class="video-preview mt-3">
+      <!-- <div v-if="recordedVideo" class="video-preview mt-3">
         <h3>Preview Video:</h3>
         <video
           :src="recordedVideo"
@@ -254,7 +254,7 @@
         <button @click="clearRecordedVideo" class="btn btn-danger btn-sm mt-2">
           Удалить видео
         </button>
-      </div>
+      </div> -->
       <!-- Панель управления медиа -->
       <div class="media-controls mt-3">
         <!-- Кнопки загрузки медиа -->
@@ -312,7 +312,7 @@
             </li>
           </ul>
 
-          <button
+          <!-- <button
             @click="startRecording"
             :disabled="isRecording"
             class="pointer btn-danger1 btn-sm flex-grow-1"
@@ -334,9 +334,9 @@
             class="btn-danger1 btn-sm flex-grow-1"
           >
             <i class="bi bi-stop"></i> Stop
-          </button>
+          </button> -->
 
-          <button
+          <!-- <button
             @click="startVideoRecording"
             :disabled="isVideoRecording"
             class="btn-danger1 btn-sm flex-grow-1"
@@ -350,7 +350,7 @@
             class="btn-danger1 btn-sm flex-grow-1"
           >
             <i class="bi bi-stop"></i> Stop Recording
-          </button>
+          </button> -->
           <!-- Кнопка для отправки отложенного сообщения -->
           <button class="btn-danger1" @click="scheduleMessage">
             Delayed sending <i class="bi bi-send"></i>

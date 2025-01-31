@@ -61,6 +61,14 @@ export const useChannelStore = defineStore('channelStore', {
     },
   },
   actions: {
+    updateSubscribers(channelId, count) {
+      const channel = this.channels.find(ch => ch.id === channelId);
+      if (channel) {
+        channel.subscribers = count;
+        this.saveToLocalStorage();
+      }
+    }
+,    
     loadChannels() {
       if (process.client) {
         // Загрузка сохранённых данных
