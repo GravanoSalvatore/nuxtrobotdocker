@@ -224,6 +224,7 @@ export default {
 channelStore.loadChannels();
 console.log("Application loaded. Channels:", channels.value);
 updateSubscribers(); // Первоначальное обновление
+
 updateInterval = setInterval(updateSubscribers, 30000);
 channels.value.forEach(async (channel) => {
   if (!channel.photo) {

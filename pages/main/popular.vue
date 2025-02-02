@@ -43,7 +43,10 @@
       <div style="position: relative">
         <h5 class="fw-bold mt-1">{{ currentTag }}: {{ news.length }}</h5>
         <!-- Сохранённые теги -->
-        <div class="saved-tags">
+        <button @click="toggleSavedTags" v-if="savedTags.length > 0" class="pl-4 btn-danger1">
+      <i class="bi bi-floppy2-fill pointer"> Saved tags</i>
+    </button>
+        <div v-if="showSavedTags" class="saved-tags mb-1">
           <span
             v-for="tag in savedTags"
             :key="tag"
@@ -60,7 +63,7 @@
 
         <!-- Кнопка сохранения текущего тега -->
         <button
-          class="btn-danger1 me-2"
+          class="btn-danger1 "
           :class="{ 'btn-danger': isTagSaved }"
           @click="toggleSaveTag(currentTag)"
         >
@@ -71,7 +74,7 @@
         <button
       @click="toggleAutopilot"
       :class="[
-        'btn-danger1 fw-bold me-2',
+        'btn-danger1 fw-bold',
         { 'btn-primary': autopilotActive },
       ]"
     >
@@ -288,7 +291,10 @@ export default {
     const channelStore = useChannelStore(); // Store для работы с каналами
    
     const currentTagId = ref(10); // Жестко заданный ID тега
-
+    const showSavedTags = ref(false);
+    const toggleSavedTags = () => {
+      showSavedTags.value = !showSavedTags.value;
+    };
 // Получение токена из куков
 const autopilotActive = ref(false);
     const loadingAutopilot = ref(false);
@@ -488,6 +494,8 @@ const autopilotActive = ref(false);
     });
 
     return {
+      toggleSavedTags,
+      showSavedTags,
       toggleAutopilot,
       autopilotActive,
       loadingAutopilot,

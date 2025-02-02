@@ -84,7 +84,7 @@
          
         </div>
         
-        <!-- Сохранённые теги -->
+      
        
         <TonWallet />
         <div class="container">

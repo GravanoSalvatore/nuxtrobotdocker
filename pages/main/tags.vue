@@ -17,7 +17,8 @@
           box-shadow: none !important;
         "
       />
-      <svg
+      <svg class="pointer"  @click="searchTags" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="currentColor" d="M12.94 4v2.717c3.004.269 5.01 2.746 5.01 5.597a5.6 5.6 0 0 1-4.223 5.434L12.9 20.34l-.115.346c1.478-.096 2.956-.623 4.242-1.506l.51.767c1.421.518 2.516 1.652 3.006 2.737c.49 1.104.507 1.678 2.244 2.964c1.738 1.277 2.872 2.219 3.15 2.315c.288.096.913.038 1.499-.547c.584-.587.64-1.211.544-1.49s-1.036-1.41-2.322-3.149c-1.286-1.738-1.873-1.757-2.967-2.246s-2.227-1.575-2.736-2.996l-.758-.498c.922-1.344 1.508-2.966 1.508-4.723c0-4.426-3.418-8.045-7.766-8.314zm-1.768.068C7.12 4.634 4 8.12 4 12.314c0 4.224 3.005 7.755 7.066 8.303v-2.793c-2.563-.508-4.35-2.784-4.35-5.51a5.61 5.61 0 0 1 3.6-5.242l.788-2.754zm.828.498l-2.846 9.936l2.852-1.258v6.799L15.52 9.117L12 10.586zm14.492 21.495c.231 0 .422.191.422.421a.42.42 0 0 1-.422.414a.41.41 0 0 1-.412-.414c0-.23.181-.421.412-.421"/></svg>
+      <!-- <svg
         @click="searchTags"
         xmlns="http://www.w3.org/2000/svg"
         width="16"
@@ -30,7 +31,7 @@
         <path
           d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"
         />
-      </svg>
+      </svg> -->
     </div>
     <div v-if="loadingTags" class="text-center">
       <svg 
@@ -43,6 +44,7 @@
       fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z" transform="matrix(0 0 0 0 12 12)"><animateTransform id="svgSpinnersPulseRingsMultiple0" attributeName="transform" begin="0;svgSpinnersPulseRingsMultiple2.end" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="translate" values="12 12;0 0"/><animateTransform additive="sum" attributeName="transform" begin="0;svgSpinnersPulseRingsMultiple2.end" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="scale" values="0;1"/><animate attributeName="opacity" begin="0;svgSpinnersPulseRingsMultiple2.end" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" values="1;0"/></path><path fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z" transform="matrix(0 0 0 0 12 12)"><animateTransform id="svgSpinnersPulseRingsMultiple1" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.2s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="translate" values="12 12;0 0"/><animateTransform additive="sum" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.2s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="scale" values="0;1"/><animate attributeName="opacity" begin="svgSpinnersPulseRingsMultiple0.begin+0.2s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" values="1;0"/></path><path fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z" transform="matrix(0 0 0 0 12 12)"><animateTransform id="svgSpinnersPulseRingsMultiple2" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.4s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="translate" values="12 12;0 0"/><animateTransform additive="sum" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.4s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="scale" values="0;1"/><animate attributeName="opacity" begin="svgSpinnersPulseRingsMultiple0.begin+0.4s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" values="1;0"/></path></svg>
     </div>
     <!-- Список тегов -->
+   
     <div v-else class="tags-list">
       <div class="tags-lis"  >
         <!-- <div style="color: cornflowerblue" class="fw-bold text-center">
@@ -83,7 +85,11 @@
       <div style="position: relative">
         <h5 class="fw-bold mt-1">{{ currentTag }}: {{ news.length }}</h5>
          <!-- Сохранённые теги -->
+         <!-- <button  @click="toggleSavedTags" v-if="savedTags.length > 0"   class="pl-4 btn-danger1">
+        <i class="bi bi-floppy2-fill pointer "> Saved tags</i> 
+        </button>
          <div class="saved-tags mb-1">
+          
   <span
     v-for="tag in savedTags"
     :key="tag"
@@ -96,12 +102,31 @@
       class="bi bi-x-circle pointer text-white"
     ></i>
   </span>
-</div>
+</div> -->
 
-        
+<button @click="toggleSavedTags" v-if="savedTags.length > 0" class="pl-4 btn-danger1">
+      <i class="bi bi-floppy2-fill pointer"> Saved tags</i>
+    </button>
+
+    <!-- Блок с сохранёнными тегами -->
+    <div v-if="showSavedTags" class="saved-tags mb-1">
+      <span
+        v-for="tag in savedTags"
+        :key="tag"
+        class="badge bg-success saved-tag pointer"
+        @click="() => { selectTag(tag); fetchNews(tag); }"
+      >
+        {{ tag }}
+        <i
+          @click.stop="removeSavedTag(tag)"
+          class="bi bi-x-circle pointer text-white"
+        ></i>
+      </span>
+    </div>
+  
 
         <button
-    class="btn-danger1 me-2"
+    class="btn-danger1 "
     :class="{ 'btn-danger': isTagSaved }"
     @click="toggleSaveTag(currentTag)"
   >
@@ -112,7 +137,7 @@
   <button
           @click="toggleAutopilot"
           :class="[
-            'btn-danger1 fw-bold me-2',
+            'btn-danger1 fw-bold ',
             { 'btn-primary': autopilotActive },
           ]"
         >
@@ -454,6 +479,10 @@ export default {
     const channelStore = useChannelStore();
     const storePop = useTopPopularStore();
     const showSetting = ref(false);
+    const showSavedTags = ref(false);
+    const toggleSavedTags = () => {
+      showSavedTags.value = !showSavedTags.value;
+    };
     const toggleSetting = () => {
       showSetting.value = !showSetting.value;
     };
@@ -663,6 +692,8 @@ const sendToTelegram = (item) => {
     });
 
     return {
+      toggleSavedTags,
+      showSavedTags,
       loadingNews,
       loadingTags,
       showSetting,
