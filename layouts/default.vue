@@ -21,7 +21,7 @@
         <!-- {{ activeChannelId }} -->
       </span>
     
-     <Ton/>
+   <NuxtLink to="/ton" > <Ton/></NuxtLink>
       <div class="collapse navbar-collapse" id="navbarNav"></div>
     </div>
   </nav>
@@ -87,6 +87,69 @@
       
        
         <TonWallet />
+       
+              <!-- Социальные иконки -->
+              <div class="col-md-12  text-center text-md-start mb-3 mb-md-0">
+                <div
+                  class="d-flex  justify-content-center justify-content-md-start"
+                >
+                <a
+                  target="_blank"
+                    style="color: var(--bs-body-color)"
+                    href="https://fourv.tech"
+                    class="me-3 fs-6 mt-3"
+                    aria-label="Twitter"
+                  >
+                  <img style="width:40px" src="../assets/img/4v.jpg">
+                  </a>
+                  <a
+                  target="_blank"
+                    style="color: var(--bs-body-color)"
+                    href="https://4v.news"
+                    class="me-3 fs-6 mt-3"
+                    aria-label="Instagram"
+                  >
+                  <img style="width:40px;border-radius:50%" src="../assets/img/4vnews.jpg">
+                  </a>
+                  <a
+                    style="color: var(--bs-body-color)"
+                    href="https://cryptocurrencybulls.com"
+                    target="_blank"
+                    class="me-3 fs-6 mt-3"
+                    aria-label="bulls"
+                  >
+                   <img style="width:40px" src="../assets/img/bull.webp">
+                  </a>
+                 
+                  <!-- <a
+                    style="color: var(--bs-body-color)"
+                    href="#"
+                    class="me-3 fs-6 mt-3"
+                    aria-label="LinkedIn"
+                  >
+                  <img style="width:40px" src="../assets/img/itshka.webp">
+                  </a> -->
+                  <a
+                  target="_blank"
+                    style="color: var(--bs-body-color)"
+                    href="https://t.me/FourVrobot/FourVworldNews?startapp"
+                    class="fs-6 me-3 mt-3"
+                    aria-label="YouTube"
+                  >
+                  <img style="width:40px" src="../assets/img/boss.webp">
+                  </a>
+                  <!-- <a
+                    style="color: var(--bs-body-color)"
+                    href="#"
+                    class="fs-6 me-3 mt-3"
+                    aria-label="YouTube"
+                  >
+                    <i class="bi bi-reddit"></i>
+                  </a> -->
+                </div>
+              </div>
+
+
         <div class="container">
             <div class="row align-items-center">
               <!-- Социальные иконки -->
