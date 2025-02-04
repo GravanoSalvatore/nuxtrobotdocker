@@ -1,91 +1,205 @@
 <template>
   <div class="container">
-    <!-- Поле поиска -->
-    <div class="search-container">
+    <select v-model="selectedCategoryId" class="form-control w-100 mb-3">
+      <option :value="null">Все категории</option>
+      <option
+        v-for="category in categories"
+        :key="category.id"
+        :value="category.id"
+      >
+        {{ category.name }}
+      </option>
+    </select>
+
+    <!-- Поле поиска с иконкой -->
+    <div class="d-flex align-items-center w-100">
       <input
         type="text"
         v-model="query"
-        class="form-control mb-3"
+        class="form-control flex-grow-1"
         placeholder="Search..."
-        style="
-          max-width: 300px;
-          display: inline-block;
-          border-bottom: 2px solid #ccc !important;
-          border-top: none !important;
-          border-left: none !important;
-          border-right: none !important;
-          box-shadow: none !important;
-        "
       />
-      <svg class="pointer"  @click="searchTags" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="currentColor" d="M12.94 4v2.717c3.004.269 5.01 2.746 5.01 5.597a5.6 5.6 0 0 1-4.223 5.434L12.9 20.34l-.115.346c1.478-.096 2.956-.623 4.242-1.506l.51.767c1.421.518 2.516 1.652 3.006 2.737c.49 1.104.507 1.678 2.244 2.964c1.738 1.277 2.872 2.219 3.15 2.315c.288.096.913.038 1.499-.547c.584-.587.64-1.211.544-1.49s-1.036-1.41-2.322-3.149c-1.286-1.738-1.873-1.757-2.967-2.246s-2.227-1.575-2.736-2.996l-.758-.498c.922-1.344 1.508-2.966 1.508-4.723c0-4.426-3.418-8.045-7.766-8.314zm-1.768.068C7.12 4.634 4 8.12 4 12.314c0 4.224 3.005 7.755 7.066 8.303v-2.793c-2.563-.508-4.35-2.784-4.35-5.51a5.61 5.61 0 0 1 3.6-5.242l.788-2.754zm.828.498l-2.846 9.936l2.852-1.258v6.799L15.52 9.117L12 10.586zm14.492 21.495c.231 0 .422.191.422.421a.42.42 0 0 1-.422.414a.41.41 0 0 1-.412-.414c0-.23.181-.421.412-.421"/></svg>
-      <!-- <svg
+      <svg
+        class="pointer ms-2"
         @click="searchTags"
         xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        fill="currentColor"
-        class="bi bi-search pointer"
-        viewBox="0 0 16 16"
-        style="cursor: pointer; margin-left: 10px"
+        width="32"
+        height="32"
+        viewBox="0 0 32 32"
       >
         <path
-          d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"
+          fill="currentColor"
+          d="M12.94 4v2.717c3.004.269 5.01 2.746 5.01 5.597a5.6 5.6 0 0 1-4.223 5.434L12.9 20.34l-.115.346c1.478-.096 2.956-.623 4.242-1.506l.51.767c1.421.518 2.516 1.652 3.006 2.737c.49 1.104.507 1.678 2.244 2.964c1.738 1.277 2.872 2.219 3.15 2.315c.288.096.913.038 1.499-.547c.584-.587.64-1.211.544-1.49s-1.036-1.41-2.322-3.149c-1.286-1.738-1.873-1.757-2.967-2.246s-2.227-1.575-2.736-2.996l-.758-.498c.922-1.344 1.508-2.966 1.508-4.723c0-4.426-3.418-8.045-7.766-8.314zm-1.768.068C7.12 4.634 4 8.12 4 12.314c0 4.224 3.005 7.755 7.066 8.303v-2.793c-2.563-.508-4.35-2.784-4.35-5.51a5.61 5.61 0 0 1 3.6-5.242l.788-2.754zm.828.498l-2.846 9.936l2.852-1.258v6.799L15.52 9.117L12 10.586zm14.492 21.495c.231 0 .422.191.422.421a.42.42 0 0 1-.422.414a.41.41 0 0 1-.412-.414c0-.23.181-.421.412-.421"
         />
-      </svg> -->
+      </svg>
     </div>
-    <div v-if="loadingTags" class="text-center">
-      <svg 
-      
-      xmlns="http://www.w3.org/2000/svg" 
-      width="52" 
-      height="52" 
-      viewBox="0 0 24 24">
-      <path 
-      fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z" transform="matrix(0 0 0 0 12 12)"><animateTransform id="svgSpinnersPulseRingsMultiple0" attributeName="transform" begin="0;svgSpinnersPulseRingsMultiple2.end" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="translate" values="12 12;0 0"/><animateTransform additive="sum" attributeName="transform" begin="0;svgSpinnersPulseRingsMultiple2.end" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="scale" values="0;1"/><animate attributeName="opacity" begin="0;svgSpinnersPulseRingsMultiple2.end" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" values="1;0"/></path><path fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z" transform="matrix(0 0 0 0 12 12)"><animateTransform id="svgSpinnersPulseRingsMultiple1" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.2s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="translate" values="12 12;0 0"/><animateTransform additive="sum" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.2s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="scale" values="0;1"/><animate attributeName="opacity" begin="svgSpinnersPulseRingsMultiple0.begin+0.2s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" values="1;0"/></path><path fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z" transform="matrix(0 0 0 0 12 12)"><animateTransform id="svgSpinnersPulseRingsMultiple2" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.4s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="translate" values="12 12;0 0"/><animateTransform additive="sum" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.4s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="scale" values="0;1"/><animate attributeName="opacity" begin="svgSpinnersPulseRingsMultiple0.begin+0.4s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" values="1;0"/></path></svg>
-    </div>
-    <!-- Список тегов -->
-   
-    <div v-else class="tags-list">
-      <div class="tags-lis"  >
-        <!-- <div style="color: cornflowerblue" class="fw-bold text-center">
+
+    <br />
+    <div style="position: relative">
+      <i
+        v-if="tags.length > 0"
+        style="position: absolute; right: 0; top: 10px"
+        @click="clearTags"
+        class="bi bi-x-circle pointer"
+      ></i>
+
+      <div v-if="loadingTags" class="text-center">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="52"
+          height="52"
+          viewBox="0 0 24 24"
+        >
+          <path
+            fill="currentColor"
+            d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z"
+            transform="matrix(0 0 0 0 12 12)"
+          >
+            <animateTransform
+              id="svgSpinnersPulseRingsMultiple0"
+              attributeName="transform"
+              begin="0;svgSpinnersPulseRingsMultiple2.end"
+              calcMode="spline"
+              dur="1.2s"
+              keySplines=".52,.6,.25,.99"
+              type="translate"
+              values="12 12;0 0"
+            />
+            <animateTransform
+              additive="sum"
+              attributeName="transform"
+              begin="0;svgSpinnersPulseRingsMultiple2.end"
+              calcMode="spline"
+              dur="1.2s"
+              keySplines=".52,.6,.25,.99"
+              type="scale"
+              values="0;1"
+            />
+            <animate
+              attributeName="opacity"
+              begin="0;svgSpinnersPulseRingsMultiple2.end"
+              calcMode="spline"
+              dur="1.2s"
+              keySplines=".52,.6,.25,.99"
+              values="1;0"
+            />
+          </path>
+          <path
+            fill="currentColor"
+            d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z"
+            transform="matrix(0 0 0 0 12 12)"
+          >
+            <animateTransform
+              id="svgSpinnersPulseRingsMultiple1"
+              attributeName="transform"
+              begin="svgSpinnersPulseRingsMultiple0.begin+0.2s"
+              calcMode="spline"
+              dur="1.2s"
+              keySplines=".52,.6,.25,.99"
+              type="translate"
+              values="12 12;0 0"
+            />
+            <animateTransform
+              additive="sum"
+              attributeName="transform"
+              begin="svgSpinnersPulseRingsMultiple0.begin+0.2s"
+              calcMode="spline"
+              dur="1.2s"
+              keySplines=".52,.6,.25,.99"
+              type="scale"
+              values="0;1"
+            />
+            <animate
+              attributeName="opacity"
+              begin="svgSpinnersPulseRingsMultiple0.begin+0.2s"
+              calcMode="spline"
+              dur="1.2s"
+              keySplines=".52,.6,.25,.99"
+              values="1;0"
+            />
+          </path>
+          <path
+            fill="currentColor"
+            d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z"
+            transform="matrix(0 0 0 0 12 12)"
+          >
+            <animateTransform
+              id="svgSpinnersPulseRingsMultiple2"
+              attributeName="transform"
+              begin="svgSpinnersPulseRingsMultiple0.begin+0.4s"
+              calcMode="spline"
+              dur="1.2s"
+              keySplines=".52,.6,.25,.99"
+              type="translate"
+              values="12 12;0 0"
+            />
+            <animateTransform
+              additive="sum"
+              attributeName="transform"
+              begin="svgSpinnersPulseRingsMultiple0.begin+0.4s"
+              calcMode="spline"
+              dur="1.2s"
+              keySplines=".52,.6,.25,.99"
+              type="scale"
+              values="0;1"
+            />
+            <animate
+              attributeName="opacity"
+              begin="svgSpinnersPulseRingsMultiple0.begin+0.4s"
+              calcMode="spline"
+              dur="1.2s"
+              keySplines=".52,.6,.25,.99"
+              values="1;0"
+            />
+          </path>
+        </svg>
+      </div>
+      <!-- Список тегов -->
+
+      <div v-else class="tags-list">
+        <br />
+        <div class="tags-lis">
+          <!-- <div style="color: cornflowerblue" class="fw-bold text-center">
           Total: {{ tags.length }}
         </div> -->
-        <div
-          class="scrollable-tags-list rounded px-1"
-          ref="tagsList"
-          style="max-height: 300px; overflow-y: auto"
-        >
-         
-        
-        <button
-  v-for="tag in sortedTags"
-  :key="tag.id"
-  class="btn-danger2 "
-  @click="() => { selectTag(tag.name); fetchNews(tag.name); }"
->
-  {{ tag.name }} -
-  <span class="badge">{{ tag.popularity }}</span>
-</button>
-
-        <!-- <button
-            v-for="tag in sortedTags"
-            :key="tag.id"
-            class="btn-danger2 m-1"
-            @click="fetchNews(tag.name)"
+          <div
+            class="scrollable-tags-list rounded p-1"
+            ref="tagsList"
+            style="max-height: 300px; overflow-y: auto"
           >
-            {{ tag.name }} -
-            <span class="badge">{{ tag.popularity }}</span>
-          </button> -->
+            <button
+              style="
+                color: var(--bs-body-color);
+                background-color: var(--bs-body-bg);
+              "
+              v-for="tag in sortedTags"
+              :key="tag.id"
+              class="btn-danger2"
+              @click="
+                selectTag(tag.name);
+                fetchNews(tag.name);
+              "
+            >
+              {{ tag.name }}
+              <span
+                style="
+                  color: var(--bs-body-color);
+                  background-color: var(--bs-body-bg);
+                "
+                class="badge"
+                >{{ tag.popularity }}</span
+              >
+            </button>
+          </div>
         </div>
       </div>
     </div>
-   
     <!-- Список новостей -->
     <div v-if="news.length > 0" class="news-list">
       <div style="position: relative">
         <h5 class="fw-bold mt-1">{{ currentTag }}: {{ news.length }}</h5>
-         <!-- Сохранённые теги -->
-         <!-- <button  @click="toggleSavedTags" v-if="savedTags.length > 0"   class="pl-4 btn-danger1">
+        <!-- Сохранённые теги -->
+        <!-- <button  @click="toggleSavedTags" v-if="savedTags.length > 0"   class="pl-4 btn-danger1">
         <i class="bi bi-floppy2-fill pointer "> Saved tags</i> 
         </button>
          <div class="saved-tags mb-1">
@@ -103,43 +217,54 @@
     ></i>
   </span>
 </div> -->
-
-<button @click="toggleSavedTags" v-if="savedTags.length > 0" class="pl-4 btn-danger1">
-      <i class="bi bi-floppy2-fill pointer"> Saved tags</i>
-    </button>
-
-    <!-- Блок с сохранёнными тегами -->
-    <div v-if="showSavedTags" class="saved-tags mb-1">
-      <span
-        v-for="tag in savedTags"
-        :key="tag"
-        class="badge bg-success saved-tag pointer"
-        @click="() => { selectTag(tag); fetchNews(tag); }"
-      >
-        {{ tag }}
-        <i
-          @click.stop="removeSavedTag(tag)"
-          class="bi bi-x-circle pointer text-white"
-        ></i>
-      </span>
-    </div>
-  
+        <button
+          class="btn-danger1"
+          :class="{ 'btn-danger': isTagSaved }"
+          @click="toggleSaveTag"
+        >
+          {{ isTagSaved ? "Delete" : "Save" }}
+        </button>
 
         <button
+          @click="toggleSavedTags"
+          v-if="savedTags.length > 0"
+          class="pl-4 btn-danger1"
+        >
+          <i class="bi bi-floppy2-fill pointer"> Saved tags</i>
+        </button>
+
+        <!-- Блок с сохранёнными тегами -->
+        <div v-if="showSavedTags" class="saved-tags mb-1">
+          <span
+            v-for="tag in savedTags"
+            :key="tag"
+            class="badge bg-success saved-tag pointer"
+            @click="
+              () => {
+                selectTag(tag);
+                fetchNews(tag);
+              }
+            "
+          >
+            {{ tag }}
+            <i
+              @click.stop="removeSavedTag(tag)"
+              class="bi bi-x-circle pointer text-white"
+            ></i>
+          </span>
+        </div>
+
+        <!-- <button
     class="btn-danger1 "
     :class="{ 'btn-danger': isTagSaved }"
     @click="toggleSaveTag(currentTag)"
   >
     {{ isTagSaved ? "Delete" : "Save" }}
-  </button>
+  </button> -->
 
-        
-  <button
+        <button
           @click="toggleAutopilot"
-          :class="[
-            'btn-danger1 fw-bold ',
-            { 'btn-primary': autopilotActive },
-          ]"
+          :class="['btn-danger1 fw-bold ', { 'btn-primary': autopilotActive }]"
         >
           {{ autopilotActive ? "Stop Autopilot" : "Start Autopilot" }}
         </button>
@@ -192,15 +317,116 @@
       </div>
 
       <div v-if="loadingNews" class="text-center">
-        <svg 
-      
-       xmlns="http://www.w3.org/2000/svg" 
-       width="52" 
-       height="52" 
-       viewBox="0 0 24 24">
-       <path 
-       fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z" transform="matrix(0 0 0 0 12 12)"><animateTransform id="svgSpinnersPulseRingsMultiple0" attributeName="transform" begin="0;svgSpinnersPulseRingsMultiple2.end" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="translate" values="12 12;0 0"/><animateTransform additive="sum" attributeName="transform" begin="0;svgSpinnersPulseRingsMultiple2.end" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="scale" values="0;1"/><animate attributeName="opacity" begin="0;svgSpinnersPulseRingsMultiple2.end" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" values="1;0"/></path><path fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z" transform="matrix(0 0 0 0 12 12)"><animateTransform id="svgSpinnersPulseRingsMultiple1" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.2s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="translate" values="12 12;0 0"/><animateTransform additive="sum" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.2s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="scale" values="0;1"/><animate attributeName="opacity" begin="svgSpinnersPulseRingsMultiple0.begin+0.2s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" values="1;0"/></path><path fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z" transform="matrix(0 0 0 0 12 12)"><animateTransform id="svgSpinnersPulseRingsMultiple2" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.4s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="translate" values="12 12;0 0"/><animateTransform additive="sum" attributeName="transform" begin="svgSpinnersPulseRingsMultiple0.begin+0.4s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" type="scale" values="0;1"/><animate attributeName="opacity" begin="svgSpinnersPulseRingsMultiple0.begin+0.4s" calcMode="spline" dur="1.2s" keySplines=".52,.6,.25,.99" values="1;0"/></path></svg>
-    </div>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="52"
+          height="52"
+          viewBox="0 0 24 24"
+        >
+          <path
+            fill="currentColor"
+            d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z"
+            transform="matrix(0 0 0 0 12 12)"
+          >
+            <animateTransform
+              id="svgSpinnersPulseRingsMultiple0"
+              attributeName="transform"
+              begin="0;svgSpinnersPulseRingsMultiple2.end"
+              calcMode="spline"
+              dur="1.2s"
+              keySplines=".52,.6,.25,.99"
+              type="translate"
+              values="12 12;0 0"
+            />
+            <animateTransform
+              additive="sum"
+              attributeName="transform"
+              begin="0;svgSpinnersPulseRingsMultiple2.end"
+              calcMode="spline"
+              dur="1.2s"
+              keySplines=".52,.6,.25,.99"
+              type="scale"
+              values="0;1"
+            />
+            <animate
+              attributeName="opacity"
+              begin="0;svgSpinnersPulseRingsMultiple2.end"
+              calcMode="spline"
+              dur="1.2s"
+              keySplines=".52,.6,.25,.99"
+              values="1;0"
+            />
+          </path>
+          <path
+            fill="currentColor"
+            d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z"
+            transform="matrix(0 0 0 0 12 12)"
+          >
+            <animateTransform
+              id="svgSpinnersPulseRingsMultiple1"
+              attributeName="transform"
+              begin="svgSpinnersPulseRingsMultiple0.begin+0.2s"
+              calcMode="spline"
+              dur="1.2s"
+              keySplines=".52,.6,.25,.99"
+              type="translate"
+              values="12 12;0 0"
+            />
+            <animateTransform
+              additive="sum"
+              attributeName="transform"
+              begin="svgSpinnersPulseRingsMultiple0.begin+0.2s"
+              calcMode="spline"
+              dur="1.2s"
+              keySplines=".52,.6,.25,.99"
+              type="scale"
+              values="0;1"
+            />
+            <animate
+              attributeName="opacity"
+              begin="svgSpinnersPulseRingsMultiple0.begin+0.2s"
+              calcMode="spline"
+              dur="1.2s"
+              keySplines=".52,.6,.25,.99"
+              values="1;0"
+            />
+          </path>
+          <path
+            fill="currentColor"
+            d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z"
+            transform="matrix(0 0 0 0 12 12)"
+          >
+            <animateTransform
+              id="svgSpinnersPulseRingsMultiple2"
+              attributeName="transform"
+              begin="svgSpinnersPulseRingsMultiple0.begin+0.4s"
+              calcMode="spline"
+              dur="1.2s"
+              keySplines=".52,.6,.25,.99"
+              type="translate"
+              values="12 12;0 0"
+            />
+            <animateTransform
+              additive="sum"
+              attributeName="transform"
+              begin="svgSpinnersPulseRingsMultiple0.begin+0.4s"
+              calcMode="spline"
+              dur="1.2s"
+              keySplines=".52,.6,.25,.99"
+              type="scale"
+              values="0;1"
+            />
+            <animate
+              attributeName="opacity"
+              begin="svgSpinnersPulseRingsMultiple0.begin+0.4s"
+              calcMode="spline"
+              dur="1.2s"
+              keySplines=".52,.6,.25,.99"
+              values="1;0"
+            />
+          </path>
+        </svg>
+      </div>
       <div class="row row-cols-1 row-cols-md-3 g-3 mt-3">
         <div v-for="item in news" :key="item.id" class="col">
           <div class="car">
@@ -238,7 +464,7 @@
                 <p v-else class="badge bg-secondary">Unknown</p>
                 <div class="">
                   <p style="color: cornflowerblue" class="fw-bold">
-                    <a :href="item.url" target="_blank">   {{ item.title }}</a>
+                    <a :href="item.url" target="_blank"> {{ item.title }}</a>
                   </p>
                   <p>{{ item.description }}</p>
                   <p v-html="item.content"></p>
@@ -259,44 +485,44 @@
 
     <!-- Модальное окно для редактирования -->
     <div
-        class="modal fade"
-        id="editModal"
-        tabindex="-1"
-        aria-labelledby="editModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-body">
-              <div>
-                <!-- Кнопка для открытия компонента -->
-                <button @click="toggleSetting" class="btn">
-                  <i class="bi bi-sliders"></i>
-                </button>
-                <i
-          style="position: absolute; right: 5px; top: 3px"
-          
-          class="bi bi-x-circle pointer" data-bs-dismiss="modal"
-        ></i>
-                
-                <!-- Анимированный блок с настройками -->
-                <transition name="fade">
-                  <div v-if="showSetting" class="setting-container">
-                    <setting />
-                    <!-- Кнопка для закрытия -->
-                    <!-- <button @click="toggleSetting" class="btn btn-danger mt-3">Close</button> -->
-                  </div>
-                </transition>
-              </div>
-              <div class="mb-3">
-                <div class="text-center mt-3">
-                  <img
-                    :src="editableItem.tempImageUrl || editableItem.urlToImage"
-                    class="img-fluid"
-                    alt="Preview"
-                  />
+      class="modal fade"
+      id="editModal"
+      tabindex="-1"
+      aria-labelledby="editModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div>
+              <!-- Кнопка для открытия компонента -->
+              <button @click="toggleSetting" class="btn">
+                <i class="bi bi-sliders"></i>
+              </button>
+              <i
+                style="position: absolute; right: 5px; top: 3px"
+                class="bi bi-x-circle pointer"
+                data-bs-dismiss="modal"
+              ></i>
+
+              <!-- Анимированный блок с настройками -->
+              <transition name="fade">
+                <div v-if="showSetting" class="setting-container">
+                  <setting />
+                  <!-- Кнопка для закрытия -->
+                  <!-- <button @click="toggleSetting" class="btn btn-danger mt-3">Close</button> -->
                 </div>
-                <!-- <div class="mb-3">
+              </transition>
+            </div>
+            <div class="mb-3">
+              <div class="text-center mt-3">
+                <img
+                  :src="editableItem.tempImageUrl || editableItem.urlToImage"
+                  class="img-fluid"
+                  alt="Preview"
+                />
+              </div>
+              <!-- <div class="mb-3">
                   <label for="editImageFile" class="form-label"
                     >Upload Image</label
                   >
@@ -316,109 +542,13 @@
                     class="form-control"
                   />
                 </div> -->
-                <label for="editTitle" class="form-label">Title</label>
-                <textarea
-                  id="editTitle"
-                  type="text"
-                  v-model="editableItem.title"
-                  class="form-control"
-                ></textarea>
-              </div>
-              <div class="mb-3">
-                <label for="editDescription" class="form-label"
-                  >Description</label
-                >
-                <textarea
-                  id="editDescription"
-                  v-model="editableItem.description"
-                  class="form-control"
-                ></textarea>
-              </div>
-              <div class="mb-3">
-                <label for="editContent" class="form-label">Content</label>
-                <!-- <textarea
-                  id="editContent"
-                  v-model="editableItem.content"
-                  class="form-control"
-                ></textarea> -->
-                <textarea
-  id="editContent"
-  v-model="editableItem.content"
-  class="form-control"
-></textarea>
-<!-- <p v-html="editableItem.content || 'Контент отсутствует'"></p> -->
-
-
-              </div>
-            </div>
-
-            <div class="modal-footer">
-             
-              <button
-                type="button"
-                class="btn-danger1"
-                @click="saveChanges"
-                
-              >
-                Save changes
-              </button>
-              <button
-  @click="sendToTelegram(editableItem)"
-  class="btn-danger1 "
->
-  Send to Telegram
-  <i style="color:  cornflowerblue" class="bi bi-telegram"></i>
-</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    <!-- <div
-      class="modal fade"
-      id="editModal"
-      tabindex="-1"
-      aria-labelledby="editModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-body">
-            <setting />
-            <div class="mb-3">
-              <div class="text-center mt-3">
-                <img
-                  :src="editableItem.tempImageUrl || editableItem.urlToImage"
-                  class="img-fluid"
-                  alt="Preview"
-                />
-              </div>
-              <div class="mb-3">
-                <label for="editImageFile" class="form-label"
-                  >Upload Image</label
-                >
-                <input
-                  id="editImageFile"
-                  type="file"
-                  @change="uploadImage"
-                  class="form-control"
-                />
-              </div>
-              <div class="mb-3">
-                <label for="editImage" class="form-label">Image URL</label>
-                <input
-                  id="editImage"
-                  type="text"
-                  v-model="editableItem.tempImageUrl"
-                  class="form-control"
-                />
-              </div>
               <label for="editTitle" class="form-label">Title</label>
-              <input
+              <textarea
                 id="editTitle"
                 type="text"
                 v-model="editableItem.title"
                 class="form-control"
-              />
+              ></textarea>
             </div>
             <div class="mb-3">
               <label for="editDescription" class="form-label"
@@ -432,39 +562,38 @@
             </div>
             <div class="mb-3">
               <label for="editContent" class="form-label">Content</label>
+              <!-- <textarea
+                  id="editContent"
+                  v-model="editableItem.content"
+                  class="form-control"
+                ></textarea> -->
               <textarea
                 id="editContent"
                 v-model="editableItem.content"
                 class="form-control"
               ></textarea>
+              <!-- <p v-html="editableItem.content || 'Контент отсутствует'"></p> -->
             </div>
           </div>
 
           <div class="modal-footer">
-            <button type="button" class="btn-danger1" data-bs-dismiss="modal">
-              Close
-            </button>
-            <button
-              type="button"
-              class="btn-danger1"
-              @click="saveChanges"
-              data-bs-dismiss="modal"
-            >
+            <button type="button" class="btn-danger1" @click="saveChanges">
               Save changes
             </button>
-            <button @click="sendToTelegram(item)" class="btn-danger1 mt-2">
+            <button @click="sendToTelegram(editableItem)" class="btn-danger1">
               Send to Telegram
               <i style="color: cornflowerblue" class="bi bi-telegram"></i>
             </button>
           </div>
         </div>
       </div>
-    </div> -->
+    </div>
+    
   </div>
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios";
 import { useTopPopularStore } from "../../stores/popular";
 import { useTagStore } from "../../stores/tags";
 import { useChannelStore } from "@/stores/channelStore";
@@ -486,35 +615,57 @@ export default {
     const toggleSetting = () => {
       showSetting.value = !showSetting.value;
     };
+
     // const autopilotInterval = ref(null);
     // const autopilotActive = ref(false);
-const loadingTags = ref(false); // Состояние загрузки тегов
-const loadingNews = ref(false); 
+    const loadingTags = ref(false); // Состояние загрузки тегов
+    const loadingNews = ref(false);
     //getters
-    
+
     const sortedTags = computed(() => store.sortedTags);
     const savedTags = computed(() => storePop.savedTags);
     //const currentTag = computed(() => storePop.currentTag);
     const currentTag = ref(""); // Текущий выбранный тег
+    //     const selectTag = (tagName) => {
+    //   currentTag.value = tagName;
+    //   console.log("Текущий тег установлен:", tagName);
+    // };
+
+    const clearTags = () => {
+      store.tags = []; // Очистка массива тегов в сторе
+      console.log("Теги очищены!");
+    };
+
+    // Проверяем, сохранён ли текущий тег
+    const isTagSaved = computed(() => {
+      return storePop.savedTags.includes(currentTag.value);
+    });
+
     const selectTag = (tagName) => {
-  currentTag.value = tagName;
-  console.log("Текущий тег установлен:", tagName);
-};
+      currentTag.value = tagName;
+      console.log("Выбранный тег:", currentTag.value);
+    };
 
-
-
-
-// Проверяем, сохранён ли текущий тег
-const isTagSaved = computed(() => storePop.savedTags.includes(currentTag.value));
-
-   
-const toggleSaveTag = () => {
+    const toggleSaveTag = () => {
       if (!currentTag.value.trim()) {
-        console.error("Текущий тег пустой, невозможно сохранить.");
+        console.error("Ошибка: Текущий тег пустой, невозможно сохранить.");
         return;
       }
-      storePop.toggleSaveTag(currentTag.value);
-      console.log("Тег сохранён/удалён:", currentTag.value);
+
+      if (storePop.savedTags.includes(currentTag.value)) {
+        // Удаляем тег
+        storePop.savedTags = storePop.savedTags.filter(
+          (tag) => tag !== currentTag.value
+        );
+        console.log(`Тег удалён: ${currentTag.value}`);
+      } else {
+        // Добавляем тег
+        storePop.savedTags.push(currentTag.value);
+        console.log(`Тег сохранён: ${currentTag.value}`);
+      }
+
+      // Обновляем `localStorage`
+      localStorage.setItem("savedTags", JSON.stringify(storePop.savedTags));
     };
 
     // Удаление тега из списка сохранённых
@@ -527,19 +678,18 @@ const toggleSaveTag = () => {
       console.log("Тег удалён:", tag);
     };
 
-
     // Действия
     const activeChannelId = computed(() => channelStore.activeChannelId); // Достаём ID активного канала
 
     const tagsList = ref(null);
     const editableItem = ref({
-  title: "",
-  description: "",
-  content: "",
-  tempImageUrl: "",
-  urlToImage: "",
-  id: null,
-});
+      title: "",
+      description: "",
+      content: "",
+      tempImageUrl: "",
+      urlToImage: "",
+      id: null,
+    });
 
     //const editableItem = ref({});
     const query = computed({
@@ -559,11 +709,6 @@ const toggleSaveTag = () => {
         editableItem.value.tempImageUrl = imageUrl;
       }
     };
-    // const openEditModal = (item) => {
-    //   editableItem.value = { ...item };
-    //   const modal = new bootstrap.Modal(document.getElementById("editModal"));
-    //   modal.show();
-    // };
 
     const saveChanges = () => {
       const index = store.news.findIndex(
@@ -579,29 +724,33 @@ const toggleSaveTag = () => {
         store.news[index] = { ...editableItem.value };
       }
     };
+    const logQuery = () =>
+      console.log("Текущий ввод в поле поиска:", store.query);
 
     //const searchTags = () => store.searchTags();
     const searchTags = async () => {
-  try {
-    loadingTags.value = true; // Включаем прелоадер
-    await store.searchTags(); // Загружаем теги
-  } catch (error) {
-    console.error("Ошибка при загрузке тегов:", error);
-  } finally {
-    loadingTags.value = false; // Отключаем прелоадер
-  }
-};
+      console.log("Запуск поиска тегов...");
+      loadingTags.value = true;
+      try {
+        await store.searchTags();
+        console.log("Теги загружены:", store.tags);
+      } catch (error) {
+        console.error("Ошибка при поиске тегов:", error);
+      } finally {
+        loadingTags.value = false;
+      }
+    };
 
-const fetchNews = async (tagName) => {
-  try {
-    loadingNews.value = true; // Включаем прелоадер
-    await store.fetchNews(tagName); // Загружаем новости
-  } catch (error) {
-    console.error("Ошибка при загрузке новостей:", error);
-  } finally {
-    loadingNews.value = false; // Отключаем прелоадер
-  }
-};
+    const fetchNews = async (tagName) => {
+      try {
+        loadingNews.value = true; // Включаем прелоадер
+        await store.fetchNews(tagName); // Загружаем новости
+      } catch (error) {
+        console.error("Ошибка при загрузке новостей:", error);
+      } finally {
+        loadingNews.value = false; // Отключаем прелоадер
+      }
+    };
 
     //const fetchNews = (tagName) => store.fetchNews(tagName);
     const clearNews = () => store.clearNews();
@@ -615,68 +764,71 @@ const fetchNews = async (tagName) => {
     // };
 
     const openEditModal = (item) => {
-  editableItem.value = { ...item };
-  const modal = new bootstrap.Modal(document.getElementById("editModal"));
-  modal.show();
-};
-const sendToTelegram = (item) => {
-  if (!activeChannelId.value) {
-    alert("Выберите канал для отправки новостей!");
-    return;
-  }
+      editableItem.value = { ...item };
+      const modal = new bootstrap.Modal(document.getElementById("editModal"));
+      modal.show();
+    };
+    const sendToTelegram = (item) => {
+      if (!activeChannelId.value) {
+        alert("Выберите канал для отправки новостей!");
+        return;
+      }
 
-  // Проверяем, есть ли description и content
-  const description = item.description ? item.description : "";
-  const content = item.content ? item.content : "";
+      // Проверяем, есть ли description и content
+      const description = item.description ? item.description : "";
+      const content = item.content ? item.content : "";
 
-  // Формируем сообщение
-  const message = `<b>${item.title}</b>\n${description}\n${content}\n<a href="${item.url}">Читать полностью</a>`;
+      // Формируем сообщение
+      const message = `<b>${item.title}</b>\n${description}\n${content}\n<a href="${item.url}">Читать полностью</a>`;
 
-  const data = {
-    chat_id: activeChannelId.value,
-    text: message,
-    parse_mode: "HTML",
-  };
+      const data = {
+        chat_id: activeChannelId.value,
+        text: message,
+        parse_mode: "HTML",
+      };
 
-  axios
-    .post(`https://api.telegram.org/bot${store.botToken}/sendMessage`, data)
-    .then((response) => {
-      console.log("Сообщение успешно отправлено в Telegram:", response.data);
-      alert("Сообщение отправлено!");
-    })
-    .catch((error) => {
-      console.error("Ошибка отправки сообщения:", error);
-      alert(`Ошибка отправки: ${error.message}`);
-    });
-};
+      axios
+        .post(`https://api.telegram.org/bot${store.botToken}/sendMessage`, data)
+        .then((response) => {
+          console.log(
+            "Сообщение успешно отправлено в Telegram:",
+            response.data
+          );
+          alert("Сообщение отправлено!");
+        })
+        .catch((error) => {
+          console.error("Ошибка отправки сообщения:", error);
+          alert(`Ошибка отправки: ${error.message}`);
+        });
+    };
 
-// const sendToTelegram = (item) => {
-//   if (!activeChannelId.value) {
-//     alert("Выберите канал для отправки новостей!");
-//     return;
-//   }
+    // const sendToTelegram = (item) => {
+    //   if (!activeChannelId.value) {
+    //     alert("Выберите канал для отправки новостей!");
+    //     return;
+    //   }
 
-//   // Логируем данные перед отправкой
-//   console.log("Отправка данных:", item);
+    //   // Логируем данные перед отправкой
+    //   console.log("Отправка данных:", item);
 
-//   const message = `<b>${item.title}</b>\n${item.description}\n${item.content}\n<a href="${item.url}">Читать полностью</a>`;
-//   const data = {
-//     chat_id: activeChannelId.value,
-//     text: message,
-//     parse_mode: "HTML",
-//   };
+    //   const message = `<b>${item.title}</b>\n${item.description}\n${item.content}\n<a href="${item.url}">Читать полностью</a>`;
+    //   const data = {
+    //     chat_id: activeChannelId.value,
+    //     text: message,
+    //     parse_mode: "HTML",
+    //   };
 
-//   axios
-//     .post(`https://api.telegram.org/bot${store.botToken}/sendMessage`, data)
-//     .then((response) => {
-//       console.log("Сообщение успешно отправлено в Telegram:", response.data);
-//       alert("Сообщение отправлено!");
-//     })
-//     .catch((error) => {
-//       console.error("Ошибка отправки сообщения:", error);
-//       alert(`Ошибка отправки: ${error.message}`);
-//     });
-// };
+    //   axios
+    //     .post(`https://api.telegram.org/bot${store.botToken}/sendMessage`, data)
+    //     .then((response) => {
+    //       console.log("Сообщение успешно отправлено в Telegram:", response.data);
+    //       alert("Сообщение отправлено!");
+    //     })
+    //     .catch((error) => {
+    //       console.error("Ошибка отправки сообщения:", error);
+    //       alert(`Ошибка отправки: ${error.message}`);
+    //     });
+    // };
 
     const scrollToTop = () => store.scrollToTop(tagsList.value);
     // const sendChatIdAndTagId = () => {
@@ -684,14 +836,16 @@ const sendToTelegram = (item) => {
     // };
 
     onMounted(() => {
+      store.fetchCategories();
       storePop.loadSavedTags(); // Загружаем сохранённые теги
-  if (storePop.savedTags.length > 0) {
-    currentTag.value = storePop.savedTags[0]; // Устанавливаем первый тег как текущий
-  }
-
+      if (storePop.savedTags.length > 0) {
+        currentTag.value = storePop.savedTags[0]; // Устанавливаем первый тег как текущий
+      }
     });
 
     return {
+      clearTags,
+      logQuery,
       toggleSavedTags,
       showSavedTags,
       loadingNews,
@@ -708,7 +862,15 @@ const sendToTelegram = (item) => {
       toggleSaveTag,
       // autopilotActive,
       // toggleAutopilot,
-      query,
+      query: computed({
+        get: () => store.query,
+        set: (value) => (store.query = value),
+      }),
+      selectedCategoryId: computed({
+        get: () => store.selectedCategoryId,
+        set: (value) => (store.selectedCategoryId = value),
+      }),
+      categories: computed(() => store.categories),
       tags: computed(() => store.tags),
       news: computed(() => store.news),
       loading: computed(() => store.loading),
@@ -716,12 +878,11 @@ const sendToTelegram = (item) => {
       totalTags: computed(() => store.totalTags),
       progress: computed(() => store.progress),
       image: computed(() => store.image),
-     
+
       searchTags,
       fetchNews,
       clearNews,
       sendToTelegram,
-      
 
       scrollToTop,
       tagsList,
@@ -771,9 +932,9 @@ a {
   margin-bottom: 20px;
 }
 
-.search-input {
+/* .search-input {
   width: 250px;
-}
+} */
 
 .loading {
   text-align: center;
@@ -880,9 +1041,9 @@ a {
   gap: 10px;
   margin-top: 10px;
 }
-.modal-content{
+.modal-content {
   border-radius: 15px;
   padding: 20px;
-  border:2px solid cornflowerblue;
+  border: 2px solid cornflowerblue;
 }
 </style>

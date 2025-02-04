@@ -14,6 +14,8 @@ export const useTagStore = defineStore("tagStore", {
     botToken: "6903896787:AAG-rPGukp422cw17k4y17UsJUiDMl5tdbc", // Замените на ваш токен бота
     savedTags: [],
     currentTag: "",
+    categories:[],
+    selectedCategoryId: null, // ID выбранной категории
   }),
   getters: {
     isTagSaved: (state) => (tagName) => state.savedTags.includes(tagName),
@@ -22,6 +24,45 @@ export const useTagStore = defineStore("tagStore", {
     },
   },
   actions: {
+    async fetchCategories() {
+      console.log("Запрос категорий...");
+      try {
+        const response = await axios.get("https://4v-news-api.azurewebsites.net/Categories?SiteId=1");
+        this.categories = response.data.items;
+        console.log("Категории загружены:", this.categories);
+      } catch (error) {
+        console.error("Ошибка загрузки категорий:", error);
+      }
+    },
+    
+    async searchTags() {
+      console.log("Запуск поиска тегов:", this.query);
+      if (this.query.trim() === "") {
+        console.warn("Поисковый запрос пустой.");
+        this.tags = [];
+        return;
+      }
+      this.loading = true;
+      try {
+        const response = await axios.get("https://4v-news-api.azurewebsites.net/Tags/Search", {
+          params: {
+            SiteId: 1,
+            Page: 1,
+            PageSize: 100,
+            Query: this.query,
+            CategoryId: this.selectedCategoryId || undefined,
+          },
+        });
+        this.tags = response.data.items;
+        console.log("Найденные теги:", this.tags);
+      } catch (error) {
+        console.error("Ошибка поиска тегов:", error);
+      } finally {
+        this.loading = false;
+      }
+    },
+
+  
     // loadSavedTags() {
     //   const saved = localStorage.getItem("savedTags");
     //   if (saved) {
@@ -43,57 +84,57 @@ export const useTagStore = defineStore("tagStore", {
     //   localStorage.setItem("savedTags", JSON.stringify(this.savedTags));
     // },
 
-    async searchTags() {
-      if (this.query.trim() === "") {
-        this.tags = [];
-        this.news = [];
-        return;
-      }
+    // async searchTags() {
+    //   if (this.query.trim() === "") {
+    //     this.tags = [];
+    //     this.news = [];
+    //     return;
+    //   }
 
-      this.loading = true;
-      this.tags = [];
-      this.progress = 0;
+    //   this.loading = true;
+    //   this.tags = [];
+    //   this.progress = 0;
 
-      try {
-        let page = 1;
-        let totalFetched = 0;
-        const pageSize = 100; // Размер страницы
-        const maxTags = 1000; // Максимальное количество тегов, которое нужно получить
+    //   try {
+    //     let page = 1;
+    //     let totalFetched = 0;
+    //     const pageSize = 100; // Размер страницы
+    //     const maxTags = 1000; // Максимальное количество тегов, которое нужно получить
 
-        while (totalFetched < maxTags) {
-          const response = await axios.get(
-            `https://4v-news-api.azurewebsites.net/Tags/Search`, // Исправлен URL
-            {
-              params: {
-                SiteId: 1,
-                Page: page,
-                PageSize: pageSize,
-                Query: this.query,
-              },
-            }
-          );
+    //     while (totalFetched < maxTags) {
+    //       const response = await axios.get(
+    //         `https://4v-news-api.azurewebsites.net/Tags/Search`, // Исправлен URL
+    //         {
+    //           params: {
+    //             SiteId: 1,
+    //             Page: page,
+    //             PageSize: pageSize,
+    //             Query: this.query,
+    //           },
+    //         }
+    //       );
 
-          const fetchedTags = response.data.items;
-          this.tags.push(...fetchedTags); // Добавляем полученные теги в массив
-          totalFetched += fetchedTags.length; // Обновляем общее количество полученных тегов
+    //       const fetchedTags = response.data.items;
+    //       this.tags.push(...fetchedTags); // Добавляем полученные теги в массив
+    //       totalFetched += fetchedTags.length; // Обновляем общее количество полученных тегов
 
-          if (fetchedTags.length < pageSize) {
-            // Если меньше, чем размер страницы, значит, больше тегов нет
-            break;
-          }
+    //       if (fetchedTags.length < pageSize) {
+    //         // Если меньше, чем размер страницы, значит, больше тегов нет
+    //         break;
+    //       }
 
-          page++; // Переходим к следующей странице
-        }
+    //       page++; // Переходим к следующей странице
+    //     }
 
-        this.totalTags = totalFetched; // Обновляем общее количество тегов
-        this.progress = 100; // Устанавливаем прогресс на 100%
-      } catch (error) {
-        console.error("Ошибка при поиске тегов:", error); // Исправлено логирование
-        this.tags = [];
-      } finally {
-        this.loading = false;
-      }
-    },
+    //     this.totalTags = totalFetched; // Обновляем общее количество тегов
+    //     this.progress = 100; // Устанавливаем прогресс на 100%
+    //   } catch (error) {
+    //     console.error("Ошибка при поиске тегов:", error); // Исправлено логирование
+    //     this.tags = [];
+    //   } finally {
+    //     this.loading = false;
+    //   }
+    // },
     // async searchTags() {
     //   if (this.query.trim() === "") {
     //     this.tags = [];

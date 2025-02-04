@@ -1,5 +1,11 @@
 <template>
-  <div class="container">
+  <div class="container" style="position :relative">
+    <!-- <i
+    v-if="tags.length > 0"
+          style="position: absolute; right: 0; top:50px"
+          @click="clearTags"
+          class="bi bi-x-circle pointer"
+        ></i> -->
     <!-- Индикатор загрузки -->
     <div v-if="loading" class="text-center">
       <svg 
@@ -21,6 +27,10 @@
 
         <div class="scrollable-tags-list rounded px-1" ref="tagsList">
           <button
+          style="
+  color: var(--bs-body-color);
+  background-color: var(--bs-body-bg);
+  " 
             v-for="tag in filteredSortedTags"
             :key="tag.id"
             class="btn-danger2"
@@ -414,6 +424,10 @@ const autopilotActive = ref(false);
     // Локальные переменные и данные
     const tagsList = ref(null); // Список тегов
     const localNews = ref([]); // Локальная копия новостей для редактирования
+    const clearTags = () => {
+  store.tags = []; // Очистка массива тегов в сторе
+  console.log("Теги очищены!");
+};
 
     // Геттеры для computed свойств
     const savedTags = computed(() => store.savedTags);
@@ -494,6 +508,7 @@ const autopilotActive = ref(false);
     });
 
     return {
+      clearTags,
       toggleSavedTags,
       showSavedTags,
       toggleAutopilot,

@@ -1,30 +1,27 @@
 <template >
 <div class="mb-4">
   <!-- <TonConnectUIProvider :options="options"> -->
-  <nav class="navbar navbar-expand-lg mb-4">
-    <div class="container-fluid">
-      <div style="">
-      <NuxtLink class="navbar-brand" to="/"
-        > <img style="max-width: 30px" src="../assets/img/favicon.png">
-        <img style="max-width: 200px" src="@/assets/img/4vrobot.png" />
-     
-      </NuxtLink>
-    </div> 
-      <span
-        style="
-          font-size: 13px;
-          
-        "
-        class="text-success fw-bold"
-      >
-      Active channel: {{ activeChannelName }} 
-        <!-- {{ activeChannelId }} -->
-      </span>
-    
-   <NuxtLink to="/ton" > <Ton/></NuxtLink>
-      <div class="collapse navbar-collapse" id="navbarNav"></div>
-    </div>
-  </nav>
+    <nav class="navbar navbar-expand-lg ">
+  <div class="container-fluid d-flex justify-content-between align-items-center">
+    <!-- Логотип -->
+    <NuxtLink class="navbar-brand" to="/">
+      <img style="max-width: 30px" src="../assets/img/favicon.png">
+      <img style="max-width: 200px" src="@/assets/img/4vrobot.png" />
+    </NuxtLink>
+
+    <!-- Кнопка TON -->
+    <NuxtLink to="/ton" class="ms-auto me-3">
+      <Ton />
+    </NuxtLink>
+
+    <!-- Активный канал (правее TON) -->
+    <span class=" " style="font-size: 13px; white-space: nowrap;">
+      <!-- Active channel:  -->
+      {{ activeChannelName }}
+    </span>
+  </div>
+</nav>
+<Running/>
   <div class="container">
     <div class="">
       <NuxtLink style="text-decoration: none; margin-left:" to="/"> </NuxtLink>
@@ -45,7 +42,7 @@
        
           font-size: 20px;
           margin-left: 20px;
-          margin-top: 5px;
+          margin-top: px;
           color: black;
         "
       />
@@ -53,10 +50,10 @@
       <Icon
         v-else
         name="meteocons:clear-night"
-        style="font-size: 20px; margin-left: 20px; margin-top: 5px"
+        style="font-size: 20px; margin-left: 20px; margin-top: px"
       />
     </button>
-   
+
     <Grid />
     <div class="row">
       <!-- Левая колонка -->
@@ -89,7 +86,7 @@
         <TonWallet />
        
               <!-- Социальные иконки -->
-              <div class="col-md-12  text-center text-md-start mb-3 mb-md-0">
+              <!-- <div class="col-md-12  text-center text-md-start mb-3 mb-md-0">
                 <div
                   class="d-flex  justify-content-center justify-content-md-start"
                 >
@@ -100,7 +97,7 @@
                     class="me-3 fs-6 mt-3"
                     aria-label="Twitter"
                   >
-                  <img style="width:40px" src="../assets/img/4v.jpg">
+                  <img style="width:40px;border-radius:50%" src="../assets/img/4v.jpg">
                   </a>
                   <a
                   target="_blank"
@@ -109,7 +106,7 @@
                     class="me-3 fs-6 mt-3"
                     aria-label="Instagram"
                   >
-                  <img style="width:40px;border-radius:50%" src="../assets/img/4vnews.jpg">
+                  <img style="width:38px;border-radius:50%" src="../assets/img/4vnews.jpg">
                   </a>
                   <a
                     style="color: var(--bs-body-color)"
@@ -121,14 +118,7 @@
                    <img style="width:40px" src="../assets/img/bull.webp">
                   </a>
                  
-                  <!-- <a
-                    style="color: var(--bs-body-color)"
-                    href="#"
-                    class="me-3 fs-6 mt-3"
-                    aria-label="LinkedIn"
-                  >
-                  <img style="width:40px" src="../assets/img/itshka.webp">
-                  </a> -->
+                 
                   <a
                   target="_blank"
                     style="color: var(--bs-body-color)"
@@ -138,16 +128,9 @@
                   >
                   <img style="width:40px" src="../assets/img/boss.webp">
                   </a>
-                  <!-- <a
-                    style="color: var(--bs-body-color)"
-                    href="#"
-                    class="fs-6 me-3 mt-3"
-                    aria-label="YouTube"
-                  >
-                    <i class="bi bi-reddit"></i>
-                  </a> -->
+                 
                 </div>
-              </div>
+              </div> -->
 
 
         <div class="container">
@@ -242,7 +225,7 @@
    <!-- Список новостей -->
    <div style="position: relative" class="news-list">
      
-     <div class=" text-center" v-if="news.length > 0">
+     <div class="" v-if="news.length > 0">
        <h5 class="fw-bold mt-1">{{ currentTag }}: {{ news.length }}</h5>
        <button
          class="btn-danger1 me-2"
@@ -303,7 +286,7 @@
      </div> -->
      <i
        v-if="news.length > 0"
-       style="position: absolute; right: 0; top: -25px"
+       style="position: absolute; right: 0; top:0"
        @click="clearNews"
        class="bi bi-x-circle pointer"
      ></i>

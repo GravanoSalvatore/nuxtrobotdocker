@@ -209,12 +209,13 @@
           The future is TON. A decentralized world, powered by Telegram, secured by blockchain, and accessible to billions.
         </p>
       </div>
+      <TonBy/>
     </div>
   </template>
   
   <script setup>
   import { onMounted } from "vue";
-  
+   import tonBy from '../components/TonBy.vue'
   onMounted(() => {
     const script = document.createElement("script");
     script.type = "text/javascript";

@@ -143,4 +143,10 @@ export default {
   height: 20px;
   border-radius: 50%;
 }
+@media screen  and (max-width: 500px) {
+  a{
+font-size: 12px;
+}
+}
+
 </style>
