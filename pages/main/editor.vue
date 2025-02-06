@@ -1174,7 +1174,7 @@ const sendMessage = async () => {
 
 
     return { 
-      canSendNow,
+      
   //     loading, // Состояние загрузки
   // mediaResults, // Результаты поиска (все найденные медиа)
   // searchQuery,
@@ -1239,7 +1239,7 @@ const sendMessage = async () => {
       startRecording,
       stopRecording,
       pauseRecording,
-      sendMessage,
+      
       sendMedia,
       handleFileUpload,
       removeFile,

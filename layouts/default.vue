@@ -22,6 +22,7 @@
   </div>
 </nav>
 <Running/>
+<Cookie/>
   <div class="container">
     <div class="">
       <NuxtLink style="text-decoration: none; margin-left:" to="/"> </NuxtLink>
