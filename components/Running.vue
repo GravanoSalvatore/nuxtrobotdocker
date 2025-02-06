@@ -2,8 +2,8 @@
   <div class="news-ticker">
     <!-- Кнопка настроек -->
     <!-- <button class="settings-btn" @click="showModal = true">⚙️</button> -->
-    <svg class="settings-btn mt-2" @click="showModal = true" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="currentColor" d="m9.25 22l-.4-3.2q-.325-.125-.612-.3t-.563-.375L4.7 19.375l-2.75-4.75l2.575-1.95Q4.5 12.5 4.5 12.338v-.675q0-.163.025-.338L1.95 9.375l2.75-4.75l2.975 1.25q.275-.2.575-.375t.6-.3l.4-3.2h5.5l.4 3.2q.325.125.613.3t.562.375l2.975-1.25l2.75 4.75l-2.575 1.95q.025.175.025.338v.674q0 .163-.05.338l2.575 1.95l-2.75 4.75l-2.95-1.25q-.275.2-.575.375t-.6.3l-.4 3.2zm2.8-6.5q1.45 0 2.475-1.025T15.55 12t-1.025-2.475T12.05 8.5q-1.475 0-2.488 1.025T8.55 12t1.013 2.475T12.05 15.5"/></svg>
-    <span style="color:cornflowerblue" class="selected-category fw-bold mt-2">{{ newsOptions[selectedCategory]?.label || 'Выберите категорию' }}</span>
+    <svg class="settings-btn mt-2" @click="showModal = true" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="cornflowerblue" d="m9.25 22l-.4-3.2q-.325-.125-.612-.3t-.563-.375L4.7 19.375l-2.75-4.75l2.575-1.95Q4.5 12.5 4.5 12.338v-.675q0-.163.025-.338L1.95 9.375l2.75-4.75l2.975 1.25q.275-.2.575-.375t.6-.3l.4-3.2h5.5l.4 3.2q.325.125.613.3t.562.375l2.975-1.25l2.75 4.75l-2.575 1.95q.025.175.025.338v.674q0 .163-.05.338l2.575 1.95l-2.75 4.75l-2.95-1.25q-.275.2-.575.375t-.6.3l-.4 3.2zm2.8-6.5q1.45 0 2.475-1.025T15.55 12t-1.025-2.475T12.05 8.5q-1.475 0-2.488 1.025T8.55 12t1.013 2.475T12.05 15.5"/></svg>
+    <span  @click="showModal = true" style="color:cornflowerblue" class="selected-category fw-bold mt-2">{{ newsOptions[selectedCategory]?.label || 'Выберите категорию' }}</span>
     <!-- Бегущая строка -->
     <div class="ticker-content" ref="ticker">
       <div v-for="(item, index) in news" :key="'news-' + index" class="ticker-item">
@@ -32,6 +32,7 @@
     <transition name="fade">
       <div v-if="showModal" class="modal-overlay" @click.self="showModal = false">
         <div class="modal-content">
+          <i class="bi bi-x-circle close-icon pointer" @click="showModal = false"></i>
           <!-- <h3>Выберите категорию новостей</h3> -->
           <ul>
             <li v-for="(option, key) in newsOptions" :key="key">
@@ -41,7 +42,7 @@
               </label>
             </li>
           </ul>
-          <button @click="showModal = false" class="close-btn btn-danger3">Закрыть</button>
+          <!-- <button @click="showModal = false" class="close-btn btn-danger3">Закрыть</button> -->
         </div>
       </div>
     </transition>
@@ -119,6 +120,14 @@ onMounted(fetchNews);
 </script>
 
 <style scoped>
+.close-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  color: cornflowerblue;
+}
 .selected-category{
   z-index:10000000;
   position: absolute;

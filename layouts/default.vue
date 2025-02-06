@@ -15,7 +15,7 @@
     </NuxtLink>
 
     <!-- Активный канал (правее TON) -->
-    <span class=" " style="font-size: 13px; white-space: nowrap;">
+    <span class="btn-danger4 " style="font-size: 9px; white-space: nowrap;">
       <!-- Active channel:  -->
       {{ activeChannelName }}
     </span>
@@ -44,7 +44,7 @@
           font-size: 20px;
           margin-left: 20px;
           margin-top: px;
-          color: black;
+         
         "
       />
 
@@ -1021,13 +1021,13 @@ footer a:hover {
   z-index: 1000; /* Убедитесь, что кнопка поверх контента */
 }
 
-.theme-toggle-btn:hover {
+/* .theme-toggle-btn:hover {
   background-color: rgba(214, 247, 32, 0.1);
-}
+} */
 
-.dark-theme .theme-toggle-btn:hover {
+/* .dark-theme .theme-toggle-btn:hover {
   background-color: rgba(255, 255, 255, 0.1);
-}
+} */
 
 /* Настройка для мобильных устройств */
 @media (max-width: 767px) {
@@ -1036,7 +1036,7 @@ footer a:hover {
     right: 0px; /* Меньший отступ справа */
   }
 }
-@media (max-width: 394px) {
+@media (max-width: 444px) {
   .theme-toggle-btn {
     top: 5px; /* Отступ ниже кнопки тоггл-меню */
     right: 0px; /* Меньший отступ справа */
@@ -1047,9 +1047,9 @@ transition: transform 0.3s ease;
 caret-color: yellow;
 } */
 
-.theme-toggle-btn:hover .theme-icon {
+/* .theme-toggle-btn:hover .theme-icon {
   transform: rotate(30deg);
-}
+} */
 .accordion-button::after {
   display: none !important;
 }
