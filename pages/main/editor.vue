@@ -8,8 +8,6 @@
         placeholder="Write a message for the Telegram channel..."
         rows="6"
       ></textarea>
-
-      <!-- Кнопка отображения Emoji Picker -->
       <client-only>
         <i
           style="color: cornflowerblue"
@@ -25,13 +23,190 @@
             class="emoji-picker-container mt-2 d-flex justify-content-center align-items-center"
           >
             <emoji-picker
-              style="z-index: 10000; top: 0"
+              style="z-index: 10000; top:0;left: 0;"
               class="custom-emoji-picker position-absolute"
               @emoji-click="addEmoji"
             ></emoji-picker>
           </div>
         </div>
       </client-only>
+            <!-- Панель управления медиа -->
+            <div class="media-controls mt-3">
+        <!-- Кнопки загрузки медиа -->
+        <div class="btn-group d-flex flex-wrap" role="group">
+          <input
+            type="file"
+            ref="fileInput"
+            @change="handleFileUpload"
+            multiple
+            accept="image/*,video/*,audio/*"
+            style="display: none"
+          />
+          <button
+            @click="$refs.fileInput.click()"
+            class="btn-danger1 btn-sm flex-grow-1"
+          >
+            <i class="bi bi-upload"></i> Upload
+          </button>
+
+          <input
+            type="file"
+            ref="videoInput"
+            @change="handleFileUpload"
+            multiple
+            accept="video/*"
+            style="display: none"
+          />
+          <button
+            class="btn-danger1 btn-sm dropdown-toggle flex-grow-1"
+            type="button"
+            data-bs-toggle="dropdown"
+          >
+            <i class="bi bi-gear"></i> Options
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+              <label class="dropdown-item">
+                <input
+                  type="checkbox"
+                  v-model="options.spoilerMode"
+                  class="form-check-input me-2"
+                />
+                Режим спойлера
+              </label>
+            </li>
+            <li>
+              <label class="dropdown-item">
+                <input
+                  type="checkbox"
+                  v-model="options.sendWithPreview"
+                  class="form-check-input me-2"
+                />
+                Предварительный просмотр
+              </label>
+            </li>
+          </ul>
+
+          <!-- <button
+            @click="startRecording"
+            :disabled="isRecording"
+            class="pointer btn-danger1 btn-sm flex-grow-1"
+          >
+            <i class="bi bi-mic"></i> Record
+          </button>
+
+          <button
+            @click="pauseRecording"
+            :disabled="!isRecording"
+            class="pointer btn-danger1 btn-sm flex-grow-1"
+          >
+            <i class="bi bi-pause"></i> Pause
+          </button>
+
+          <button
+            @click="stopRecording"
+            :disabled="!isRecording"
+            class="btn-danger1 btn-sm flex-grow-1"
+          >
+            <i class="bi bi-stop"></i> Stop
+          </button> -->
+
+          <!-- <button
+            @click="startVideoRecording"
+            :disabled="isVideoRecording"
+            class="btn-danger1 btn-sm flex-grow-1"
+          >
+            <i class="bi bi-camera-video"></i> Record Video
+          </button>
+
+          <button
+            @click="stopVideoRecording"
+            :disabled="!isVideoRecording"
+            class="btn-danger1 btn-sm flex-grow-1"
+          >
+            <i class="bi bi-stop"></i> Stop Recording
+          </button> -->
+          <!-- Кнопка для отправки отложенного сообщения -->
+          <button class="btn-danger1" @click="scheduleMessage">
+            Delayed sending <i class="bi bi-send"></i>
+          </button>
+          <!-- Кнопка отправки -->
+          <button
+  @click="sendMessage"
+  class="btn-danger1"
+  :disabled="!canSendNow"
+>
+  Send to Telegram
+  <i class="bi bi-send ml-1"></i>
+</button>
+
+          <!-- <button
+            @click="sendMessage"
+            class="btn-danger1"
+            :disabled="!message && !selectedMedia"
+          >
+            Send to telegram
+            <i class="bi bi-send ml-1"></i>
+          </button> -->
+              <!-- Кнопка отображения Emoji Picker -->
+    
+        </div>
+   
+      </div>
+
+      <input v-model="searchQuery" @input="fetchMedia" placeholder="Search video or image..." class="form-control mt-2 mb-2" />
+
+<div v-if="loading" class="text-center">
+  <p>Loading media...</p>
+</div>
+
+<div v-else>
+  <!-- <button v-if="paginatedMedia.length" @click="closeMediaGallery" class="btn btn-danger mt-2">Close Media Gallery</button> -->
+  
+ 
+ 
+  <div v-if="selectedMedia" class="selected-media-preview mt-3">
+  <h3>Selected Media:</h3>
+  <div class="position-relative">
+    <video v-if="selectedMedia.type === 'video'" :src="selectedMedia.url" controls class="preview-video"></video>
+    <img v-else :src="selectedMedia.url" class="preview-image" />
+    <i
+       
+        style="position: absolute; right: -20px; top:0"
+v-if="paginatedMedia.length"  @click="clearSelectedMedia"
+        class="bi bi-x-circle pointer"
+      ></i>
+    <!-- <button @click="clearSelectedMedia" class="btn btn-danger btn-sm position-absolute delete-media-btn">
+      <i class="bi bi-x-circle"></i>
+    </button> -->
+  </div>
+</div>
+
+<div  style="position: relative;">
+  <i
+       
+        style="position: absolute; right: -20px; top:0"
+v-if="paginatedMedia.length" @click="closeMediaGallery"
+        class="bi bi-x-circle pointer"
+      ></i>
+  <div v-if="paginatedMedia.length" class="media-gallery">
+    <div v-for="media in paginatedMedia" :key="media.id" class="media-item" @click="selectMedia(media)">
+      <video v-if="media.type === 'video'" :src="media.url" controls class="video-preview" @loadedmetadata="updateVideoLoadStatus(media.id)"></video>
+      <img v-else-if="media.type === 'image'" :src="media.url" class="image-preview" @load="updateImageLoadStatus(media.id)" />
+    </div>
+  </div>
+
+  <div v-if="paginatedMedia.length" class="pagination-controls">
+    <span @click="prevPage" :disabled="currentPage === 1" class="pointer">&laquo; </span>
+    <span> {{ currentPage }} / {{ totalPages }}</span>
+    <span @click="nextPage" :disabled="currentPage >= totalPages" class="pointer"> &raquo;</span>
+  </div>
+</div>
+</div>
+
+
+     
+
       <!-- Новая функция: Выбор даты и времени -->
       <input
         type="text"
@@ -154,17 +329,31 @@
           style="max-width: 100%; border: 1px solid #ccc; border-radius: 8px"
         />
         <!-- Кнопка удаления GIF -->
-        <button
+        <i
+       
+       style="position: absolute; right: -20px; top:0"
+  @click="clearSelectedGif"
+       class="bi bi-x-circle pointer"
+     ></i>
+        <!-- <button
           @click="clearSelectedGif"
           class="btn btn-danger btn-sm position-absolute delete-gif-btn"
         >
           <i class="bi bi-x-circle"></i>
-        </button>
+        </button> -->
       </div>
 
       <!-- <button v-if="searchResults.length" @click="closeGifResults" class="btn-close btn-sm float-end" aria-label="Close"></button> -->
       <div style="position: relative" class="gif-search mt-3">
-        <svg
+        <i
+       
+       style="position: absolute; right: -20px; top:0"
+       class="bi bi-x-circle pointer"
+          v-if="searchResults.length"
+          @click="closeGifResults"
+       
+     ></i>
+        <!-- <svg
           style="position: absolute; right: 0; top: -20px"
           class="pointer"
           v-if="searchResults.length"
@@ -178,7 +367,7 @@
             fill="currentColor"
             d="M15.59 7L12 10.59L8.41 7L7 8.41L10.59 12L7 15.59L8.41 17L12 13.41L15.59 17L17 15.59L13.41 12L17 8.41L15.59 7Z"
           />
-        </svg>
+        </svg> -->
         <div v-if="searchResults.length" class="gif-results mt-3">
           <div
             v-for="gif in searchResults"
@@ -197,7 +386,13 @@
     >
       Load More
     </button> -->
-          <svg
+    <i
+      
+       style="position: absolute; right: -20px; top:0"
+   v-if="searchResults.length"
+          @click="closeGifResults"
+     ></i>
+          <!-- <svg
             class="pointer"
             v-if="searchResults.length"
             @click="searchGifs(true)"
@@ -230,7 +425,7 @@
                 values="1.5;3;1.5"
               />
             </circle>
-          </svg>
+          </svg> -->
           <!-- Индикатор загрузки -->
           <!-- <div v-if="isLoading" class="spinner-border text-primary" role="status">
       <span class="visually-hidden">Loading...</span>
@@ -255,117 +450,7 @@
           Удалить видео
         </button>
       </div> -->
-      <!-- Панель управления медиа -->
-      <div class="media-controls mt-3">
-        <!-- Кнопки загрузки медиа -->
-        <div class="btn-group d-flex flex-wrap" role="group">
-          <input
-            type="file"
-            ref="fileInput"
-            @change="handleFileUpload"
-            multiple
-            accept="image/*,video/*,audio/*"
-            style="display: none"
-          />
-          <button
-            @click="$refs.fileInput.click()"
-            class="btn-danger1 btn-sm flex-grow-1"
-          >
-            <i class="bi bi-upload"></i> Upload
-          </button>
 
-          <input
-            type="file"
-            ref="videoInput"
-            @change="handleFileUpload"
-            multiple
-            accept="video/*"
-            style="display: none"
-          />
-          <button
-            class="btn-danger1 btn-sm dropdown-toggle flex-grow-1"
-            type="button"
-            data-bs-toggle="dropdown"
-          >
-            <i class="bi bi-gear"></i> Options
-          </button>
-          <ul class="dropdown-menu">
-            <li>
-              <label class="dropdown-item">
-                <input
-                  type="checkbox"
-                  v-model="options.spoilerMode"
-                  class="form-check-input me-2"
-                />
-                Режим спойлера
-              </label>
-            </li>
-            <li>
-              <label class="dropdown-item">
-                <input
-                  type="checkbox"
-                  v-model="options.sendWithPreview"
-                  class="form-check-input me-2"
-                />
-                Предварительный просмотр
-              </label>
-            </li>
-          </ul>
-
-          <!-- <button
-            @click="startRecording"
-            :disabled="isRecording"
-            class="pointer btn-danger1 btn-sm flex-grow-1"
-          >
-            <i class="bi bi-mic"></i> Record
-          </button>
-
-          <button
-            @click="pauseRecording"
-            :disabled="!isRecording"
-            class="pointer btn-danger1 btn-sm flex-grow-1"
-          >
-            <i class="bi bi-pause"></i> Pause
-          </button>
-
-          <button
-            @click="stopRecording"
-            :disabled="!isRecording"
-            class="btn-danger1 btn-sm flex-grow-1"
-          >
-            <i class="bi bi-stop"></i> Stop
-          </button> -->
-
-          <!-- <button
-            @click="startVideoRecording"
-            :disabled="isVideoRecording"
-            class="btn-danger1 btn-sm flex-grow-1"
-          >
-            <i class="bi bi-camera-video"></i> Record Video
-          </button>
-
-          <button
-            @click="stopVideoRecording"
-            :disabled="!isVideoRecording"
-            class="btn-danger1 btn-sm flex-grow-1"
-          >
-            <i class="bi bi-stop"></i> Stop Recording
-          </button> -->
-          <!-- Кнопка для отправки отложенного сообщения -->
-          <button class="btn-danger1" @click="scheduleMessage">
-            Delayed sending <i class="bi bi-send"></i>
-          </button>
-          <!-- Кнопка отправки -->
-          <button
-            @click="sendMessage"
-            class="btn-danger1"
-            :disabled="!message && !uploadedFiles.length"
-          >
-            Send to telegram
-            <i class="bi bi-send ml-1"></i>
-          </button>
-        </div>
-      </div>
 
       <!-- <div class="recorder-controls mt-3">
         <div class="btn-group" role="group">
@@ -382,16 +467,75 @@ import axios from "axios";
 import { useChannelStore } from "@/stores/channelStore";
 //import "emoji-picker-element";
 export default {
-  setup() {
+  
+    setup() {
     const channelStore = useChannelStore();
     const botToken = channelStore.botToken;
     const showEmojiPicker = ref(false);
+   
+    const mediaPerPage = 14;
+    const selectedMedia = ref(null);
+const currentPage = ref(1);
+const mediaResults = ref([]);
+const searchQuery = ref('');
+const loading = ref(false);
+const imageLoadStatus = ref({});
+const videoLoadStatus = ref({});
 
-    const isVideoRecording = ref(false);
+const closeMediaGallery = ()=> {
+  mediaResults.value = [];
+    }  
+
+
+const isVideoRecording = ref(false);
     const recordedVideo = ref(null);
     let videoRecorder = null;
     let videoStream = null;
     let videoChunks = [];
+
+
+    const canSendNow = computed(() => {
+  return message.value.trim().length > 0 || selectedGif.value || selectedMedia.value || uploadedFiles.value.length > 0;
+});
+
+
+
+// Фильтрация по страницам
+
+
+// Выбор медиа для отправки
+
+
+// Отправка медиа в Telegram
+const sendToTelegram = async () => {
+  if (!selectedMedia.value) return;
+
+  try {
+    let payload = {
+      chat_id: chatId.value,
+      parse_mode: 'HTML'
+    };
+
+    if (selectedMedia.value.type === 'video') {
+      payload.video = selectedMedia.value.url;
+      payload.caption = message.value.trim();
+      await axios.post(`https://api.telegram.org/bot${channelStore.botToken}/sendVideo`, payload);
+    } else {
+      payload.photo = selectedMedia.value.url;
+      payload.caption = message.value.trim();
+      await axios.post(`https://api.telegram.org/bot${channelStore.botToken}/sendPhoto`, payload);
+    }
+
+    alert('Media sent to Telegram!');
+    selectedMedia.value = null;
+    message.value = '';
+  } catch (error) {
+    console.error('Ошибка отправки в Telegram:', error);
+    alert('Ошибка отправки медиа!');
+  }
+};
+
+
     // Начать запись видео
     const startVideoRecording = async () => {
       try {
@@ -520,10 +664,7 @@ export default {
       );
     });
 
-    const canSendNow = computed(() => {
-      return message.value.trim().length > 0 || uploadedFiles.value.length > 0;
-    });
-
+   
     // Метод запланированной отправки сообщения
     //     const scheduleMessage = async () => {
     //   if (!isScheduleValid.value) {
@@ -603,20 +744,42 @@ export default {
     };
 
     // Метод загрузки файлов
+    // const handleFileUpload = (event) => {
+    //   const files = Array.from(event.target.files);
+    //   files.forEach((file) => {
+    //     const reader = new FileReader();
+    //     reader.onload = (e) => {
+    //       uploadedFiles.value.push({
+    //         file,
+    //         preview: e.target.result,
+    //         type: file.type,
+    //       });
+    //     };
+    //     reader.readAsDataURL(file);
+    //   });
+    // };
     const handleFileUpload = (event) => {
-      const files = Array.from(event.target.files);
-      files.forEach((file) => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          uploadedFiles.value.push({
-            file,
-            preview: e.target.result,
-            type: file.type,
-          });
-        };
-        reader.readAsDataURL(file);
+  const files = Array.from(event.target.files);
+  if (!files.length) return;
+
+  files.forEach((file) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      uploadedFiles.value.push({
+        file,
+        preview: e.target.result,
+        type: file.type,
       });
     };
+    reader.readAsDataURL(file);
+  });
+
+  // Очистка input, чтобы повторная загрузка с тем же файлом работала
+  event.target.value = "";
+};
+
+
+
 
     // Метод очистки всех полей
     const clearInputs = () => {
@@ -685,193 +848,98 @@ export default {
       }
     };
 
-    const sendMessage = async () => {
-      try {
-        // Проверка: является ли сообщение отложенным
-        if (isScheduleValid.value) {
-          const scheduledAt = `${scheduledDate.value}T${scheduledTime.value}`;
-          const payload = {
-            chat_id: channelStore.activeChannelId,
-            message: message.value || "",
-            files: uploadedFiles.value.map((file) => ({
-              name: file.file.name,
-              type: file.type,
-            })),
-            gif: selectedGif.value || null,
-            audio: recordedAudio.value || null,
-            scheduledAt, // Дата и время отправки
-            options,
-          };
-
-          console.log("Планирование сообщения:", payload);
-
-          // Отправка запроса для планирования сообщения
-          const response = await axios.post("/api/schedule", payload);
-          alert(response.data.message || "Сообщение успешно запланировано!");
-          resetAllFields();
-          return;
-        }
-
-        // Проверка: есть ли загруженные файлы для отправки
-        if (uploadedFiles.value.length > 0) {
-          console.log("Отправка медиафайлов в Telegram");
-          const media = uploadedFiles.value.map((file, index) => ({
-            type: file.type.startsWith("image/") ? "photo" : "video",
-            media: `attach://${file.file.name}`,
-            caption: index === 0 ? message.value || " " : undefined,
-            has_spoiler: options.spoilerMode,
-          }));
-
-          const formData = new FormData();
-          formData.append("chat_id", channelStore.activeChannelId);
-          formData.append("media", JSON.stringify(media));
-
-          uploadedFiles.value.forEach((file) => {
-            formData.append(file.file.name, file.file);
-          });
-
-          const response = await axios.post(
-            `https://api.telegram.org/bot${botToken}/sendMediaGroup`,
-            formData,
-            { headers: { "Content-Type": "multipart/form-data" } }
-          );
-
-          console.log("Медиа успешно отправлено:", response.data);
-          uploadedFiles.value = [];
-          message.value = "";
-          alert("Медиа успешно отправлено!");
-          return;
-        }
-
-        // Проверка: отправка GIF
-        if (selectedGif.value) {
-          const payload = {
-            chat_id: channelStore.activeChannelId,
-            animation: selectedGif.value,
-            caption: message.value.trim() || " ",
-            disable_web_page_preview: !options.sendWithPreview,
-          };
-
-          console.log("Отправка GIF с данными:", payload);
-
-          await axios.post(
-            `https://api.telegram.org/bot${botToken}/sendAnimation`,
-            payload
-          );
-
-          alert("GIF успешно отправлен!");
-          selectedGif.value = null;
-          message.value = "";
-          return;
-        }
-
-        // Проверка: отправка аудиофайлов
-        if (recordedAudio.value) {
-          console.log("Отправка аудио в Telegram");
-
-          const formData = new FormData();
-          formData.append("chat_id", channelStore.activeChannelId);
-          const audioFile =
-            uploadedFiles.value[0]?.file || new Blob([recordedAudio.value]);
-
-          formData.append("audio", audioFile, "recorded-audio.mp3");
-          formData.append("performer", "Voice Recorder");
-          formData.append("title", "Запись с диктофона");
-          formData.append("caption", message.value || "Аудиозапись");
-
-          try {
-            const thumbnailBlob = await fetch("../assets/img/4vrobot.png").then(
-              (res) => res.blob()
-            );
-            formData.append("thumb", thumbnailBlob, "thumbnail.jpg");
-          } catch (error) {
-            console.warn("Ошибка загрузки превью:", error.message);
-          }
-
-          const response = await axios.post(
-            `https://api.telegram.org/bot${botToken}/sendAudio`,
-            formData,
-            { headers: { "Content-Type": "multipart/form-data" } }
-          );
-
-          console.log("Аудио успешно отправлено:", response.data);
-          recordedAudio.value = null;
-          alert("Аудио успешно отправлено!");
-          return;
-        }
-
-        // Проверка: отправка текстового сообщения
-        if (message.value.trim()) {
-          const payload = {
-            chat_id: channelStore.activeChannelId,
-            text: message.value,
-            disable_web_page_preview: !options.sendWithPreview,
-          };
-
-          await axios.post(
-            `https://api.telegram.org/bot${botToken}/sendMessage`,
-            payload
-          );
-
-          alert("Сообщение успешно отправлено!");
-          message.value = "";
-          return;
-        }
-
-        console.warn("Нет данных для отправки!");
-      } catch (error) {
-        console.error(
-          "Ошибка отправки:",
-          error.response?.data || error.message
-        );
-        alert(
-          "Произошла ошибка при отправке. Проверьте данные и повторите попытку."
-        );
-      }
-    };
-
     const sendMedia = async () => {
-      try {
-        const media = uploadedFiles.value.map((file, index) => ({
-          type: file.type.startsWith("image/") ? "photo" : "video",
-          media: `attach://${file.file.name}`,
-          caption: index === 0 ? message.value || " " : undefined,
-          has_spoiler: options.spoilerMode,
-        }));
+  if (uploadedFiles.value.length === 0) {
+    alert("Выберите файл перед отправкой!");
+    return;
+  }
 
-        const formData = new FormData();
-        formData.append("chat_id", channelStore.activeChannelId);
-        formData.append("media", JSON.stringify(media));
+  try {
+    const chatId = channelStore.activeChannelId || channelStore.channels[0]?.id;
+    let formData = new FormData();
 
-        uploadedFiles.value.forEach((file) => {
-          formData.append(file.file.name, file.file);
-        });
+    formData.append("chat_id", chatId);
 
-        const response = await axios.post(
-          `https://api.telegram.org/bot${botToken}/sendMediaGroup`,
-          formData,
-          { headers: { "Content-Type": "multipart/form-data" } }
-        );
+    if (uploadedFiles.value.length === 1) {
+      // Если один файл — отправляем как фото, видео или аудио
+      const file = uploadedFiles.value[0].file;
+      formData.append(file.type.startsWith("image/") ? "photo" : file.type.startsWith("video/") ? "video" : "audio", file);
+    } else {
+      // Если несколько файлов — отправляем как `mediaGroup`
+      const media = uploadedFiles.value.map((file, index) => ({
+        type: file.type.startsWith("image/") ? "photo" : file.type.startsWith("video/") ? "video" : "audio",
+        media: `attach://${file.file.name}`,
+        caption: index === 0 ? message.value || " " : undefined,
+      }));
 
-        console.log("Медиа успешно отправлено:", response.data);
-        uploadedFiles.value = [];
-        message.value = "";
-        alert("Медиа успешно отправлено!");
-      } catch (error) {
-        console.error(
-          "Ошибка при отправке медиа:",
-          error.response?.data || error.message
-        );
-      }
-    };
+      formData.append("media", JSON.stringify(media));
+      uploadedFiles.value.forEach((file) => {
+        formData.append(file.file.name, file.file);
+      });
+    }
 
-    const resetAllFields = () => {
-      message.value = "";
-      uploadedFiles.value = [];
-      gifSearchQuery.value = "";
-      searchResults.value = [];
-      selectedGif.value = null;
-    };
+    const endpoint =
+      uploadedFiles.value.length === 1
+        ? `send${uploadedFiles.value[0].type.startsWith("image/") ? "Photo" : uploadedFiles.value[0].type.startsWith("video/") ? "Video" : "Audio"}`
+        : "sendMediaGroup";
+
+    const response = await axios.post(
+      `https://api.telegram.org/bot${botToken}/` + endpoint,
+      formData,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+
+    console.log("Медиа успешно отправлено:", response.data);
+    uploadedFiles.value = [];
+    message.value = "";
+    alert("Медиа успешно отправлено!");
+  } catch (error) {
+    console.error("Ошибка при отправке медиа:", error.response?.data || error.message);
+    alert("Ошибка отправки медиа!");
+  }
+};
+
+const selectMedia = (media) => {
+  selectedMedia.value = media;
+  selectedGif.value = null; // Сбрасываем GIF при выборе видео/фото
+};
+
+    // const sendMedia = async () => {
+    //   try {
+    //     const media = uploadedFiles.value.map((file, index) => ({
+    //       type: file.type.startsWith("image/") ? "photo" : "video",
+    //       media: `attach://${file.file.name}`,
+    //       caption: index === 0 ? message.value || " " : undefined,
+    //       has_spoiler: options.spoilerMode,
+    //     }));
+
+    //     const formData = new FormData();
+    //     formData.append("chat_id", channelStore.activeChannelId);
+    //     formData.append("media", JSON.stringify(media));
+
+    //     uploadedFiles.value.forEach((file) => {
+    //       formData.append(file.file.name, file.file);
+    //     });
+
+    //     const response = await axios.post(
+    //       `https://api.telegram.org/bot${botToken}/sendMediaGroup`,
+    //       formData,
+    //       { headers: { "Content-Type": "multipart/form-data" } }
+    //     );
+
+    //     console.log("Медиа успешно отправлено:", response.data);
+    //     uploadedFiles.value = [];
+    //     message.value = "";
+    //     alert("Медиа успешно отправлено!");
+    //   } catch (error) {
+    //     console.error(
+    //       "Ошибка при отправке медиа:",
+    //       error.response?.data || error.message
+    //     );
+    //   }
+    // };
+
+    
 
     const clearSelectedGif = () => {
       console.log("Очистка выбранного GIF");
@@ -971,11 +1039,174 @@ export default {
     });
 
     const selectGif = (gif) => {
-      console.log("GIF выбран:", gif);
-      selectedGif.value = gif.images.original.url;
+  selectedGif.value = gif.images.original.url;
+  selectedMedia.value = null; // Сбрасываем видео/фото при выборе GIF
+};
+
+    
+
+    const updateImageLoadStatus = (id) => {
+      nextTick(() => {
+        imageLoadStatus.value[id] = true;
+      });
     };
 
-    return {
+    const updateVideoLoadStatus = (id) => {
+      nextTick(() => {
+        videoLoadStatus.value[id] = true;
+      });
+    };
+
+    const totalPages = computed(() => Math.ceil(mediaResults.value.length / mediaPerPage));
+    const paginatedMedia = computed(() => {
+      const start = (currentPage.value - 1) * mediaPerPage;
+      return mediaResults.value.slice(start, start + mediaPerPage);
+    });
+
+    const prevPage = () => { if (currentPage.value > 1) currentPage.value--; };
+    const nextPage = () => { if (currentPage.value < totalPages.value) currentPage.value++; };
+
+   
+    const clearSelectedMedia = () => selectedMedia.value = null;
+
+    
+const resetAllFields = () => {
+  message.value = "";
+  selectedGif.value = null;
+  selectedMedia.value = null;
+  uploadedFiles.value = [];
+};
+
+const fetchMedia = async () => {
+  if (!searchQuery.value.trim()) return;
+  loading.value = true;
+  try {
+    const videoResponse = await axios.get("https://pixabay.com/api/videos/", {
+      params: { key: "38493945-5c7d35b7bac4a53d9ead4ac6f", q: searchQuery.value, per_page: 50 },
+    });
+
+    const imageResponse = await axios.get("https://pixabay.com/api/", {
+      params: { key: "38493945-5c7d35b7bac4a53d9ead4ac6f", q: searchQuery.value, image_type: "photo", per_page: 50 },
+    });
+
+    const videos = videoResponse.data.hits.map((video) => ({ id: video.id, type: "video", url: video.videos.medium.url }));
+    const images = imageResponse.data.hits.map((image) => ({ id: image.id, type: "image", url: image.webformatURL }));
+
+    mediaResults.value = [...videos, ...images];
+  } catch (error) {
+    console.error("Ошибка загрузки медиа:", error);
+  } finally {
+    loading.value = false;
+  }
+};
+const sendMessage = async () => {
+  if (!message.value.trim() && !selectedMedia.value && !selectedGif.value && uploadedFiles.value.length === 0) {
+    alert("Добавьте текст или выберите медиа!");
+    return;
+  }
+
+  try {
+    const chatId = channelStore.activeChannelId || channelStore.channels[0]?.id;
+    let formData = new FormData();
+    formData.append("chat_id", chatId);
+
+    const captionText = message.value.trim() ? message.value.trim() : " "; // ✅ Добавляет пробел, если текста нет
+
+    if (selectedGif.value) {
+      // 🟠 Отправка GIF
+      await axios.post(`https://api.telegram.org/bot${botToken}/sendAnimation`, {
+        chat_id: chatId,
+        animation: selectedGif.value,
+        caption: captionText, // ✅ Теперь отправляет даже без текста
+        parse_mode: "HTML",
+      });
+      selectedGif.value = null;
+    } else if (selectedMedia.value) {
+      // 🟡 Отправка фото или видео
+      const mediaType = selectedMedia.value.type === "video" ? "video" : "photo";
+      await axios.post(`https://api.telegram.org/bot${botToken}/send${mediaType.charAt(0).toUpperCase() + mediaType.slice(1)}`, {
+        chat_id: chatId,
+        [mediaType]: selectedMedia.value.url,
+        caption: captionText, // ✅ Теперь отправляет даже без текста
+        parse_mode: "HTML",
+        has_spoiler: options.spoilerMode, 
+      });
+      selectedMedia.value = null;
+    } else if (uploadedFiles.value.length === 1) {
+      // 🟢 Отправка одного файла
+      const file = uploadedFiles.value[0].file;
+      formData.append(file.type.startsWith("image/") ? "photo" : file.type.startsWith("video/") ? "video" : "audio", file);
+      formData.append("caption", captionText); // ✅ Теперь отправляет даже без текста
+      formData.append("has_spoiler", options.spoilerMode ? "true" : "false"); 
+
+      await axios.post(`https://api.telegram.org/bot${botToken}/send${file.type.startsWith("image/") ? "Photo" : file.type.startsWith("video/") ? "Video" : "Audio"}`, formData);
+    } else if (uploadedFiles.value.length > 1) {
+      // 🔵 Отправка нескольких файлов как `mediaGroup`
+      const media = uploadedFiles.value.map((file, index) => ({
+        type: file.type.startsWith("image/") ? "photo" : file.type.startsWith("video/") ? "video" : "audio",
+        media: `attach://${file.file.name}`,
+        caption: index === 0 ? captionText : undefined, // ✅ Пробел, если текста нет
+        has_spoiler: options.spoilerMode,
+      }));
+      formData.append("media", JSON.stringify(media));
+      uploadedFiles.value.forEach((file) => {
+        formData.append(file.file.name, file.file);
+      });
+
+      await axios.post(`https://api.telegram.org/bot${botToken}/sendMediaGroup`, formData);
+    } else if (message.value.trim()) {
+      // 🔴 Отправка только текста
+      await axios.post(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        chat_id: chatId,
+        text: message.value.trim(),
+        parse_mode: "HTML",
+      });
+    }
+
+    alert("Сообщение успешно отправлено!");
+    resetAllFields();
+  } catch (error) {
+    console.error("Ошибка отправки в Telegram:", error.response?.data || error.message);
+    alert("Ошибка отправки медиа!");
+  }
+};
+
+
+
+    return { 
+      canSendNow,
+  //     loading, // Состояние загрузки
+  // mediaResults, // Результаты поиска (все найденные медиа)
+  // searchQuery,
+  //     fetchMedia,
+  //     paginatedMedia,
+  //     loading,
+  //     selectMedia,
+  //     selectedMedia,
+  //     clearSelectedMedia,
+  //     sendMessage,
+  //     message
+  closeMediaGallery,
+  videoLoadStatus,
+  updateVideoLoadStatus,
+  imageLoadStatus,
+  updateImageLoadStatus,
+  searchQuery,
+      fetchMedia,
+      paginatedMedia,
+      loading,
+      selectMedia,
+      selectedMedia,
+      clearSelectedMedia,
+      sendMessage,
+      message,
+      currentPage,
+      totalPages,
+      prevPage,
+      nextPage,
+  mediaResults, // Результаты поиска (все найденные медиа)
+  
+  sendToTelegram, 
       clearSelectedGif,
       selectGif, // Добавил метод selectGif
       // searchGifs,
@@ -1019,7 +1250,7 @@ export default {
       searchResults,
 
       options,
-      message,
+     
       closeGifResults,
     };
   },
@@ -1027,6 +1258,75 @@ export default {
 </script>
 
 <style scoped>
+.media-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.media-item {
+  /* width: 150px;
+  height: 100px; */
+  cursor: pointer;
+  overflow: hidden;
+  /* border-radius: 8px; */
+  border: 2px solid transparent;
+  transition: border-color 0.3s;
+}
+
+.media-item:hover {
+  border-color: red;
+}
+
+.video-preview,
+.image-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Стили для предпросмотра видео */
+.selected-media-preview {
+  text-align: center;
+}
+
+.preview-video,
+.preview-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.delete-media-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: rgba(220, 53, 69, 0.8);
+  border: none;
+  color: #fff;
+  padding: 5px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.delete-media-btn:hover {
+  background-color: rgba(200, 35, 51, 0.9);
+}
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+
+
+
+
+
 .gif-preview {
   position: relative; /* Устанавливаем позиционирование для наложения кнопки */
   display: inline-block;
@@ -1119,8 +1419,8 @@ export default {
 }
 .gif-item {
   cursor: pointer;
-  width: 50px;
-  height: 50px;
+  width: 100px;
+  height: 100px;
   overflow: hidden;
   border-radius: 8px;
   border: 2px solid transparent;

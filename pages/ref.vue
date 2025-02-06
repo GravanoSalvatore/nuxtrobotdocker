@@ -1,143 +1,189 @@
-<template>
-    <div class="container mt-5">
-      <!-- Заголовок -->
-      <h1 class="text-center fw-bold">TON news and more</h1>
-      <p class="text-center lead">Latest updates about The Open Network (TON).</p>
-  
-      <!-- Индикатор загрузки -->
-      <div v-if="loading" class="text-center my-5">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-      </div>
-  
-      <!-- Ошибка загрузки -->
-      <div v-if="error" class="alert alert-danger text-center">
-        Failed to load news. Please try again later.
-      </div>
-  
-      <!-- Сетка новостей -->
-      <div v-else class="row">
-        <div v-for="article in paginatedNews" :key="article.ID" class="col-lg-4 col-md-6 mb-4">
-          <div class="card h-100 shadow-sm">
-            <img :src="article.IMAGE_URL || 'https://via.placeholder.com/300x200'"
-              class="card-img-top"
-              alt="news image"
-              style="height: 200px; object-fit: cover;"
-            />
-            <div class="card-body d-flex flex-column">
-              <h5 class="card-title">
-                <a :href="article.URL" target="_blank" class="text-decoration-none">
-                  {{ article.TITLE || "No Title Available" }}
-                </a>
-              </h5>
-              <p class="card-text">
-                {{ article.BODY ? article.BODY.slice(0, 100) + "..." : "No content available" }}
-              </p>
-              <p class="text-muted small">
-                <img :src="article.SOURCE_DATA?.IMAGE_URL || 'https://via.placeholder.com/35x35'"
-                  style="width: 20px; height: 20px; border-radius: 50%;"
-                /> {{ article.SOURCE_DATA?.NAME || "Unknown Source" }}
-              </p>
-              <p class="text-muted small">
-                {{ formatDate(article.PUBLISHED_ON) }}
-              </p>
-              <a :href="article.URL" target="_blank" class="btn btn-primary mt-auto">Read More</a>
-            </div>
+<!-- <template>
+  <div class="container">
+   
+    
+    <input v-model="searchQuery" @input="fetchVideos" placeholder="Поиск видео..." class="search-input" />
+    
+    <div v-if="loading" class="text-center">
+      <p>Загрузка видео...</p>
+    </div>
+    
+    <div v-else>
+      <div class="video-list">
+        <div v-for="video in paginatedVideos" :key="video.id" class="video-item">
+          <video :src="video.url" controls class="video-player"></video>
+          <div class="video-info">
+            <p class="video-title">{{ video.title }}</p>
+            <button @click="sendToTelegram(video)" class="btn-danger1">
+              Send to Telegram
+            </button>
           </div>
         </div>
       </div>
-  
-      <!-- Пагинация -->
-      <div class="text-center my-4" v-if="news.length > 0">
-        <button class="btn btn-outline-primary" @click="loadMore">Load More</button>
+      
+      
+      <div class="pagination">
+        <button @click="prevPage" :disabled="currentPage === 1">Назад</button>
+        <span>Страница {{ currentPage }} из {{ totalPages }}</span>
+        <button @click="nextPage" :disabled="currentPage === totalPages">Вперед</button>
       </div>
     </div>
-  </template>
-  
-  <script>
-  import axios from "axios";
-  
-  export default {
-    data() {
-      return {
-        news: [],
-        loading: false,
-        error: false,
-        visibleCount: 9, // Количество отображаемых новостей
-      };
-    },
-    computed: {
-      paginatedNews() {
-        return this.news.slice(0, this.visibleCount);
-      },
-    },
-    methods: {
-      async fetchNews() {
-        this.loading = true;
-        this.error = false;
-        try {
-          const response = await axios.get(
-            "https://data-api.ccdata.io/news/v1/article/list?lang=EN&limit=100&categories=TON"
-          );
-          if (response.data && response.data.Data) {
-            this.news = response.data.Data.map((item) => ({
-              ID: item.ID,
-              TITLE: item.TITLE,
-              BODY: item.BODY,
-              URL: item.URL,
-              IMAGE_URL: item.IMAGE_URL,
-              PUBLISHED_ON: item.PUBLISHED_ON,
-              SOURCE_DATA: item.SOURCE_DATA || {},
-            }));
-          } else {
-            this.error = true;
-          }
-        } catch (error) {
-          console.error("Ошибка загрузки новостей:", error);
-          this.error = true;
-        } finally {
-          this.loading = false;
-        }
-      },
-      loadMore() {
-        this.visibleCount += 9; // Загружаем еще 9 новостей
-      },
-      formatDate(timestamp) {
-        const date = new Date(timestamp * 1000); // Преобразуем Unix timestamp
-        return date.toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        });
-      },
-    },
-    mounted() {
-      this.fetchNews();
-    },
-  };
-  </script>
-  
-  <style scoped>
-  h1 {
-    color: #007bff;
+  </div>
+</template>
+
+<script setup>
+import axios from 'axios';
+import { ref, computed, onMounted } from 'vue';
+
+const videos = ref([]);
+const loading = ref(true);
+const searchQuery = ref('funny');
+const botToken = '6903896787:AAG-rPGukp422cw17k4y17UsJUiDMl5tdbc';
+const chatId = '-1002272715205';
+const currentPage = ref(1);
+const videosPerPage = 10;
+
+const fetchVideos = async () => {
+  if (!searchQuery.value.trim()) return;
+  loading.value = true;
+  try {
+    const response = await axios.get('https://pixabay.com/api/videos/', {
+      params: {
+        key: '38493945-5c7d35b7bac4a53d9ead4ac6f',
+        q: searchQuery.value,
+        per_page: 100
+      }
+    });
+
+    videos.value = response.data.hits.map(video => ({
+      id: video.id,
+      title: video.tags,
+      url: video.videos.medium.url
+    }));
+    currentPage.value = 1; // Сбрасываем страницу при новом поиске
+  } catch (error) {
+    console.error('Ошибка загрузки видео:', error);
+  } finally {
+    loading.value = false;
   }
-  
-  /* .card-title a {
-    color: #212529;
-    transition: color 0.3s ease;
+};
+
+const paginatedVideos = computed(() => {
+  const start = (currentPage.value - 1) * videosPerPage;
+  return videos.value.slice(start, start + videosPerPage);
+});
+
+const totalPages = computed(() => Math.ceil(videos.value.length / videosPerPage));
+
+const nextPage = () => {
+  if (currentPage.value < totalPages.value) {
+    currentPage.value++;
   }
-   */
-  .card-title a:hover {
-    color: #007bff;
+};
+
+const prevPage = () => {
+  if (currentPage.value > 1) {
+    currentPage.value--;
   }
-  
-  .card {
-    transition: transform 0.2s ease-in-out;
+};
+
+const sendToTelegram = async (video) => {
+  try {
+    const data = {
+      chat_id: chatId,
+      text: `<a href='${video.url}'>Смотреть видео</a>`,
+      parse_mode: 'HTML'
+    };
+    await axios.post(`https://api.telegram.org/bot${botToken}/sendMessage`, data);
+    alert('Видео отправлено в Telegram!');
+  } catch (error) {
+    console.error('Ошибка отправки в Telegram:', error);
+    alert('Ошибка отправки видео!');
   }
+};
+
+onMounted(fetchVideos);
+</script>
+
+<style scoped>
+.container {
+  text-align: center;
+  padding: 20px;
+}
+.search-input {
+  color: var(--bs-body-color);
+  background-color: var(--bs-body-bg);
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+.video-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+.video-item {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.video-player {
+  width: 100%;
+  border-radius: 10px;
+}
+.video-title {
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: bold;
+}
+.btn-send {
+  margin-top: 5px;
+  padding: 8px 12px;
+  background-color: #0088cc;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.btn-send:hover {
+  background-color: #006699;
+}
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.pagination button {
+  padding: 5px 10px;
+  border: none;
+  background-color: #0088cc;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+</style> -->
+<template lang="">
+  <div>
+    
+  </div>
+</template>
+<script>
+export default {
   
-  .card:hover {
-    transform: translateY(-5px);
-  }
-  </style>
+}
+</script>
+<style lang="">
   
+</style>

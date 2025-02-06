@@ -3,12 +3,15 @@
     <!-- Кнопка настроек -->
     <!-- <button class="settings-btn" @click="showModal = true">⚙️</button> -->
     <svg class="settings-btn" @click="showModal = true" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="currentColor" d="m9.25 22l-.4-3.2q-.325-.125-.612-.3t-.563-.375L4.7 19.375l-2.75-4.75l2.575-1.95Q4.5 12.5 4.5 12.338v-.675q0-.163.025-.338L1.95 9.375l2.75-4.75l2.975 1.25q.275-.2.575-.375t.6-.3l.4-3.2h5.5l.4 3.2q.325.125.613.3t.562.375l2.975-1.25l2.75 4.75l-2.575 1.95q.025.175.025.338v.674q0 .163-.05.338l2.575 1.95l-2.75 4.75l-2.95-1.25q-.275.2-.575.375t-.6.3l-.4 3.2zm2.8-6.5q1.45 0 2.475-1.025T15.55 12t-1.025-2.475T12.05 8.5q-1.475 0-2.488 1.025T8.55 12t1.013 2.475T12.05 15.5"/></svg>
+    <span style="color:cornflowerblue" class="selected-category fw-bold">{{ newsOptions[selectedCategory]?.label || 'Выберите категорию' }}</span>
     <!-- Бегущая строка -->
     <div class="ticker-content" ref="ticker">
       <div v-for="(item, index) in news" :key="'news-' + index" class="ticker-item">
         <a :href="item.url" target="_blank">
           <img v-if="item.urlToImage" :src="item.urlToImage" class="news-logo" />
-           <span class="news-title "> {{ item.title }}</span>
+          <img v-else src="https://s3.coinmarketcap.com/static-gravity/image/d889592fdf2042a782200649ee970afb.jpg" class="news-logo" />
+          
+          <span class="news-title "> {{ item.title }}</span>
           <span class="news-source fw-bold"> — {{ item.sourceName }}</span>
           <span class="news-date"> [{{ formatDate(item.publishedAt) }}] </span>
         </a>
@@ -17,6 +20,7 @@
       <div v-for="(item, index) in news" :key="'news-duplicate-' + index" class="ticker-item">
         <a :href="item.url" target="_blank">
           <img v-if="item.urlToImage" :src="item.urlToImage" class="news-logo" />
+          <img v-else src="https://s3.coinmarketcap.com/static-gravity/image/d889592fdf2042a782200649ee970afb.jpg" class="news-logo" />
           <span class="news-title "> {{ item.title }}</span>
           <span class="news-source fw-bold"> — {{ item.sourceName }}</span>
           <span class="news-date"> [{{ formatDate(item.publishedAt) }}] </span>
@@ -45,7 +49,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch  } from 'vue';
 import axios from 'axios';
 
 const news = ref([]);
@@ -54,7 +58,7 @@ const selectedCategory = ref('ton');
 
 const newsOptions = {
   bitcoin: {
-    label: 'Bitcoin News',
+    label: 'Bitcoin',
     url: 'https://4v-news-api.azurewebsites.net/News?SiteId=1&CategoryId=16&Page=1&PageSize=100'
   },
   science: {
@@ -67,7 +71,7 @@ const newsOptions = {
   },
 
   ton: {
-    label: 'TON News',
+    label: 'TON ',
     url: 'https://data-api.ccdata.io/news/v1/article/list?lang=EN&limit=100&categories=TON'
   }
 };
@@ -110,11 +114,22 @@ const formatDate = (dateString) => {
     minute: '2-digit',
   }).replace(',', '');
 };
-
+watch(selectedCategory, fetchNews);
 onMounted(fetchNews);
 </script>
 
 <style scoped>
+.selected-category{
+  z-index:10000000;
+  position: absolute;
+  top: 35px;
+  right: 25px;
+  background: transparent;
+  border: none;
+  font-size: 12px;
+  cursor: pointer;
+  z-index: 10;
+}
 .news-title , .news-date{
   margin-left: 5px;
 }
