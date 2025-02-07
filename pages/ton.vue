@@ -1,7 +1,7 @@
 <template>
     <div class="container ">
       <!-- Title Section -->
-      <h1 class="text-center fw-bold"><span style="color:cornflowerblue">TON</span> - The Open Network</h1>
+      <h1 class="text-center fw-bold"><a href="https://ton.org/en" target="_blank"><span style="color:cornflowerblue">TON</span></a> - The Open Network</h1>
       <p class="text-center lead">
         A highly scalable and fast <a href="https://tonscan.org/" target="_blank">blockchain</a> designed for Web3 applications.
       </p>

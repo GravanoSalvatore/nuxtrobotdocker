@@ -725,7 +725,7 @@ export default {
     const accordionItems = ref([
       {
         title: "Setting",
-        icon: '<i class="bi bi-sliders"></i>',
+        icon: '<i class="bi bi-sliders text-secondary"></i>',
         route: "/null",
       },
       {
@@ -734,9 +734,16 @@ export default {
         route: "/profile",
       },
       {
+        title: "Ton lab",
+        content: "Content for item #7.",
+        icon: '<i class="bi bi-globe text-info"></i>',
+        route: "/ton",
+      },
+     
+      {
         title: "Invite friends",
         content: "Content for item #7.",
-        icon: '<i class="bi bi-people-fill"></i>',
+        icon: '<i class="bi bi-people-fill text-primary"></i>',
         route: "/ref",
       },
       // {
@@ -752,12 +759,12 @@ export default {
       // },
       {
         title: "Privacy policy",
-        icon: '<i class="bi bi-shield-check"></i>',
+        icon: '<i class="bi bi-shield-check text-success"></i>',
         route: "/privacy",
       },
       {
         title: "Terms of servises",
-        icon: '<i class="bi bi-file-earmark-text-fill"></i>',
+        icon: '<i class="bi bi-file-earmark-text-fill text-warning"></i>',
         route: "/terms",
       },
       // {
