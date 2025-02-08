@@ -202,6 +202,7 @@
         <button  @click="toggleSavedTags" v-if="savedTags.length > 0"   class="pl-4 btn-danger1">
         <i class="bi bi-floppy2-fill pointer "> Saved tags</i> 
         </button>
+        
     <div 
       v-show="showSavedTags" 
       class="saved-tags-container mt-2"
@@ -221,7 +222,7 @@
         </span>
       </div>
     </div>
-   
+    
   
    <!-- Список новостей -->
    <div style="position: relative" class="news-list">
@@ -373,11 +374,14 @@
   
   
   </div>
+ 
         <div class="row container p">
       
           <NuxtPage />
         </div>
+        <Main  v-if="isHomePage"/>
       </div>
+     
       <div
         v-if="showModal"
         class="modal fade show"
@@ -408,7 +412,7 @@
               <!-- Ваш компонент -->
               <Document />
               <Setting />
-              <Main />
+              <!-- <Main /> -->
 
              
 
@@ -758,10 +762,16 @@ export default {
       //   route: "/aboutUs",
       // },
       {
+        title: "About us",
+        icon: '<i class="bi bi-file-text-fill text-muted"></i>',
+        route: "/aboutUs",
+      },
+      {
         title: "Privacy policy",
         icon: '<i class="bi bi-shield-check text-success"></i>',
         route: "/privacy",
       },
+      
       {
         title: "Terms of servises",
         icon: '<i class="bi bi-file-earmark-text-fill text-warning"></i>',

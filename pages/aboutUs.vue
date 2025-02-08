@@ -2,18 +2,21 @@
   <div class="about-us container my-4">
     <h1 class="text-center mb-4">About Us</h1>
 
-    <p>
-      <strong>4VROBOT</strong> is an innovative platform for spreading news about blockchain, cryptocurrencies, and IT technologies from around the world. We specialize in providing up-to-date and high-quality information and content.
-    </p>
-    <p>
-      Our goal is to be a reliable source of information for everyone interested in cryptocurrencies and technologies. We strive to keep our users informed about the latest events and trends in the world of cryptocurrencies.
-    </p>
-    <p>
-      <strong>4VROBOT</strong> is not just a platform but a full-fledged cryptocurrency news website where anyone can find useful information, analytical articles, and expert opinions.
-    </p>
-    <p>
-      Thank you for trusting and choosing <strong>4VROBOT</strong> as your source for cryptocurrency news.
-    </p>
+    <p>  
+  <strong>4V.ROBOT</strong> is an innovative platform for spreading high-quality news, articles, and diverse content from around the world. We specialize in providing up-to-date and relevant information to our users.  
+</p>  
+<p>  
+  Our goal is to be a reliable source of information for everyone interested in staying informed. We strive to keep our users updated on the latest events and trends across various topics.  
+</p>  
+<p>  
+  <strong>4V.ROBOT</strong> is not just a platform, but a comprehensive news website where anyone can find useful information, analytical articles, and expert insights.  
+</p>  
+<p>  
+  We utilize advanced AI systems to curate, edit, and distribute the content to our Telegram channels and chat groups, ensuring a seamless and engaging experience for our users.  
+</p>  
+<p>  
+  Thank you for trusting and choosing <strong>4V.ROBOT</strong> as your go-to source for news and content.  
+</p>
   </div>
 </template>
 

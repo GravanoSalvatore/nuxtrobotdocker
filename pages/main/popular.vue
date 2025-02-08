@@ -253,7 +253,7 @@
                 <textarea
                   id="editDescription"
                   v-model="editableItem.description"
-                  class="form-control"
+                  class="form-control d"
                 ></textarea>
               </div>
               <div class="mb-3">
@@ -261,7 +261,7 @@
                 <textarea
   id="editContent"
   v-model="editableItem.content"
-  class="form-control"
+  class="form-control c"
 ></textarea>
 <!-- <p v-html="editableItem.content || 'Контент отсутствует'"></p> -->
 
@@ -559,6 +559,9 @@ const autopilotActive = ref(false);
 </script>
 
 <style scoped>
+.c , .d{
+  min-height:100px;
+}
 .overlay {
   overflow-x: hidden;
   overflow-y: auto;
