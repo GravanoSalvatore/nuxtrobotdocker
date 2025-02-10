@@ -1,7 +1,6 @@
-<template>
+<!-- <template>
   <div v-if="localArticles.length > 0" class="container">
-    <!-- Кнопки управления -->
-    <!-- Active channel ID: {{ activeChannelId }}   -->
+   
     <div style="position: relative;">
     <button
       :class="['save-tag-btn btn-danger1', { active: isTagSaved }]"
@@ -19,38 +18,35 @@
   Setting
 </button>
 
-<!-- Modal -->
+
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <!-- <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div> -->
+      
       <div class="modal-body">
         <setting/>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn-danger1" data-bs-dismiss="modal">Close</button>
-        <!-- <button type="button" class="btn btn-primary">Understood</button> -->
+       
       </div>
     </div>
   </div>
 </div>
     <i style="position: absolute;right: 0;top:-25px" @click="close" class="bi bi-x-circle pointer"></i>
 </div>
-    <!-- Список статей -->
+    
     <div class="row row-cols-1 row-cols-md-3 g3 mx-auto m-1">
       <div v-for="item in localArticles" :key="item.id" class="col">
         <div class="card mt-4">
-          <!-- Изображение -->
+         
           <img
             v-if="item.urlToImage"
             :src="item.urlToImage"
             class="card-img-top"
           />
           <img v-else :src="image" class="card-img-top" />
-          <!-- Заголовок -->
+          
           <input
             v-model="item.title"
             type="text"
@@ -58,7 +54,7 @@
             placeholder="Редактировать заголовок"
           />
 
-          <!-- Описание -->
+         
           <textarea
             v-model="item.description"
             class="form-control mb-2"
@@ -66,7 +62,7 @@
             rows="3"
           ></textarea>
 
-          <!-- Содержимое -->
+         
           <textarea
             v-model="item.content"
             class="form-control mb-2"
@@ -74,12 +70,12 @@
             rows="5"
           ></textarea>
 
-          <!-- Дата публикации -->
+         
           <div class="p-1" style="font-size: 10px; border-radius: 2px">
             {{ formatDateTime(item.publishedAt) }}
           </div>
 
-          <!-- Кнопка отправки -->
+        
           <button
             style="font-size: 16px"
             @click="sendToTelegram(item)"
@@ -286,4 +282,16 @@ a {
   height: auto;
   margin-bottom: 10px;
 }
+</style> --><template lang="">
+  <div>
+    
+  </div>
+</template>
+<script>
+export default {
+  
+}
+</script>
+<style lang="">
+  
 </style>

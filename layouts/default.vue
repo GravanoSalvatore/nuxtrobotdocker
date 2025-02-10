@@ -36,7 +36,14 @@
           : 'Переключить на тёмную тему'
       "
     >
-      <Icon
+    <svg  style="
+       
+       font-size: 20px;
+       margin-left: 20px;
+       margin-top: px;
+      "
+      v-if="!themeStore.isDark" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"><path fill="currentColor" d="m6.76 4.84l-1.8-1.79l-1.41 1.41l1.79 1.79zM4 10.5H1v2h3zm9-9.95h-2V3.5h2zm7.45 3.91l-1.41-1.41l-1.79 1.79l1.41 1.41zm-3.21 13.7l1.79 1.8l1.41-1.41l-1.8-1.79zM20 10.5v2h3v-2zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6s6-2.69 6-6s-2.69-6-6-6m-1 16.95h2V19.5h-2zm-7.45-3.91l1.41 1.41l1.79-1.8l-1.41-1.41z"/></svg>
+      <!-- <Icon
         v-if="!themeStore.isDark"
         name="meteocons:clear-day-fill"
         style="
@@ -46,7 +53,7 @@
           margin-top: px;
          
         "
-      />
+      /> -->
 
       <Icon
         v-else
@@ -728,7 +735,7 @@ export default {
     const showModal = ref(false);
     const accordionItems = ref([
       {
-        title: "Setting",
+        title: "Settings",
         icon: '<i class="bi bi-sliders text-secondary"></i>',
         route: "/null",
       },
@@ -743,7 +750,11 @@ export default {
         icon: '<i class="bi bi-globe text-info"></i>',
         route: "/ton",
       },
-     
+      {
+        title: "Earn tokens",
+        icon: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 14 14"><path fill="gold" fill-rule="evenodd" d="M13.462 9.692C13.462 12.664 10.77 14 7 14S.537 12.664.537 9.713c0-2.825 1.235-4.432 3.705-5.885a4.59 4.59 0 0 0 5.52-.004c2.467 1.438 3.7 3.045 3.7 5.868M8.743 3.008l1.27-1.985A.7.7 0 0 0 9.41 0H4.843a.7.7 0 0 0-.603 1.077l1.047 1.95c1.061.635 2.4.629 3.456-.019" clip-rule="evenodd"/></svg>',
+        route: "/privacy",
+      },
       {
         title: "Invite friends",
         content: "Content for item #7.",
@@ -771,10 +782,11 @@ export default {
         icon: '<i class="bi bi-shield-check text-success"></i>',
         route: "/privacy",
       },
+
       
       {
         title: "Terms of servises",
-        icon: '<i class="bi bi-file-earmark-text-fill text-warning"></i>',
+        icon: '<i class="bi bi-file-earmark-text-fill text-success"></i>',
         route: "/terms",
       },
       // {
@@ -793,7 +805,7 @@ export default {
     ]);
 
     const handleItemClick = (item, index) => {
-      if (item.title === "Setting") {
+      if (item.title === "Settings") {
         showModal.value = true; // Открыть модальное окно
         console.log("Модальное окно открыто");
       } else if (item.route) {
@@ -849,7 +861,8 @@ export default {
       isTagSaved,
       toggleSaveTag,
       removeSavedTag,
-      savedTags: computed(() => popularStore.savedTags),
+      savedTags,
+      // : computed(() => popularStore.savedTags),
       channels,
       tags,
       sendToTelegram,
@@ -935,7 +948,11 @@ modal-dialog {
 .col-12.col-md-3 {
   order: 1; /* На десктопах сайдбар первый */
 }
-
+@media (max-width: 767px){
+  .accordion{
+    margin-top:10px;
+  }
+}
 @media (max-width: 767px) {
   .col-12.col-md-9 {
     order: 1; /* На мобильных содержимое первое */

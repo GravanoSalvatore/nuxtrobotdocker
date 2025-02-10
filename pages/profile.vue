@@ -1,5 +1,5 @@
 
-   <template>
+    <template>
     <div class="container d-flex justify-content-center">
       <div class="card p-4 shadow-sm" style="max-width: 400px; width: 100%;">
         <h4 v-if="!isAuthenticated" class="text-center mb-3">Авторизация</h4>

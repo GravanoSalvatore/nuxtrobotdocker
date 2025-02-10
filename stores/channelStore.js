@@ -44,7 +44,7 @@
 // stores/channelStore.js
 export const useChannelStore = defineStore('channelStore', {
   state: () => ({
-    botToken: "6903896787:AAG-rPGukp422cw17k4y17UsJUiDMl5tdbc",
+    botToken: "7278946722:AAFImxEmuP9zuitDYktDJMJkIu99ut1y--k",
     channels: [
       {
         id: '-1002414188397', // Chat ID по умолчанию

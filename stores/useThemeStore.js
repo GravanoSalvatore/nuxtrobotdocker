@@ -46,7 +46,7 @@ export const useThemeStore = defineStore("theme", {
     sortOption: "popularity",
     progress: 0,
     image: "", // Замените на URL изображения-заглушки
-    botToken: "6903896787:AAG-rPGukp422cw17k4y17UsJUiDMl5tdbc", // Замените на ваш токен бота
+    botToken: "7278946722:AAFImxEmuP9zuitDYktDJMJkIu99ut1y--k", // Замените на ваш токен бота
     savedTags: [],
     currentTag: "",
   }),

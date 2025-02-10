@@ -852,7 +852,7 @@ export default {
       loadingTags,
       showSetting,
       toggleSetting,
-      savedTags: computed(() => storePop.savedTags),
+      // savedTags: computed(() => storePop.savedTags),
       selectTag,
       currentTag,
       savedTags,
