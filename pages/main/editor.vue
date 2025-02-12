@@ -279,9 +279,9 @@ v-if="paginatedMedia.length" @click="closeMediaGallery"
       </div>
 
       <!-- Предварительный просмотр аудиозаписи -->
-      <div v-if="recordedAudio" class="audio-preview mt-3">
+      <!-- <div v-if="recordedAudio" class="audio-preview mt-3">
         <div class="audio-preview-thumbnail" style="position: relative">
-          <!-- <img src="../../assets/img/4vrobot.png" alt="Audio Preview" /> -->
+
           <p style="font-size: 12px">Listen to the audio recording</p>
           <button
             @click="clearRecordedAudio"
@@ -290,17 +290,8 @@ v-if="paginatedMedia.length" @click="closeMediaGallery"
           ></button>
         </div>
 
-        <!-- <audio
-          style="
-            max-width: 200px;
-            height: 30px;
-            padding-right: 15px;
-            background-color: transparent !important;
-          "
-          :src="recordedAudio"
-          controls
-        ></audio> -->
-      </div>
+       
+      </div> -->
       <!-- Предварительный просмотр выбранного GIF -->
       <!-- <div v-if="selectedGif" class="gif-preview mt-3">
   <h3>Preview GIF:</h3>
@@ -1276,7 +1267,7 @@ const sendMessage = async () => {
 }
 
 .media-item:hover {
-  border-color: red;
+  border-color: rgb(14, 113, 166);
 }
 
 .video-preview,
@@ -1428,7 +1419,7 @@ const sendMessage = async () => {
 }
 
 .gif-item:hover {
-  border-color: #dc3545;
+  border-color: rgb(14, 113, 166);
 }
 .gif-item img {
   width: 100%;

@@ -7,9 +7,9 @@
           class="bi bi-x-circle pointer"
         ></i> -->
     <!-- Индикатор загрузки -->
-    <div v-if="loading" class="text-center">
+    <div v-if="loading" >
       <svg 
-      
+     
       xmlns="http://www.w3.org/2000/svg" 
       width="52" 
       height="52" 
