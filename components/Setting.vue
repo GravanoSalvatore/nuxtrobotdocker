@@ -509,7 +509,7 @@ const fetchChannelAdmins = async (chatId) => {
     </form>
 
    
-    <div v-if="channels.length > 0" class="card mt-4">
+    <div style="border: none !important" v-if="channels.length > 0" class="card mt-4">
       <ul class="list-group list-group-flush">
         <li
           v-for="(channel, index) in channels"
@@ -520,8 +520,9 @@ const fetchChannelAdmins = async (chatId) => {
          
           <span
             @click="handleSelectChannel(channel.id)"
-            style="cursor: pointer; font-size: 12px;"
+            style="cursor: pointer; font-size: 14px;"
           >
+         <!-- <span  :class="{ 'active-channel1': activeChannelId === channel.id }" class="active">active</span> <br/> -->
           <img
             :src="channel.photo || defaultPhoto"
             alt="Фото канала"
@@ -531,6 +532,7 @@ const fetchChannelAdmins = async (chatId) => {
           />
             <strong style="font-size: 20px;">{{ channel.name }}</strong><br/>
             <strong style="color:cornflowerblue">  Описание: </strong>{{ channel.description || 'Нет описания' }}<br/>
+            <strong style="color:cornflowerblue"> ChatId:</strong> {{ channel.id }}<br/>
             <strong style="color:cornflowerblue"> Подписчиков:</strong> {{ channel.subscribers }}<br/>
             
             <strong style="color:cornflowerblue">Администраторов:</strong> {{ channel.admins || 0 }}<br/>
@@ -733,6 +735,73 @@ export default {
 //     };
 //   }
 // };
+// const fetchChannelInfo = async (chatId) => {
+//   try {
+//     const chatResponse = await axios.get(
+//       `https://api.telegram.org/bot${channelStore.botToken}/getChat?chat_id=${chatId}`
+//     );
+
+//     if (!chatResponse.data || !chatResponse.data.result) {
+//       console.error("Не удалось получить данные о канале (getChat).");
+//       return {
+//         description: 'Ошибка при получении описания',
+//         creationDate: 'Неизвестно',
+//         channelType: 'Неизвестно',
+//         status: 'Неизвестно',
+//         admins: 0,
+//         language: 'Неизвестно',
+//         telegramName: 'Неизвестно',  // добавляем поле для названия канала
+//       };
+//     }
+
+//     const chatResult = chatResponse.data.result;
+
+//     // Получаем настоящее название канала
+//     const telegramName = chatResult.title || "Без названия";  // В Telegram канал имеет поле title для названия
+
+//     const description = chatResult.description || "Нет описания";
+//     let admins = 0;
+//     try {
+//       const adminsResponse = await axios.get(
+//         `https://api.telegram.org/bot${channelStore.botToken}/getChatAdministrators?chat_id=${chatId}`
+//       );
+
+//       if (adminsResponse.data && adminsResponse.data.result) {
+//         admins = adminsResponse.data.result.length;
+//       } else {
+//         console.warn("Не удалось получить администраторов.");
+//       }
+//     } catch (error) {
+//       console.error("Ошибка при получении администраторов:", error);
+//     }
+
+//     const creationDate = chatResult.date ? new Date(chatResult.date * 1000).toLocaleDateString() : 'Неизвестно';
+//     const channelType = chatResult.type || 'Неизвестно';
+//     const status = chatResult.status || 'Неизвестно';
+//     const language = chatResult.language || 'Неизвестно';
+
+//     return {
+//       description,
+//       creationDate,
+//       channelType,
+//       status,
+//       admins,
+//       language,
+//       telegramName, // возвращаем название канала из Telegram
+//     };
+//   } catch (error) {
+//     console.error("Ошибка при получении информации о канале:", error);
+//     return {
+//       description: 'Ошибка при получении описания',
+//       creationDate: 'Неизвестно',
+//       channelType: 'Неизвестно',
+//       status: 'Неизвестно',
+//       admins: 0,
+//       language: 'Неизвестно',
+//       telegramName: 'Неизвестно',
+//     };
+//   }
+// };
 const fetchChannelInfo = async (chatId) => {
   try {
     const chatResponse = await axios.get(
@@ -748,14 +817,14 @@ const fetchChannelInfo = async (chatId) => {
         status: 'Неизвестно',
         admins: 0,
         language: 'Неизвестно',
-        telegramName: 'Неизвестно',  // добавляем поле для названия канала
+        telegramName: 'Неизвестно', // Оригинальное название из Telegram
       };
     }
 
     const chatResult = chatResponse.data.result;
 
-    // Получаем настоящее название канала
-    const telegramName = chatResult.title || "Без названия";  // В Telegram канал имеет поле title для названия
+    // Получаем оригинальное название канала из Telegram
+    const telegramName = chatResult.title || "Без названия";
 
     const description = chatResult.description || "Нет описания";
     let admins = 0;
@@ -785,7 +854,7 @@ const fetchChannelInfo = async (chatId) => {
       status,
       admins,
       language,
-      telegramName, // возвращаем название канала из Telegram
+      telegramName, // Возвращаем оригинальное название канала
     };
   } catch (error) {
     console.error("Ошибка при получении информации о канале:", error);
@@ -800,7 +869,6 @@ const fetchChannelInfo = async (chatId) => {
     };
   }
 };
-
 const fetchChannelAdmins = async (chatId) => {
   try {
     const response = await axios.get(
@@ -849,7 +917,10 @@ const fetchChannelAdmins = async (chatId) => {
 }
 
 .active-channel {
-  font-weight: bold;
+  border: 3px solid rgb(14, 113, 166);
+  /* font-weight: bold; */
   color: #198754;
+  border-radius: 10px;
 }
+
 </style>
