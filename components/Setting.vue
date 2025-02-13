@@ -509,15 +509,15 @@ const fetchChannelAdmins = async (chatId) => {
     </form>
 
    
-    <div style="border: none !important" v-if="channels.length > 0" class="card mt-4">
-      <ul class="list-group list-group-flush">
+    <div style="border: none !important" v-if="channels.length > 0" class="card mt-4 ">
+      <ul class="list-group list-group-flush ">
         <li
           v-for="(channel, index) in channels"
           :key="index"
           class="list-group-item d-flex justify-content-between align-items-center"
           :class="{ 'active-channel': activeChannelId === channel.id }"
         >
-         
+        
           <span
             @click="handleSelectChannel(channel.id)"
             style="cursor: pointer; font-size: 14px;"
@@ -529,14 +529,14 @@ const fetchChannelAdmins = async (chatId) => {
             class="rounded-circle me-2 mt-2 mb-2 "
             width="50"
             height="50"
-          />
-            <strong style="font-size: 20px;margin-left: 7px;">{{ channel.name }}</strong><br/>
+          /><br/>
+            <strong style="font-size: 18px;">{{ channel.name }}</strong><br/>
             <strong style="color:cornflowerblue">  Описание: </strong>{{ channel.description || 'Нет описания' }}<br/>
             <strong style="color:cornflowerblue"> ChatId:</strong> {{ channel.id }}<br/>
             <strong style="color:cornflowerblue"> Подписчиков:</strong> {{ channel.subscribers }}<br/>
             
             <strong style="color:cornflowerblue">Администраторов:</strong> {{ channel.admins || 0 }}<br/>
-           
+           <span class="fw-bold active">Selected channel</span> 
             <!-- <strong style="color:cornflowerblue">Дата создания:</strong> {{ channel.creationDate || 'Неизвестно' }}<br/> -->
           </span>
 
@@ -544,6 +544,7 @@ const fetchChannelAdmins = async (chatId) => {
             <i style="font-size: 11px;" @click="handleRemoveChannel(index)" class="bi bi-x-circle pointer text-danger"></i>
           </div>
         </li>
+        <br/>
       </ul>
     </div>
     <div v-else>
@@ -917,17 +918,27 @@ const fetchChannelAdmins = async (chatId) => {
 }
 
 .active-channel {
+  position: relative;
   z-index: 10;
   border: 3px solid rgb(14, 113, 166);
   border-radius: 10px;
-  transform: scale(1.05); /* Увеличение элемента при активации */
-  transition: transform 0.3s ease-in-out; /* Плавная анимация */
+  transform: scale(1.25); /* Увеличение элемента при активации */
+  transition: transform 0.5s ease-in-out; /* Плавная анимация */
 }
 
 .active-channel img {
-  transform: scale(1.4); /* Увеличение картинки внутри элемента */
-  transition: transform 0.3s ease-in-out;
+  transform: scale(1.3); /* Увеличение картинки внутри элемента */
+  transition: transform 0.5s ease-in-out;
 }
-
-
+.active{
+  right:5px;
+  top:3px;
+  display: none;
+  position: absolute;
+}
+.active-channel  .active{
+  font-size: 11px;
+  display: block;
+  color: rgb(6, 179, 185);
+}
 </style>
