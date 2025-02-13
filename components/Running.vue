@@ -142,6 +142,9 @@ onMounted(fetchNews);
 .news-title , .news-date{
   margin-left: 5px;
 }
+.news-title{
+  font-size: 20px;
+}
 .news-ticker {
   height: 70px;
   width: 100%;
@@ -156,7 +159,7 @@ onMounted(fetchNews);
 .ticker-content {
   display: flex;
   width: max-content;
-  animation: ticker-scroll 1000s linear infinite;
+  animation: ticker-scroll 1500s linear infinite;
 }
 
 .ticker-item {
@@ -178,7 +181,7 @@ onMounted(fetchNews);
 
 .news-logo {
   width: 60px;
-  height: 40px;
+  height: 50px;
   border-radius: 5px;
 }
 

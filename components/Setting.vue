@@ -526,11 +526,11 @@ const fetchChannelAdmins = async (chatId) => {
           <img
             :src="channel.photo || defaultPhoto"
             alt="Фото канала"
-            class="rounded-circle me-2"
-            width="70"
-            height="70"
+            class="rounded-circle me-2 mt-2 mb-2 "
+            width="50"
+            height="50"
           />
-            <strong style="font-size: 20px;">{{ channel.name }}</strong><br/>
+            <strong style="font-size: 20px;margin-left: 7px;">{{ channel.name }}</strong><br/>
             <strong style="color:cornflowerblue">  Описание: </strong>{{ channel.description || 'Нет описания' }}<br/>
             <strong style="color:cornflowerblue"> ChatId:</strong> {{ channel.id }}<br/>
             <strong style="color:cornflowerblue"> Подписчиков:</strong> {{ channel.subscribers }}<br/>
@@ -541,7 +541,7 @@ const fetchChannelAdmins = async (chatId) => {
           </span>
 
           <div>
-            <i style="font-size: 11px;" @click="handleRemoveChannel(index)" class="bi bi-x-circle pointer"></i>
+            <i style="font-size: 11px;" @click="handleRemoveChannel(index)" class="bi bi-x-circle pointer text-danger"></i>
           </div>
         </li>
       </ul>
@@ -917,10 +917,17 @@ const fetchChannelAdmins = async (chatId) => {
 }
 
 .active-channel {
+  z-index: 10;
   border: 3px solid rgb(14, 113, 166);
-  /* font-weight: bold; */
-  color: #198754;
   border-radius: 10px;
+  transform: scale(1.05); /* Увеличение элемента при активации */
+  transition: transform 0.3s ease-in-out; /* Плавная анимация */
 }
+
+.active-channel img {
+  transform: scale(1.4); /* Увеличение картинки внутри элемента */
+  transition: transform 0.3s ease-in-out;
+}
+
 
 </style>

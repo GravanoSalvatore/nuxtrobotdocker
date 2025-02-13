@@ -487,7 +487,7 @@
                   class="form-control"
                 />
               </div> -->
-              <label for="editTitle" class="form-label">Title</label>
+              <label style="color:cornflowerblue" for="editTitle" class="form-label fw-bold mt-1">Title</label>
               <textarea
                 id="editTitle"
                 type="text"
@@ -497,7 +497,7 @@
               </textarea>
             </div>
             <div class="mb-3">
-              <label for="editDescription" class="form-label"
+              <label style="color:cornflowerblue" for="editDescription" class="form-label fw-bold"
                 >Description</label
               >
               <textarea
@@ -507,7 +507,7 @@
               ></textarea>
             </div>
             <div class="mb-3">
-              <label for="editContent" class="form-label">Content</label>
+              <label style="color:cornflowerblue" for="editContent" class="form-label fw-bold">Content</label>
               <textarea
                 id="editContent"
                 v-model="editableItem.content"
