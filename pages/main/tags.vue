@@ -46,8 +46,8 @@
       <div v-if="loadingTags" class="text-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="52"
-          height="52"
+          width="82"
+          height="82"
           viewBox="0 0 24 24"
         >
           <path
@@ -542,7 +542,7 @@
                     class="form-control"
                   />
                 </div> -->
-              <label for="editTitle" class="form-label">Title</label>
+              <label style="color:cornflowerblue" for="editTitle" class="form-label fw-bold">Title</label>
               <textarea
                 id="editTitle"
                 type="text"
@@ -551,7 +551,7 @@
               ></textarea>
             </div>
             <div class="mb-3">
-              <label for="editDescription" class="form-label"
+              <label style="color:cornflowerblue" for="editDescription" class="form-label fw-bold"
                 >Description</label
               >
               <textarea
@@ -561,7 +561,7 @@
               ></textarea>
             </div>
             <div class="mb-3">
-              <label for="editContent" class="form-label">Content</label>
+              <label style="color:cornflowerblue" for="editContent" class="form-label fw-bold">Content</label>
               <!-- <textarea
                   id="editContent"
                   v-model="editableItem.content"

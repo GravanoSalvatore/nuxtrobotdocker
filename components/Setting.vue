@@ -435,7 +435,7 @@ const fetchChannelAdmins = async (chatId) => {
 
 <template>
   <div class="form">
-    
+  
     <form @submit.prevent="handleAddChannel" class="mb-4">
       <div class="mb-3">
         <input
@@ -541,7 +541,13 @@ const fetchChannelAdmins = async (chatId) => {
           </span>
 
           <div>
-            <i style="font-size: 11px;" @click="handleRemoveChannel(index)" class="bi bi-x-circle pointer text-danger"></i>
+            <!-- <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top">
+  Tooltip on top
+</button> -->
+            <i  type="button"
+            data-bs-custom-class="custom-tooltip"
+          data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Delete channel"
+            style="font-size: 11px;" @click="handleRemoveChannel(index)" class="bi bi-x-circle pointer text-danger btn"></i>
           </div>
         </li>
         <br/>
@@ -888,6 +894,11 @@ const fetchChannelAdmins = async (chatId) => {
 
 
     onMounted(() => {
+      // Инициализация всплывающих подсказок на элементах с атрибутом data-bs-toggle="tooltip"
+  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+  tooltipTriggerList.forEach((tooltipTriggerEl) => {
+    new bootstrap.Tooltip(tooltipTriggerEl);  // Инициализируем каждый tooltip
+  });
       channelStore.loadChannels();
     });
 
@@ -912,6 +923,7 @@ const fetchChannelAdmins = async (chatId) => {
 
 
 <style scoped>
+
 .container {
   max-width: 600px;
   margin: 20px auto;
@@ -922,7 +934,7 @@ const fetchChannelAdmins = async (chatId) => {
   z-index: 10;
   border: 3px solid rgb(14, 113, 166);
   border-radius: 10px;
-  transform: scale(1.25); /* Увеличение элемента при активации */
+  transform: scale(1.1); /* Увеличение элемента при активации */
   transition: transform 0.5s ease-in-out; /* Плавная анимация */
 }
 
@@ -939,6 +951,6 @@ const fetchChannelAdmins = async (chatId) => {
 .active-channel  .active{
   font-size: 11px;
   display: block;
-  color: rgb(6, 179, 185);
+  /* color: rgb(6, 179, 185); */
 }
 </style>

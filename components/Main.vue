@@ -10,11 +10,11 @@
        </div>
      </div>
      <div class="container ">
-     <h6 style=""  ><span style="font-size: 24px;" class="fw-bold">4V.ROBOT </span><span style="font-size: 18px;"> bot developed by <a href="https://fourv.tech" target="_blank"><span class="fs-2 fw-bold">4V</span></a> is an indispensable assistant for channel administration. Create channels on popular social media platforms and automate the process with our bot.
+     <h6 style=""  ><span style="font-size: 20px;" class="fw-bold">4V.ROBOT </span><span style="font-size: 16px;"> bot developed by <a href="https://fourv.tech" target="_blank"><span class="fs-4 fw-bold">4V</span></a> is an indispensable assistant for channel administration. Create channels on popular social media platforms and automate the process with our bot.
        <br/> <span style="" >4V.ROBOT </span>integrates elements of artificial intelligence to optimize bot performance and provides integration with various social networks such as Telegram, Twitter*, Facebook*, *Instagram, and *WhatsApp. These bots allow users to receive instant news updates and automate social media content management.
        <br/>Additionally, 4V.ROBOT enables users to create personalized news feeds tailored to their interests using AI-driven algorithms. By analyzing user preferences and behavior, the bot curates relevant news, ensuring a highly customized and efficient experience. Whether managing multiple social media accounts or staying updated with the latest information, 4V.ROBOT streamlines processes, enhances engagement, and provides unparalleled automation tools for individuals and businesses alike.
      </span>
-     <p style="color: cornflowerblue;font-size: 18px;">* Under development</p></h6>
+     <p style="color: cornflowerblue;font-size: 14px;">* Under development</p></h6>
      </div>
   </div>
   </template>

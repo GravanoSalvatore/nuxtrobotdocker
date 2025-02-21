@@ -1,5 +1,20 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  css: [
+    
+    'bootstrap/dist/css/bootstrap.min.css',
+    '@/assets/scss/global.scss'  // подключаем стили Bootstrap
+  ],
+  script: [
+    {
+      src: 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js',  // Подключаем Popper.js
+      body: true,
+    },
+    {
+      src: 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js',  // Подключаем Bootstrap
+      body: true,
+    }
+  ],
   primevue: {
     /* Configuration */
 },
@@ -29,7 +44,7 @@ export default defineNuxtConfig({
   // prisma:{
   //   autoSetupPrisma:true
   // } ,
-  css: ['@/assets/scss/global.scss'], // Глобальные стили
+ 
   vite: {
     css: {
       optimizeDeps: {

@@ -34,7 +34,7 @@
   
   <style scoped>
   .cookie-popup {
-    border: 2px solid orange;
+    /* border: 2px solid orange; */
     position: fixed;
     bottom: 20px;
     left: 50%;
