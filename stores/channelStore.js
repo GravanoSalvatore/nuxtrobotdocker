@@ -44,10 +44,11 @@
 // stores/channelStore.js
 export const useChannelStore = defineStore('channelStore', {
   state: () => ({
-    botToken: "7278946722:AAFImxEmuP9zuitDYktDJMJkIu99ut1y--k",
+    botToken: useRuntimeConfig().public.botToken,
+   
     channels: [
       {
-        id: '-1002414188397', // Chat ID по умолчанию
+        id: useRuntimeConfig().public.chatId, // Chat ID по умолчанию
         name: 'ROBOTON',     // Имя канала по умолчанию
       },
     ],

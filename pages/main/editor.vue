@@ -1,7 +1,6 @@
 <template>
   <div class="media-editor-container">
     <div class="editor-wrapper">
-      <!-- Основное текстовое поле -->
       <textarea
         v-model="message"
         class="form-control message-textarea mt-2"
@@ -16,23 +15,21 @@
           :class="showEmojiPicker ? 'bi-x-circle' : 'bi-emoji-smile'"
         ></i>
 
-        <!-- Emoji Picker -->
         <div class="position-relative">
           <div
             v-if="showEmojiPicker"
             class="emoji-picker-container mt-2 d-flex justify-content-center align-items-center"
           >
             <emoji-picker
-              style="z-index: 10000; top:0;left: 0;"
+              style="z-index: 10000; top: 0; left: 0"
               class="custom-emoji-picker position-absolute"
               @emoji-click="addEmoji"
             ></emoji-picker>
           </div>
         </div>
       </client-only>
-            <!-- Панель управления медиа -->
-            <div class="media-controls mt-3">
-        <!-- Кнопки загрузки медиа -->
+
+      <div class="media-controls mt-3">
         <div class="btn-group d-flex flex-wrap" role="group">
           <input
             type="file"
@@ -86,128 +83,146 @@
               </label>
             </li>
           </ul>
+          <button class="btn-danger1" @click="openPreviewModal">
+  Top 20 Crypto <i class="bi bi-bar-chart"></i>
+</button>
 
-          <!-- <button
-            @click="startRecording"
-            :disabled="isRecording"
-            class="pointer btn-danger1 btn-sm flex-grow-1"
-          >
-            <i class="bi bi-mic"></i> Record
-          </button>
 
-          <button
-            @click="pauseRecording"
-            :disabled="!isRecording"
-            class="pointer btn-danger1 btn-sm flex-grow-1"
-          >
-            <i class="bi bi-pause"></i> Pause
-          </button>
+<div v-if="showPreviewModal" class="modal-overlay">
+  <div class="modal-content"  style="position:relative;">
+    <i
+          style=""
+          @click="closePreviewModal"
+          class="bi bi-x-circle pointer close-icon"
+        ></i>
+    <!-- <button @click="closePreviewModal" class="btn btn-danger"> Закрыть</button> -->
+    <h4 class="text-center"> TOP-30 Cryptocurrency</h4>
+    <ul class="crypto-list">
+  <li v-for="coin in top10Preview" :key="coin.rank">
+    <img :src="coin.image" :alt="coin.name" class="crypto-icon" />
+    <span class="crypto-rank">#{{ coin.rank }}</span>
+    <span class="crypto-name">{{ coin.name }} ({{ coin.symbol }})</span>
+    <span  
+            class="crypto-price">💰 {{ coin.price }}</span>
+    <span class="crypto-market-cap">🏦 {{ coin.marketCap }}</span>
+    <span class="crypto-volume">📊 Объём 24ч: {{ coin.volume24h }}</span> <!-- ✅ Добавлено -->
 
-          <button
-            @click="stopRecording"
-            :disabled="!isRecording"
-            class="btn-danger1 btn-sm flex-grow-1"
-          >
-            <i class="bi bi-stop"></i> Stop
-          </button> -->
+    <span
+      class="crypto-change"
+      :class="{ 'positive': coin.change24h >= 0, 'negative': coin.change24h < 0 }"
+    >
+    📈 {{ coin.change24h }}%
+    </span>
+  </li>
+</ul>
 
-          <!-- <button
-            @click="startVideoRecording"
-            :disabled="isVideoRecording"
-            class="btn-danger1 btn-sm flex-grow-1"
-          >
-            <i class="bi bi-camera-video"></i> Record Video
-          </button>
+    <div class="modal-buttons">
+      <button @click="sendTop10ToTelegram" class="btn btn-danger1">   Send to Telegram</button>
 
-          <button
-            @click="stopVideoRecording"
-            :disabled="!isVideoRecording"
-            class="btn-danger1 btn-sm flex-grow-1"
-          >
-            <i class="bi bi-stop"></i> Stop Recording
-          </button> -->
-          <!-- Кнопка для отправки отложенного сообщения -->
+    </div>
+  </div>
+</div>
+
+
+
+
           <button class="btn-danger1" @click="scheduleMessage">
             Delayed sending <i class="bi bi-send"></i>
           </button>
-          <!-- Кнопка отправки -->
-          <button
-  @click="sendMessage"
-  class="btn-danger1"
-  :disabled="!canSendNow"
->
-  Send to Telegram
-  <i class="bi bi-send ml-1"></i>
-</button>
 
-          <!-- <button
+          <button
             @click="sendMessage"
             class="btn-danger1"
-            :disabled="!message && !selectedMedia"
+            :disabled="!canSendNow"
           >
-            Send to telegram
+            Send to Telegram
             <i class="bi bi-send ml-1"></i>
-          </button> -->
-              <!-- Кнопка отображения Emoji Picker -->
-    
+          </button>
         </div>
-   
       </div>
 
-      <input v-model="searchQuery" @input="fetchMedia" placeholder="Search video or image..." class="form-control mt-2 mb-2" />
-
-<div v-if="loading" class="text-center">
-  <p>Loading media...</p>
-</div>
-
-<div v-else>
-  <!-- <button v-if="paginatedMedia.length" @click="closeMediaGallery" class="btn btn-danger mt-2">Close Media Gallery</button> -->
-  
- 
- 
-  <div v-if="selectedMedia" class="selected-media-preview mt-3">
-  <h3>Selected Media:</h3>
-  <div class="position-relative">
-    <video v-if="selectedMedia.type === 'video'" :src="selectedMedia.url" controls class="preview-video"></video>
-    <img v-else :src="selectedMedia.url" class="preview-image" />
-    <i
-       
-        style="position: absolute; right: -20px; top:0"
-v-if="paginatedMedia.length"  @click="clearSelectedMedia"
-        class="bi bi-x-circle pointer"
-      ></i>
-    <!-- <button @click="clearSelectedMedia" class="btn btn-danger btn-sm position-absolute delete-media-btn">
-      <i class="bi bi-x-circle"></i>
-    </button> -->
-  </div>
-</div>
-
-<div  style="position: relative;">
-  <i
-       
-        style="position: absolute; right: -20px; top:0"
-v-if="paginatedMedia.length" @click="closeMediaGallery"
-        class="bi bi-x-circle pointer"
-      ></i>
-  <div v-if="paginatedMedia.length" class="media-gallery">
-    <div v-for="media in paginatedMedia" :key="media.id" class="media-item" @click="selectMedia(media)">
-      <video v-if="media.type === 'video'" :src="media.url" controls class="video-preview" @loadedmetadata="updateVideoLoadStatus(media.id)"></video>
-      <img v-else-if="media.type === 'image'" :src="media.url" class="image-preview" @load="updateImageLoadStatus(media.id)" />
-    </div>
-  </div>
-
-  <div v-if="paginatedMedia.length" class="pagination-controls">
-    <span @click="prevPage" :disabled="currentPage === 1" class="pointer">&laquo; </span>
-    <span> {{ currentPage }} / {{ totalPages }}</span>
-    <span @click="nextPage" :disabled="currentPage >= totalPages" class="pointer"> &raquo;</span>
-  </div>
-</div>
-</div>
+      <input
+        v-model="searchQuery"
+        @input="fetchMedia"
+        placeholder="Search video or image..."
+        class="form-control mt-2 mb-2"
+      />
+    
 
 
-     
+      <div v-if="loading" class="text-center">
+        <p>Loading media...</p>
+      </div>
 
-      <!-- Новая функция: Выбор даты и времени -->
+      <div v-else>
+        <div v-if="selectedMedia" class="selected-media-preview mt-3">
+          <h3>Selected Media:</h3>
+          <div class="position-relative">
+            <video
+              v-if="selectedMedia.type === 'video'"
+              :src="selectedMedia.url"
+              controls
+              class="preview-video"
+            ></video>
+            <img v-else :src="selectedMedia.url" class="preview-image" />
+            <i
+              style="position: absolute; right: -20px; top: 0"
+              v-if="paginatedMedia.length"
+              @click="clearSelectedMedia"
+              class="bi bi-x-circle pointer"
+            ></i>
+          </div>
+        </div>
+
+        <div style="position: relative">
+          <i
+            style="position: absolute; right: -20px; top: 0"
+            v-if="paginatedMedia.length"
+            @click="closeMediaGallery"
+            class="bi bi-x-circle pointer"
+          ></i>
+          <div v-if="paginatedMedia.length" class="media-gallery">
+            <div
+              v-for="media in paginatedMedia"
+              :key="media.id"
+              class="media-item"
+              @click="selectMedia(media)"
+            >
+              <video
+                v-if="media.type === 'video'"
+                :src="media.url"
+                controls
+                class="video-preview"
+                @loadedmetadata="updateVideoLoadStatus(media.id)"
+              ></video>
+              <img
+                v-else-if="media.type === 'image'"
+                :src="media.url"
+                class="image-preview"
+                @load="updateImageLoadStatus(media.id)"
+              />
+            </div>
+          </div>
+
+          <div v-if="paginatedMedia.length" class="pagination-controls">
+            <span
+              @click="prevPage"
+              :disabled="currentPage === 1"
+              class="pointer"
+              >&laquo;
+            </span>
+            <span> {{ currentPage }} / {{ totalPages }}</span>
+            <span
+              @click="nextPage"
+              :disabled="currentPage >= totalPages"
+              class="pointer"
+            >
+              &raquo;</span
+            >
+          </div>
+        </div>
+      </div>
+
       <input
         type="text"
         v-model="gifSearchQuery"
@@ -216,7 +231,6 @@ v-if="paginatedMedia.length" @click="closeMediaGallery"
       />
 
       <div class="schedule-controls mt-2">
-        <!-- <label for="schedule-date">Schedule Date:</label> -->
         <input
           id="schedule-date"
           type="date"
@@ -224,7 +238,6 @@ v-if="paginatedMedia.length" @click="closeMediaGallery"
           v-model="scheduledDate"
         />
 
-        <!-- <label for="schedule-time" class="mt-2">Schedule Time:</label> -->
         <input
           id="schedule-time"
           type="time"
@@ -233,7 +246,6 @@ v-if="paginatedMedia.length" @click="closeMediaGallery"
         />
       </div>
 
-      <!-- Превью загруженных медиафайлов -->
       <div
         v-if="uploadedFiles && uploadedFiles.length"
         class="media-preview mt-3"
@@ -250,7 +262,6 @@ v-if="paginatedMedia.length" @click="closeMediaGallery"
             class="img-thumbnail"
           />
 
-          <!-- Превью видео -->
           <video
             v-else-if="file.type.startsWith('video/')"
             controls
@@ -259,7 +270,6 @@ v-if="paginatedMedia.length" @click="closeMediaGallery"
             <source :src="file.preview" :type="file.type" />
           </video>
 
-          <!-- Превью аудио -->
           <audio
             v-else-if="file.type.startsWith('audio/')"
             controls
@@ -268,7 +278,6 @@ v-if="paginatedMedia.length" @click="closeMediaGallery"
             <source :src="file.preview" :type="file.type" />
           </audio>
 
-          <!-- Кнопка удаления файла -->
           <button
             @click="removeFile(index)"
             class="btn btn-danger btn-sm remove-file-btn"
@@ -278,40 +287,6 @@ v-if="paginatedMedia.length" @click="closeMediaGallery"
         </div>
       </div>
 
-      <!-- Предварительный просмотр аудиозаписи -->
-      <!-- <div v-if="recordedAudio" class="audio-preview mt-3">
-        <div class="audio-preview-thumbnail" style="position: relative">
-
-          <p style="font-size: 12px">Listen to the audio recording</p>
-          <button
-            @click="clearRecordedAudio"
-            class="btn btn-close btn-sm"
-            style="position: absolute; right: 0; top: 0"
-          ></button>
-        </div>
-
-       
-      </div> -->
-      <!-- Предварительный просмотр выбранного GIF -->
-      <!-- <div v-if="selectedGif" class="gif-preview mt-3">
-  <h3>Preview GIF:</h3>
-  <div class="position-relative">
-    <img
-      :src="selectedGif"
-      alt="Selected GIF"
-      class="img-thumbnail"
-      style="max-width: 100%; border: 1px solid #ccc; border-radius: 8px;"
-    />
-   
-    <button
-      @click="clearSelectedGif"
-      class="btn btn-danger btn-sm position-absolute"
-      style="top: 0; right: 0;"
-    >
-      <i class="bi bi-x-circle"></i>
-    </button>
-  </div>
-</div> -->
       <div v-if="selectedGif" class="gif-preview mt-3 position-relative">
         <img
           :src="selectedGif"
@@ -319,46 +294,22 @@ v-if="paginatedMedia.length" @click="closeMediaGallery"
           class="img-thumbnail"
           style="max-width: 100%; border: 1px solid #ccc; border-radius: 8px"
         />
-        <!-- Кнопка удаления GIF -->
+
         <i
-       
-       style="position: absolute; right: -20px; top:0"
-  @click="clearSelectedGif"
-       class="bi bi-x-circle pointer"
-     ></i>
-        <!-- <button
+          style="position: absolute; right: -20px; top: 0"
           @click="clearSelectedGif"
-          class="btn btn-danger btn-sm position-absolute delete-gif-btn"
-        >
-          <i class="bi bi-x-circle"></i>
-        </button> -->
+          class="bi bi-x-circle pointer"
+        ></i>
       </div>
 
-      <!-- <button v-if="searchResults.length" @click="closeGifResults" class="btn-close btn-sm float-end" aria-label="Close"></button> -->
       <div style="position: relative" class="gif-search mt-3">
         <i
-       
-       style="position: absolute; right: -20px; top:0"
-       class="bi bi-x-circle pointer"
+          style="position: absolute; right: -20px; top: 0"
+          class="bi bi-x-circle pointer"
           v-if="searchResults.length"
           @click="closeGifResults"
-       
-     ></i>
-        <!-- <svg
-          style="position: absolute; right: 0; top: -20px"
-          class="pointer"
-          v-if="searchResults.length"
-          @click="closeGifResults"
-          xmlns="http://www.w3.org/2000/svg"
-          width="22"
-          height="22"
-          viewBox="0 0 24 24"
-        >
-          <path
-            fill="currentColor"
-            d="M15.59 7L12 10.59L8.41 7L7 8.41L10.59 12L7 15.59L8.41 17L12 13.41L15.59 17L17 15.59L13.41 12L17 8.41L15.59 7Z"
-          />
-        </svg> -->
+        ></i>
+
         <div v-if="searchResults.length" class="gif-results mt-3">
           <div
             v-for="gif in searchResults"
@@ -370,84 +321,13 @@ v-if="paginatedMedia.length" @click="closeMediaGallery"
           </div>
         </div>
         <div class="d-flex justify-content-center mt-3">
-          <!-- <button
-      v-if="!isLoading"
-      @click="searchGifs(true)"
-      class="btn btn-primary"
-    >
-      Load More
-    </button> -->
-    <i
-      
-       style="position: absolute; right: -20px; top:0"
-   v-if="searchResults.length"
-          @click="closeGifResults"
-     ></i>
-          <!-- <svg
-            class="pointer"
+          <i
+            style="position: absolute; right: -20px; top: 0"
             v-if="searchResults.length"
-            @click="searchGifs(true)"
-            xmlns="http://www.w3.org/2000/svg"
-            width="42"
-            height="42"
-            viewBox="0 0 24 24"
-          >
-            <circle cx="4" cy="12" r="1.5" fill="cornflowerblue">
-              <animate
-                attributeName="r"
-                dur="0.75s"
-                repeatCount="indefinite"
-                values="1.5;3;1.5"
-              />
-            </circle>
-            <circle cx="12" cy="12" r="3" fill="cornflowerblue">
-              <animate
-                attributeName="r"
-                dur="0.75s"
-                repeatCount="indefinite"
-                values="3;1.5;3"
-              />
-            </circle>
-            <circle cx="20" cy="12" r="1.5" fill="cornflowerblue">
-              <animate
-                attributeName="r"
-                dur="0.75s"
-                repeatCount="indefinite"
-                values="1.5;3;1.5"
-              />
-            </circle>
-          </svg> -->
-          <!-- Индикатор загрузки -->
-          <!-- <div v-if="isLoading" class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Loading...</span>
-    </div> -->
+            @click="closeGifResults"
+          ></i>
         </div>
       </div>
-      <!-- Новая функция: Видео с веб-камеры -->
-      <!-- <div v-if="recordedVideo" class="video-preview mt-3">
-        <h3>Preview Video:</h3>
-        <video
-          :src="recordedVideo"
-          controls
-          class="video-preview"
-          style="
-            width: 100%;
-            max-width: 600px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-          "
-        ></video>
-        <button @click="clearRecordedVideo" class="btn btn-danger btn-sm mt-2">
-          Удалить видео
-        </button>
-      </div> -->
-
-
-      <!-- <div class="recorder-controls mt-3">
-        <div class="btn-group" role="group">
-         
-        </div>
-      </div> -->
     </div>
   </div>
 </template>
@@ -458,119 +338,270 @@ import axios from "axios";
 import { useChannelStore } from "@/stores/channelStore";
 //import "emoji-picker-element";
 export default {
-  
-    setup() {
+  setup() {
     const channelStore = useChannelStore();
     const botToken = channelStore.botToken;
     const showEmojiPicker = ref(false);
-   
+
     const mediaPerPage = 14;
     const selectedMedia = ref(null);
-const currentPage = ref(1);
-const mediaResults = ref([]);
-const searchQuery = ref('');
-const loading = ref(false);
-const imageLoadStatus = ref({});
-const videoLoadStatus = ref({});
+    const currentPage = ref(1);
+    const mediaResults = ref([]);
+    const searchQuery = ref("");
+    const loading = ref(false);
+    const imageLoadStatus = ref({});
+    const videoLoadStatus = ref({});
 
-const closeMediaGallery = ()=> {
-  mediaResults.value = [];
-    }  
+    const showPreviewModal = ref(false);
+const top10Preview = ref([]);
 
+// const fetchTop10Cryptos = async () => {
+//   try {
+//     const response = await axios.get(
+//       "https://api.coingecko.com/api/v3/coins/markets",
+//       {
+//         params: {
+//           vs_currency: "usd",
+//           order: "market_cap_desc",
+//           per_page: 50,
+//           page: 1,
+//           sparkline: false,
+//         },
+//       }
+//     );
 
-const isVideoRecording = ref(false);
-    const recordedVideo = ref(null);
-    let videoRecorder = null;
-    let videoStream = null;
-    let videoChunks = [];
-
-
-    const canSendNow = computed(() => {
-  return message.value.trim().length > 0 || selectedGif.value || selectedMedia.value || uploadedFiles.value.length > 0;
-});
-
-
-
-// Фильтрация по страницам
-
-
-// Выбор медиа для отправки
-
-
-// Отправка медиа в Telegram
-const sendToTelegram = async () => {
-  if (!selectedMedia.value) return;
-
+//     return response.data.map((coin, index) => ({
+//       rank: index + 1,
+//       name: coin.name,
+//       symbol: coin.symbol.toUpperCase(),
+//       price: `$${coin.current_price.toLocaleString()}`,
+//       marketCap: `$${(coin.market_cap / 1e9).toFixed(2)}B`,
+//       image: coin.image, // Добавляем иконку криптовалюты
+//     }));
+//   } catch (error) {
+//     console.error("Ошибка получения топ-10 криптовалют:", error);
+//     return [];
+//   }
+// };
+const fetchTop10Cryptos = async () => {
   try {
-    let payload = {
-      chat_id: chatId.value,
-      parse_mode: 'HTML'
-    };
+    const response = await axios.get(
+      "https://api.coingecko.com/api/v3/coins/markets",
+      {
+        params: {
+          vs_currency: "usd",
+          order: "market_cap_desc",
+          per_page: 20,
+          page: 1,
+          sparkline: false,
+          price_change_percentage: "24h",
+        },
+      }
+    );
 
-    if (selectedMedia.value.type === 'video') {
-      payload.video = selectedMedia.value.url;
-      payload.caption = message.value.trim();
-      await axios.post(`https://api.telegram.org/bot${channelStore.botToken}/sendVideo`, payload);
-    } else {
-      payload.photo = selectedMedia.value.url;
-      payload.caption = message.value.trim();
-      await axios.post(`https://api.telegram.org/bot${channelStore.botToken}/sendPhoto`, payload);
-    }
-
-    alert('Media sent to Telegram!');
-    selectedMedia.value = null;
-    message.value = '';
+    return response.data.map((coin, index) => ({
+      rank: index + 1,
+      name: coin.name,
+      symbol: coin.symbol.toUpperCase(),
+      price: `$${coin.current_price.toLocaleString()}`,
+      marketCap: `$${(coin.market_cap / 1e9).toFixed(2)}B`,
+      volume24h: `$${(coin.total_volume / 1e9).toFixed(2)}B`, // 🆕 Добавлен объём торгов
+      image: coin.image, // Логотип криптовалюты
+      change24h: coin.price_change_percentage_24h
+        ? coin.price_change_percentage_24h.toFixed(2)
+        : "0.00", // Процент изменения цены за 24 часа
+    }));
   } catch (error) {
-    console.error('Ошибка отправки в Telegram:', error);
-    alert('Ошибка отправки медиа!');
+    console.error("Ошибка получения топ-20 криптовалют:", error);
+    return [];
+  }
+};
+
+const openPreviewModal = async () => {
+  console.log("Открытие модального окна...");
+  top10Preview.value = await fetchTop10Cryptos();
+  console.log("Загруженные данные:", top10Preview.value);
+
+  if (top10Preview.value.length > 0) {
+    showPreviewModal.value = true;
+  } else {
+    alert("Не удалось загрузить данные о криптовалютах.");
   }
 };
 
 
-    // Начать запись видео
-    const startVideoRecording = async () => {
+const closePreviewModal = () => {
+  showPreviewModal.value = false;
+};
+
+// const sendTop10ToTelegram = async () => {
+//   try {
+//     const chatId = channelStore.activeChannelId || channelStore.channels[0]?.id;
+//     if (!chatId) {
+//       alert("Выберите канал для отправки!");
+//       return;
+//     }
+
+//     let messageText = "📊 *ТОП-50 Криптовалют по капитализации*\n\n";
+//     top10Preview.value.forEach((coin) => {
+//       messageText += `#*${coin.rank}* *${coin.name}* (${coin.symbol})\n💰 Цена: ${coin.price}\n🏦 Капитализация: ${coin.marketCap}\n\n`;
+//     });
+
+//     await axios.post(
+//       `https://api.telegram.org/bot${channelStore.botToken}/sendMessage`,
+//       {
+//         chat_id: chatId,
+//         text: messageText,
+//         parse_mode: "Markdown",
+//       }
+//     );
+
+//     alert("Топ-50 криптовалют отправлен в Telegram!");
+//     closePreviewModal();
+//   } catch (error) {
+//     console.error("Ошибка отправки топ-10 криптовалют:", error);
+//     alert("Ошибка отправки данных в Telegram!");
+//   }
+// };
+
+// const sendTop10ToTelegram = async () => {
+//   try {
+//     const chatId = channelStore.activeChannelId || channelStore.channels[0]?.id;
+//     if (!chatId) {
+//       alert("Выберите канал для отправки!");
+//       return;
+//     }
+
+//     let messageText = "📊 *ТОП-50 Криптовалют по капитализации*\n\n";
+//     top10Preview.value.forEach((coin) => {
+//       const changeColor = coin.change24h >= 0 ? "🟢" : "🔴"; // Зелёный если +, Красный если -
+//       const trendIcon = coin.change24h >= 0 ? "📈" : "📉"; // График 📈 или 📉
+      
+//       messageText += `#*${coin.rank}* *${coin.name}* (${coin.symbol})\n`;
+//       messageText += `💰 Цена: ${coin.price}\n`;
+//       messageText += `🏦 Капитализация: ${coin.marketCap}\n`;
+//       messageText += `📊 24ч: ${trendIcon} ${changeColor} ${coin.change24h}%\n\n`;
+//     });
+
+//     await axios.post(
+//       `https://api.telegram.org/bot${channelStore.botToken}/sendMessage`,
+//       {
+//         chat_id: chatId,
+//         text: messageText,
+//         parse_mode: "Markdown",
+//       }
+//     );
+
+//     alert("Топ-50 криптовалют отправлен в Telegram!");
+//     closePreviewModal();
+//   } catch (error) {
+//     console.error("Ошибка отправки топ-50 криптовалют:", error);
+//     alert("Ошибка отправки данных в Telegram!");
+//   }
+// };
+
+
+const sendTop10ToTelegram = async () => {
+  try {
+    const chatId = channelStore.activeChannelId || channelStore.channels[0]?.id;
+    if (!chatId) {
+      alert("Выберите канал для отправки!");
+      return;
+    }
+
+    let messageText = "📊 *TOP-20*\n\n";
+    top10Preview.value.forEach((coin) => {
+      const changeColor = coin.change24h >= 0 ? "🟢" : "🔴"; // Красный 📈 (рост), Зелёный 📉 (падение)
+      // const trendIcon = coin.change24h >= 0 ? "📈" : "📉"; 
+
+      messageText += `*${coin.rank}. ${coin.name} (${coin.symbol})*\n`;
+      messageText += `💰 Price: ${coin.price}\n`;
+      messageText += `📊 Volume 24h: ${coin.volume24h}\n`; // ✅ Добавлен объём торгов
+      messageText += `🏦 Market Cap: ${coin.marketCap}\n`;
+      
+      messageText += `📈 Change 24h:  ${changeColor} ${coin.change24h}%\n\n`;
+    });
+
+    await axios.post(
+      `https://api.telegram.org/bot${channelStore.botToken}/sendMessage`,
+      {
+        chat_id: chatId,
+        text: messageText,
+        parse_mode: "Markdown",
+      }
+    );
+
+    alert("Топ-20 криптовалют отправлен в Telegram!");
+    closePreviewModal();
+  } catch (error) {
+    console.error("Ошибка отправки топ-20 криптовалют:", error);
+    alert("Ошибка отправки данных в Telegram!");
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const closeMediaGallery = () => {
+      mediaResults.value = [];
+    };
+
+    const isVideoRecording = ref(false);
+    const recordedVideo = ref(null);
+    // let videoRecorder = null;
+    // let videoStream = null;
+    // let videoChunks = [];
+
+    const canSendNow = computed(() => {
+      return (
+        message.value.trim().length > 0 ||
+        selectedGif.value ||
+        selectedMedia.value ||
+        uploadedFiles.value.length > 0
+      );
+    });
+
+    const sendToTelegram = async () => {
+      if (!selectedMedia.value) return;
+
       try {
-        videoStream = await navigator.mediaDevices.getUserMedia({
-          video: true,
-        });
-        videoRecorder = new MediaRecorder(videoStream);
-        videoChunks = [];
-
-        videoRecorder.ondataavailable = (event) => {
-          if (event.data.size > 0) {
-            videoChunks.push(event.data);
-          }
+        let payload = {
+          chat_id: chatId.value,
+          parse_mode: "HTML",
         };
 
-        videoRecorder.onstop = () => {
-          const videoBlob = new Blob(videoChunks, { type: "video/webm" });
-          recordedVideo.value = URL.createObjectURL(videoBlob);
-          uploadedFiles.value.push({
-            file: videoBlob,
-            preview: recordedVideo.value,
-            type: "video/webm",
-          });
-        };
+        if (selectedMedia.value.type === "video") {
+          payload.video = selectedMedia.value.url;
+          payload.caption = `🔥🔥🔥 <b>${message.value.trim()}</b>`;
+          await axios.post(
+            `https://api.telegram.org/bot${channelStore.botToken}/sendVideo`,
+            payload
+          );
+        } else {
+          payload.photo = selectedMedia.value.url;
+          payload.caption = message.value.trim();
+          await axios.post(
+            `https://api.telegram.org/bot${channelStore.botToken}/sendPhoto`,
+            payload
+          );
+        }
 
-        videoRecorder.start();
-        isVideoRecording.value = true;
+        alert("Media sent to Telegram!");
+        selectedMedia.value = null;
+        message.value = "";
       } catch (error) {
-        console.error("Ошибка доступа к камере:", error);
+        console.error("Ошибка отправки в Telegram:", error);
+        alert("Ошибка отправки медиа!");
       }
-    };
-
-    // Остановить запись видео
-    const stopVideoRecording = () => {
-      if (videoRecorder) {
-        videoRecorder.stop();
-        videoStream.getTracks().forEach((track) => track.stop());
-        isVideoRecording.value = false;
-      }
-    };
-
-    // Очистить записанное видео
-    const clearRecordedVideo = () => {
-      recordedVideo.value = null;
     };
 
     // Переключение видимости Emoji Picker
@@ -655,38 +686,6 @@ const sendToTelegram = async () => {
       );
     });
 
-   
-    // Метод запланированной отправки сообщения
-    //     const scheduleMessage = async () => {
-    //   if (!isScheduleValid.value) {
-    //     alert("Добавьте текст или файл и укажите дату и время!");
-    //     return;
-    //   }
-
-    //   const scheduledAt = `${scheduledDate.value}T${scheduledTime.value}`;
-    //   const payload = {
-    //     message: message.value.trim(),
-    //     scheduledAt,
-    //     botToken: channelStore.botToken,
-    //     chatId: channelStore.activeChannelId || channelStore.channels[0]?.id,
-    //     files: uploadedFiles.value.map((file) => ({
-    //       name: file.file.name,
-    //       type: file.type,
-    //     })),
-    //   };
-
-    //   console.log("[CLIENT] Отправка на сервер с данными:", JSON.stringify(payload, null, 2));
-
-    //   try {
-    //     const response = await axios.post("/api/schedule", payload);
-    //     console.log("[CLIENT] Ответ от сервера:", response.data);
-    //     alert(response.data.message || "Сообщение успешно запланировано!");
-    //     clearInputs();
-    //   } catch (error) {
-    //     console.error("[ERROR] Ошибка при планировании:", error.response?.data || error.message);
-    //     alert("Ошибка планирования. Проверьте данные и повторите.");
-    //   }
-    // };
     const scheduleMessage = async () => {
       if (!isScheduleValid.value) {
         alert("Добавьте текст или файл и укажите дату и время!");
@@ -734,43 +733,25 @@ const sendToTelegram = async () => {
       }
     };
 
-    // Метод загрузки файлов
-    // const handleFileUpload = (event) => {
-    //   const files = Array.from(event.target.files);
-    //   files.forEach((file) => {
-    //     const reader = new FileReader();
-    //     reader.onload = (e) => {
-    //       uploadedFiles.value.push({
-    //         file,
-    //         preview: e.target.result,
-    //         type: file.type,
-    //       });
-    //     };
-    //     reader.readAsDataURL(file);
-    //   });
-    // };
     const handleFileUpload = (event) => {
-  const files = Array.from(event.target.files);
-  if (!files.length) return;
+      const files = Array.from(event.target.files);
+      if (!files.length) return;
 
-  files.forEach((file) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      uploadedFiles.value.push({
-        file,
-        preview: e.target.result,
-        type: file.type,
+      files.forEach((file) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          uploadedFiles.value.push({
+            file,
+            preview: e.target.result,
+            type: file.type,
+          });
+        };
+        reader.readAsDataURL(file);
       });
+
+      // Очистка input, чтобы повторная загрузка с тем же файлом работала
+      event.target.value = "";
     };
-    reader.readAsDataURL(file);
-  });
-
-  // Очистка input, чтобы повторная загрузка с тем же файлом работала
-  event.target.value = "";
-};
-
-
-
 
     // Метод очистки всех полей
     const clearInputs = () => {
@@ -785,152 +766,78 @@ const sendToTelegram = async () => {
       uploadedFiles.value.splice(index, 1);
     };
 
-    const isRecording = ref(false);
-    const recordedAudio = ref(null);
-    let mediaRecorder;
-    let audioChunks = [];
-    const clearRecordedAudio = () => {
-      console.log("Закрытие предварительного просмотра аудио");
-      recordedAudio.value = null;
-    };
-    const startRecording = () => {
-      console.log("Начало записи аудио");
-      navigator.mediaDevices
-        .getUserMedia({ audio: true })
-        .then((stream) => {
-          mediaRecorder = new MediaRecorder(stream);
-          mediaRecorder.start();
-          isRecording.value = true;
-          audioChunks = [];
-
-          mediaRecorder.ondataavailable = (event) => {
-            audioChunks.push(event.data);
-          };
-
-          mediaRecorder.onstop = () => {
-            console.log("Запись остановлена");
-            const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
-            recordedAudio.value = URL.createObjectURL(audioBlob);
-            uploadedFiles.value.push({
-              file: audioBlob,
-              preview: recordedAudio.value,
-              type: "audio/wav",
-            });
-          };
-        })
-        .catch((error) => {
-          console.error("Ошибка доступа к микрофону:", error);
-        });
-    };
-
-    const stopRecording = () => {
-      if (mediaRecorder) {
-        console.log("Остановка записи аудио");
-        mediaRecorder.stop();
-        isRecording.value = false;
-      }
-    };
-
-    const pauseRecording = () => {
-      if (mediaRecorder && isRecording.value) {
-        console.log("Пауза записи аудио");
-        mediaRecorder.pause();
-        isRecording.value = false;
-      }
-    };
+    // let audioChunks = [];
 
     const sendMedia = async () => {
-  if (uploadedFiles.value.length === 0) {
-    alert("Выберите файл перед отправкой!");
-    return;
-  }
+      if (uploadedFiles.value.length === 0) {
+        alert("Выберите файл перед отправкой!");
+        return;
+      }
 
-  try {
-    const chatId = channelStore.activeChannelId || channelStore.channels[0]?.id;
-    let formData = new FormData();
+      try {
+        const chatId =
+          channelStore.activeChannelId || channelStore.channels[0]?.id;
+        let formData = new FormData();
 
-    formData.append("chat_id", chatId);
+        formData.append("chat_id", chatId);
 
-    if (uploadedFiles.value.length === 1) {
-      // Если один файл — отправляем как фото, видео или аудио
-      const file = uploadedFiles.value[0].file;
-      formData.append(file.type.startsWith("image/") ? "photo" : file.type.startsWith("video/") ? "video" : "audio", file);
-    } else {
-      // Если несколько файлов — отправляем как `mediaGroup`
-      const media = uploadedFiles.value.map((file, index) => ({
-        type: file.type.startsWith("image/") ? "photo" : file.type.startsWith("video/") ? "video" : "audio",
-        media: `attach://${file.file.name}`,
-        caption: index === 0 ? message.value || " " : undefined,
-      }));
+        if (uploadedFiles.value.length === 1) {
+          // Если один файл — отправляем как фото, видео или аудио
+          const file = uploadedFiles.value[0].file;
+          formData.append(
+            file.type.startsWith("image/")
+              ? "photo"
+              : file.type.startsWith("video/")
+                ? "video"
+                : "audio",
+            file
+          );
+        } else {
+          // Если несколько файлов — отправляем как `mediaGroup`
+          const media = uploadedFiles.value.map((file, index) => ({
+            type: file.type.startsWith("image/")
+              ? "photo"
+              : file.type.startsWith("video/")
+                ? "video"
+                : "audio",
+            media: `attach://${file.file.name}`,
+            caption: index === 0 ? message.value || " " : undefined,
+          }));
 
-      formData.append("media", JSON.stringify(media));
-      uploadedFiles.value.forEach((file) => {
-        formData.append(file.file.name, file.file);
-      });
-    }
+          formData.append("media", JSON.stringify(media));
+          uploadedFiles.value.forEach((file) => {
+            formData.append(file.file.name, file.file);
+          });
+        }
 
-    const endpoint =
-      uploadedFiles.value.length === 1
-        ? `send${uploadedFiles.value[0].type.startsWith("image/") ? "Photo" : uploadedFiles.value[0].type.startsWith("video/") ? "Video" : "Audio"}`
-        : "sendMediaGroup";
+        const endpoint =
+          uploadedFiles.value.length === 1
+            ? `send${uploadedFiles.value[0].type.startsWith("image/") ? "Photo" : uploadedFiles.value[0].type.startsWith("video/") ? "Video" : "Audio"}`
+            : "sendMediaGroup";
 
-    const response = await axios.post(
-      `https://api.telegram.org/bot${botToken}/` + endpoint,
-      formData,
-      { headers: { "Content-Type": "multipart/form-data" } }
-    );
+        const response = await axios.post(
+          `https://api.telegram.org/bot${botToken}/` + endpoint,
+          formData,
+          { headers: { "Content-Type": "multipart/form-data" } }
+        );
 
-    console.log("Медиа успешно отправлено:", response.data);
-    uploadedFiles.value = [];
-    message.value = "";
-    alert("Медиа успешно отправлено!");
-  } catch (error) {
-    console.error("Ошибка при отправке медиа:", error.response?.data || error.message);
-    alert("Ошибка отправки медиа!");
-  }
-};
+        console.log("Медиа успешно отправлено:", response.data);
+        uploadedFiles.value = [];
+        message.value = "";
+        alert("Медиа успешно отправлено!");
+      } catch (error) {
+        console.error(
+          "Ошибка при отправке медиа:",
+          error.response?.data || error.message
+        );
+        alert("Ошибка отправки медиа!");
+      }
+    };
 
-const selectMedia = (media) => {
-  selectedMedia.value = media;
-  selectedGif.value = null; // Сбрасываем GIF при выборе видео/фото
-};
-
-    // const sendMedia = async () => {
-    //   try {
-    //     const media = uploadedFiles.value.map((file, index) => ({
-    //       type: file.type.startsWith("image/") ? "photo" : "video",
-    //       media: `attach://${file.file.name}`,
-    //       caption: index === 0 ? message.value || " " : undefined,
-    //       has_spoiler: options.spoilerMode,
-    //     }));
-
-    //     const formData = new FormData();
-    //     formData.append("chat_id", channelStore.activeChannelId);
-    //     formData.append("media", JSON.stringify(media));
-
-    //     uploadedFiles.value.forEach((file) => {
-    //       formData.append(file.file.name, file.file);
-    //     });
-
-    //     const response = await axios.post(
-    //       `https://api.telegram.org/bot${botToken}/sendMediaGroup`,
-    //       formData,
-    //       { headers: { "Content-Type": "multipart/form-data" } }
-    //     );
-
-    //     console.log("Медиа успешно отправлено:", response.data);
-    //     uploadedFiles.value = [];
-    //     message.value = "";
-    //     alert("Медиа успешно отправлено!");
-    //   } catch (error) {
-    //     console.error(
-    //       "Ошибка при отправке медиа:",
-    //       error.response?.data || error.message
-    //     );
-    //   }
-    // };
-
-    
+    const selectMedia = (media) => {
+      selectedMedia.value = media;
+      selectedGif.value = null; // Сбрасываем GIF при выборе видео/фото
+    };
 
     const clearSelectedGif = () => {
       console.log("Очистка выбранного GIF");
@@ -944,37 +851,6 @@ const selectMedia = (media) => {
     console.log("scheduledDate:", scheduledDate.value);
     console.log("scheduledTime:", scheduledTime.value);
 
-    // const searchGifs = async () => {
-    //   console.log("Поиск GIF начался с запросом:", gifSearchQuery.value);
-    //   if (!gifSearchQuery.value.trim()) {
-    //     console.warn("Пустой поисковый запрос!");
-    //     searchResults.value = [];
-    //     return;
-    //   }
-
-    //   try {
-    //     const response = await axios.get(
-    //       `https://api.giphy.com/v1/gifs/search`,
-    //       {
-    //         params: {
-    //           api_key: "fADq5TfaTTfCcdSmI7jd3znNii8C1SqA",
-    //           q: gifSearchQuery.value,
-    //           limit: 49,
-    //         },
-    //       }
-    //     );
-    //     searchResults.value = response.data.data.map((gif) => ({
-    //       ...gif,
-    //       isSelected: false,
-    //     }));
-    //     console.log("Найдено GIF:", searchResults.value.length);
-    //   } catch (error) {
-    //     console.error(
-    //       "Ошибка поиска GIF:",
-    //       error.response?.data || error.message
-    //     );
-    //   }
-    // };
     const searchGifs = async (loadMore = false) => {
       if (!gifSearchQuery.value.trim()) {
         console.warn("Пустой поисковый запрос!");
@@ -1009,7 +885,7 @@ const selectMedia = (media) => {
 
         // Если это подгрузка, добавляем новые GIF в конец массива
         searchResults.value = [...searchResults.value, ...newResults];
-        offset.value += 50; // Увеличиваем offset на 50
+        offset.value += 100; // Увеличиваем offset на 50
       } catch (error) {
         console.error(
           "Ошибка поиска GIF:",
@@ -1030,11 +906,9 @@ const selectMedia = (media) => {
     });
 
     const selectGif = (gif) => {
-  selectedGif.value = gif.images.original.url;
-  selectedMedia.value = null; // Сбрасываем видео/фото при выборе GIF
-};
-
-    
+      selectedGif.value = gif.images.original.url;
+      selectedMedia.value = null; // Сбрасываем видео/фото при выборе GIF
+    };
 
     const updateImageLoadStatus = (id) => {
       nextTick(() => {
@@ -1048,141 +922,196 @@ const selectMedia = (media) => {
       });
     };
 
-    const totalPages = computed(() => Math.ceil(mediaResults.value.length / mediaPerPage));
+    const totalPages = computed(() =>
+      Math.ceil(mediaResults.value.length / mediaPerPage)
+    );
     const paginatedMedia = computed(() => {
       const start = (currentPage.value - 1) * mediaPerPage;
       return mediaResults.value.slice(start, start + mediaPerPage);
     });
 
-    const prevPage = () => { if (currentPage.value > 1) currentPage.value--; };
-    const nextPage = () => { if (currentPage.value < totalPages.value) currentPage.value++; };
+    const prevPage = () => {
+      if (currentPage.value > 1) currentPage.value--;
+    };
+    const nextPage = () => {
+      if (currentPage.value < totalPages.value) currentPage.value++;
+    };
 
-   
-    const clearSelectedMedia = () => selectedMedia.value = null;
+    const clearSelectedMedia = () => (selectedMedia.value = null);
 
-    
-const resetAllFields = () => {
-  message.value = "";
-  selectedGif.value = null;
-  selectedMedia.value = null;
-  uploadedFiles.value = [];
-};
-
-const fetchMedia = async () => {
-  if (!searchQuery.value.trim()) return;
-  loading.value = true;
-  try {
-    const videoResponse = await axios.get("https://pixabay.com/api/videos/", {
-      params: { key: "38493945-5c7d35b7bac4a53d9ead4ac6f", q: searchQuery.value, per_page: 50 },
-    });
-
-    const imageResponse = await axios.get("https://pixabay.com/api/", {
-      params: { key: "38493945-5c7d35b7bac4a53d9ead4ac6f", q: searchQuery.value, image_type: "photo", per_page: 50 },
-    });
-
-    const videos = videoResponse.data.hits.map((video) => ({ id: video.id, type: "video", url: video.videos.medium.url }));
-    const images = imageResponse.data.hits.map((image) => ({ id: image.id, type: "image", url: image.webformatURL }));
-
-    mediaResults.value = [...videos, ...images];
-  } catch (error) {
-    console.error("Ошибка загрузки медиа:", error);
-  } finally {
-    loading.value = false;
-  }
-};
-const sendMessage = async () => {
-  if (!message.value.trim() && !selectedMedia.value && !selectedGif.value && uploadedFiles.value.length === 0) {
-    alert("Добавьте текст или выберите медиа!");
-    return;
-  }
-
-  try {
-    const chatId = channelStore.activeChannelId || channelStore.channels[0]?.id;
-    let formData = new FormData();
-    formData.append("chat_id", chatId);
-
-    const captionText = message.value.trim() ? message.value.trim() : " "; // ✅ Добавляет пробел, если текста нет
-
-    if (selectedGif.value) {
-      // 🟠 Отправка GIF
-      await axios.post(`https://api.telegram.org/bot${botToken}/sendAnimation`, {
-        chat_id: chatId,
-        animation: selectedGif.value,
-        caption: captionText, // ✅ Теперь отправляет даже без текста
-        parse_mode: "HTML",
-      });
+    const resetAllFields = () => {
+      message.value = "";
       selectedGif.value = null;
-    } else if (selectedMedia.value) {
-      // 🟡 Отправка фото или видео
-      const mediaType = selectedMedia.value.type === "video" ? "video" : "photo";
-      await axios.post(`https://api.telegram.org/bot${botToken}/send${mediaType.charAt(0).toUpperCase() + mediaType.slice(1)}`, {
-        chat_id: chatId,
-        [mediaType]: selectedMedia.value.url,
-        caption: captionText, // ✅ Теперь отправляет даже без текста
-        parse_mode: "HTML",
-        has_spoiler: options.spoilerMode, 
-      });
       selectedMedia.value = null;
-    } else if (uploadedFiles.value.length === 1) {
-      // 🟢 Отправка одного файла
-      const file = uploadedFiles.value[0].file;
-      formData.append(file.type.startsWith("image/") ? "photo" : file.type.startsWith("video/") ? "video" : "audio", file);
-      formData.append("caption", captionText); // ✅ Теперь отправляет даже без текста
-      formData.append("has_spoiler", options.spoilerMode ? "true" : "false"); 
+      uploadedFiles.value = [];
+    };
 
-      await axios.post(`https://api.telegram.org/bot${botToken}/send${file.type.startsWith("image/") ? "Photo" : file.type.startsWith("video/") ? "Video" : "Audio"}`, formData);
-    } else if (uploadedFiles.value.length > 1) {
-      // 🔵 Отправка нескольких файлов как `mediaGroup`
-      const media = uploadedFiles.value.map((file, index) => ({
-        type: file.type.startsWith("image/") ? "photo" : file.type.startsWith("video/") ? "video" : "audio",
-        media: `attach://${file.file.name}`,
-        caption: index === 0 ? captionText : undefined, // ✅ Пробел, если текста нет
-        has_spoiler: options.spoilerMode,
-      }));
-      formData.append("media", JSON.stringify(media));
-      uploadedFiles.value.forEach((file) => {
-        formData.append(file.file.name, file.file);
-      });
+    const fetchMedia = async () => {
+      if (!searchQuery.value.trim()) return;
+      loading.value = true;
+      try {
+        const videoResponse = await axios.get(
+          "https://pixabay.com/api/videos/",
+          {
+            params: {
+              key: "38493945-5c7d35b7bac4a53d9ead4ac6f",
+              q: searchQuery.value,
+              per_page: 50,
+            },
+          }
+        );
 
-      await axios.post(`https://api.telegram.org/bot${botToken}/sendMediaGroup`, formData);
-    } else if (message.value.trim()) {
-      // 🔴 Отправка только текста
-      await axios.post(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-        chat_id: chatId,
-        text: message.value.trim(),
-        parse_mode: "HTML",
-      });
-    }
+        const imageResponse = await axios.get("https://pixabay.com/api/", {
+          params: {
+            key: "38493945-5c7d35b7bac4a53d9ead4ac6f",
+            q: searchQuery.value,
+            image_type: "photo",
+            per_page: 50,
+          },
+        });
 
-    alert("Сообщение успешно отправлено!");
-    resetAllFields();
-  } catch (error) {
-    console.error("Ошибка отправки в Telegram:", error.response?.data || error.message);
-    alert("Ошибка отправки медиа!");
-  }
-};
+        const videos = videoResponse.data.hits.map((video) => ({
+          id: video.id,
+          type: "video",
+          url: video.videos.medium.url,
+        }));
+        const images = imageResponse.data.hits.map((image) => ({
+          id: image.id,
+          type: "image",
+          url: image.webformatURL,
+        }));
 
+        mediaResults.value = [...videos, ...images];
+      } catch (error) {
+        console.error("Ошибка загрузки медиа:", error);
+      } finally {
+        loading.value = false;
+      }
+    };
+    const sendMessage = async () => {
+      if (
+        !message.value.trim() &&
+        !selectedMedia.value &&
+        !selectedGif.value &&
+        uploadedFiles.value.length === 0
+      ) {
+        alert("Добавьте текст или выберите медиа!");
+        return;
+      }
 
+      try {
+        const chatId =
+          channelStore.activeChannelId || channelStore.channels[0]?.id;
+        let formData = new FormData();
+        formData.append("chat_id", chatId);
 
-    return { 
-      
-  //     loading, // Состояние загрузки
-  // mediaResults, // Результаты поиска (все найденные медиа)
-  // searchQuery,
-  //     fetchMedia,
-  //     paginatedMedia,
-  //     loading,
-  //     selectMedia,
-  //     selectedMedia,
-  //     clearSelectedMedia,
-  //     sendMessage,
-  //     message
-  closeMediaGallery,
-  videoLoadStatus,
-  updateVideoLoadStatus,
-  imageLoadStatus,
-  updateImageLoadStatus,
-  searchQuery,
+        const captionText = message.value.trim() ? message.value.trim() : " "; // ✅ Добавляет пробел, если текста нет
+
+        if (selectedGif.value) {
+          // 🟠 Отправка GIF
+          await axios.post(
+            `https://api.telegram.org/bot${botToken}/sendAnimation`,
+            {
+              chat_id: chatId,
+              animation: selectedGif.value,
+              caption: captionText, // ✅ Теперь отправляет даже без текста
+              parse_mode: "HTML",
+            }
+          );
+          selectedGif.value = null;
+        } else if (selectedMedia.value) {
+          // 🟡 Отправка фото или видео
+          const mediaType =
+            selectedMedia.value.type === "video" ? "video" : "photo";
+          await axios.post(
+            `https://api.telegram.org/bot${botToken}/send${mediaType.charAt(0).toUpperCase() + mediaType.slice(1)}`,
+            {
+              chat_id: chatId,
+              [mediaType]: selectedMedia.value.url,
+              caption: captionText, // ✅ Теперь отправляет даже без текста
+              parse_mode: "HTML",
+              has_spoiler: options.spoilerMode,
+            }
+          );
+          selectedMedia.value = null;
+        } else if (uploadedFiles.value.length === 1) {
+          // 🟢 Отправка одного файла
+          const file = uploadedFiles.value[0].file;
+          formData.append(
+            file.type.startsWith("image/")
+              ? "photo"
+              : file.type.startsWith("video/")
+                ? "video"
+                : "audio",
+            file
+          );
+          formData.append("caption", captionText); // ✅ Теперь отправляет даже без текста
+          formData.append(
+            "has_spoiler",
+            options.spoilerMode ? "true" : "false"
+          );
+
+          await axios.post(
+            `https://api.telegram.org/bot${botToken}/send${file.type.startsWith("image/") ? "Photo" : file.type.startsWith("video/") ? "Video" : "Audio"}`,
+            formData
+          );
+        } else if (uploadedFiles.value.length > 1) {
+          // 🔵 Отправка нескольких файлов как `mediaGroup`
+          const media = uploadedFiles.value.map((file, index) => ({
+            type: file.type.startsWith("image/")
+              ? "photo"
+              : file.type.startsWith("video/")
+                ? "video"
+                : "audio",
+            media: `attach://${file.file.name}`,
+            caption: index === 0 ? captionText : undefined, // ✅ Пробел, если текста нет
+            has_spoiler: options.spoilerMode,
+          }));
+          formData.append("media", JSON.stringify(media));
+          uploadedFiles.value.forEach((file) => {
+            formData.append(file.file.name, file.file);
+          });
+
+          await axios.post(
+            `https://api.telegram.org/bot${botToken}/sendMediaGroup`,
+            formData
+          );
+        } else if (message.value.trim()) {
+          // 🔴 Отправка только текста
+          await axios.post(
+            `https://api.telegram.org/bot${botToken}/sendMessage`,
+            {
+              chat_id: chatId,
+              text: message.value.trim(),
+              parse_mode: "HTML",
+            }
+          );
+        }
+
+        alert("Сообщение успешно отправлено!");
+        resetAllFields();
+      } catch (error) {
+        console.error(
+          "Ошибка отправки в Telegram:",
+          error.response?.data || error.message
+        );
+        alert("Ошибка отправки медиа!");
+      }
+    };
+
+    return {
+     
+      showPreviewModal, // Добавляем флаг отображения модального окна
+  top10Preview, // Добавляем список криптовалют
+  openPreviewModal, // Метод открытия модального окна
+  closePreviewModal, // Метод закрытия модального окна
+  sendTop10ToTelegram, // Метод отправки в Telegram
+      closeMediaGallery,
+      videoLoadStatus,
+      updateVideoLoadStatus,
+      imageLoadStatus,
+      updateImageLoadStatus,
+      searchQuery,
       fetchMedia,
       paginatedMedia,
       loading,
@@ -1195,9 +1124,9 @@ const sendMessage = async () => {
       totalPages,
       prevPage,
       nextPage,
-  mediaResults, // Результаты поиска (все найденные медиа)
-  
-  sendToTelegram, 
+      mediaResults, // Результаты поиска (все найденные медиа)
+
+      sendToTelegram,
       clearSelectedGif,
       selectGif, // Добавил метод selectGif
       // searchGifs,
@@ -1209,9 +1138,9 @@ const sendMessage = async () => {
 
       isVideoRecording,
       recordedVideo,
-      startVideoRecording,
-      stopVideoRecording,
-      clearRecordedVideo,
+      // startVideoRecording,
+      // stopVideoRecording,
+      // clearRecordedVideo,
 
       theme,
       // emojiSearchQuery,
@@ -1224,13 +1153,13 @@ const sendMessage = async () => {
       scheduleMessage,
       addEmoji,
 
-      clearRecordedAudio,
-      isRecording,
-      recordedAudio,
-      startRecording,
-      stopRecording,
-      pauseRecording,
-      
+      // clearRecordedAudio,
+      // isRecording,
+      // recordedAudio,
+      // startRecording,
+      // stopRecording,
+      // pauseRecording,
+
       sendMedia,
       handleFileUpload,
       removeFile,
@@ -1241,7 +1170,7 @@ const sendMessage = async () => {
       searchResults,
 
       options,
-     
+
       closeGifResults,
     };
   },
@@ -1249,6 +1178,127 @@ const sendMessage = async () => {
 </script>
 
 <style scoped>
+.crypto-change {
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.positive {
+  color: green;
+}
+
+.negative {
+  color: red;
+}
+
+.close-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  /* color: red; */
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.close-icon:hover {
+  color: red;
+}
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: var(--bs-body-bg);
+  /* background: white; */
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 600px;
+  max-height: 80vh; /* Ограничиваем высоту окна */
+  overflow-y: auto; /* Добавляем прокрутку */
+  /* text-align: center; */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Делаем список криптовалют более удобным */
+.crypto-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.crypto-list li {
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.crypto-icon {
+  width: 30px;
+  height: 30px;
+}
+@media screen and (max-width: 500px){
+  .crypto-list li {
+  font-size: 10px;
+ 
+}
+.crypto-icon {
+  width: 20px;
+  height: 20px;
+}
+}
+.modal-buttons {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-around;
+}
+
+
+
+
+.crypto-rank {
+  font-weight: bold;
+  /* color: #333; */
+}
+
+.crypto-name {
+  flex-grow: 1;
+}
+
+.crypto-price {
+  font-weight: bold;
+  color: cornflowerblue;
+}
+
+.crypto-market-cap {
+  font-size: 0.9em;
+  /* color: #777; */
+}
+
+.modal-buttons {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-around;
+}
+
+
+
+
+
 .media-gallery {
   display: flex;
   flex-wrap: wrap;
@@ -1312,11 +1362,6 @@ const sendMessage = async () => {
   gap: 10px;
   margin-top: 10px;
 }
-
-
-
-
-
 
 .gif-preview {
   position: relative; /* Устанавливаем позиционирование для наложения кнопки */

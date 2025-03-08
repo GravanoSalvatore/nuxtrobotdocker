@@ -1,50 +1,57 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { defineNuxtConfig } from 'nuxt/config'
+import fs from 'node:fs'
+import path from 'node:path'
+
 export default defineNuxtConfig({
+  runtimeConfig: {
+    botToken: process.env.BOT_TOKEN, // Доступно только на сервере
+    chatId: process.env.CHAT_ID, // Доступно только на сервере
+    public: {
+      botToken: process.env.BOT_TOKEN, // Доступно на клиенте
+      chatId: process.env.CHAT_ID, // Доступно на клиенте
+    }
+  },
+  devServer: {
+    https: {
+      key: fs.readFileSync(path.resolve(process.cwd(), 'localhost-key.pem'), 'utf-8'),
+      cert: fs.readFileSync(path.resolve(process.cwd(), 'localhost.pem'), 'utf-8')
+    }
+  },
   css: [
-    
     'bootstrap/dist/css/bootstrap.min.css',
-    '@/assets/scss/global.scss'  // подключаем стили Bootstrap
+    '@/assets/scss/global.scss'
   ],
   script: [
     {
-      src: 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js',  // Подключаем Popper.js
+      src: 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js',
       body: true,
     },
     {
-      src: 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js',  // Подключаем Bootstrap
+      src: 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js',
       body: true,
     }
   ],
   primevue: {
     /* Configuration */
-},
+  },
   modules: [
     '@nuxt/icon',
-    // "@prisma/nuxt",
     '@vueuse/nuxt',
     '@nuxt/fonts',
     '@pinia/nuxt',
     '@nuxt/image',
-    // '@nuxtjs/tailwindcss',
-    // '@nuxt/ui'
     '@primevue/nuxt-module',
     'dayjs-nuxt',
     'nuxt-typed-router'
   ],
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
-  fonts:{
-    families:[{ name:'montserrat',provider:'google'}
-
+  fonts: {
+    families: [
+      { name: 'montserrat', provider: 'google' }
     ]
   },
-  // rollupOptions: {
-  //   external: ['@prisma/nuxt/dist/runtime/server/utils/prisma.d.ts']
-  // },
-  // prisma:{
-  //   autoSetupPrisma:true
-  // } ,
- 
   vite: {
     css: {
       optimizeDeps: {
@@ -86,17 +93,10 @@ export default defineNuxtConfig({
   },
   pinia: {  
     autoImports: [  
-      // automatically imports `defineStore`  
-      // 'defineStore',   
-      // automatically imports `defineStore` as `definePiniaStore`  
       ['defineStore', 'definePiniaStore'],  
     ],  
-  },  
+  },
   plugins: [
     '~/plugins/axios.ts',
-   
-    
   ],
-  
-  
 })

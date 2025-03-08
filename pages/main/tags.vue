@@ -1,7 +1,8 @@
 <template>
   <div class="container">
+    <!-- <label for="categorySelect" class="form-label">Category</label> -->
     <select v-model="selectedCategoryId" class="form-control w-100 mb-3">
-      <option :value="null">Все категории</option>
+      <option :value="null">All categories</option>
       <option
         v-for="category in categories"
         :key="category.id"
@@ -10,9 +11,18 @@
         {{ category.name }}
       </option>
     </select>
+    <!-- <label for="languageSelect" class="form-label ">Language</label> -->
+    <select v-model="selectedLanguageId" @change="filterTagsByLanguage" class="form-control w-100 mb-3">
+      <option :value="null">All languages</option>
+      <option v-for="language in languages" :key="language.id" :value="language.id">
+        {{ language.name }}
+      </option>
+    </select>
+
 
     <!-- Поле поиска с иконкой -->
     <div class="d-flex align-items-center w-100">
+     
       <input
         type="text"
         v-model="query"
@@ -779,7 +789,7 @@ export default {
       const content = item.content ? item.content : "";
 
       // Формируем сообщение
-      const message = `<b>${item.title}</b>\n${description}\n${content}\n<a href="${item.url}">Читать полностью</a>`;
+      const message = `<b>🔥🔥🔥${item.title}🔥🔥🔥</b>\n${description}\n${content}\n<a href="${item.url}"><b>➡️Читать полностью</b></a>`;
 
       const data = {
         chat_id: activeChannelId.value,
@@ -836,6 +846,7 @@ export default {
     // };
 
     onMounted(() => {
+      store.fetchLanguages();
       store.fetchCategories();
       storePop.loadSavedTags(); // Загружаем сохранённые теги
       if (storePop.savedTags.length > 0) {
@@ -844,6 +855,14 @@ export default {
     });
 
     return {
+      languages: computed(() => store.languages),
+      selectedLanguageId: computed({
+        get: () => store.selectedLanguageId,
+        set: (value) => {
+          store.selectedLanguageId = value;
+          store.filterTagsByLanguage(); // Перефильтровываем теги при смене языка
+        },
+      }),
       clearTags,
       logQuery,
       toggleSavedTags,

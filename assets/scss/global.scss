@@ -128,7 +128,7 @@ a{
   .btn-danger1:hover {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     transform: perspective(500px) translateZ(20px);
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.8), inset 0px -3px 12px rgba(255, 255, 255, 0.2);
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.8);
   }
   .btn-danger2 {
       margin: 0.5px;
@@ -153,7 +153,7 @@ a{
   .btn-danger {
     margin: 2px;
     z-index: 1;
-    // color: white;
+    color: var(--bs-body-color);
     font-weight: bold;
     font-size: 11px;
     padding: 3px 6px;

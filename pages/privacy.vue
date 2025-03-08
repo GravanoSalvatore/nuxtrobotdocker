@@ -78,7 +78,7 @@
 
     <h2>10. Contact Information</h2>
     <p>
-      If you have any questions or comments regarding this Privacy Policy, please contact us at <a href="mailto:4V"><a href="https://fourv.tech" target="_blank"><span class="fs-2 fw-bold"> 4V</span></a></a>.
+      If you have any questions or comments regarding this Privacy Policy, please contact us at <a href="https://fourv.tech" target="_blank"><span class="fs-2 fw-bold"> 4V</span></a>.
     </p>
    
 

@@ -111,7 +111,7 @@ export default {
           },
         },
         {
-          title: "CREATE TAG",
+          title: "CATEGORIES",
           description: "4V.COIN",
           route: "/main/create",
           icons: {

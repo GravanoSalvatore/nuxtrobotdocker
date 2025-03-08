@@ -931,7 +931,7 @@ const fetchChannelAdmins = async (chatId) => {
 
 .active-channel {
   position: relative;
-  z-index: 10;
+  z-index: 10000000;
   border: 3px solid rgb(14, 113, 166);
   border-radius: 10px;
   transform: scale(1.1); /* Увеличение элемента при активации */

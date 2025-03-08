@@ -28,8 +28,10 @@
     "dayjs-nuxt": "^2.1.11",
     "dompurify": "^3.2.4",
     "emoji-picker-element": "^1.26.0",
+    "feedparser": "^2.2.10",
     "moment-timezone": "^0.5.46",
     "node-cron": "^3.0.3",
+    "node-fetch": "^3.3.2",
     "node-schedule": "^2.1.1",
     "nuxt": "^3.14.1592",
     "nuxt-typed-router": "^3.7.2-beta.1",
@@ -41,7 +43,8 @@
     "ton-ui-vue": "^0.1.5",
     "vue": "latest",
     "vue-chartjs": "^5.3.2",
-    "vue-router": "latest"
+    "vue-router": "latest",
+    "xml2js": "^0.6.2"
   },
   "devDependencies": {
     "@iconify-json/fa6-solid": "^1.2.2",

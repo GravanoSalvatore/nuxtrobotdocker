@@ -470,6 +470,9 @@ const autopilotActive = ref(false);
       localStorage.setItem("savedTags", JSON.stringify(store.savedTags)); // Сохраняем изменения в localStorage
       console.log("Тег удалён:", tag);
     };
+   
+   
+   
     const sendToTelegram = (item) => {
   if (!activeChannelId.value) {
     alert("Выберите канал для отправки новостей!");
@@ -481,7 +484,7 @@ const autopilotActive = ref(false);
   const content = item.content ? item.content : "";
 
   // Формируем сообщение
-  const message = `<b>${item.title}</b>\n${description}\n${content}\n<a href="${item.url}">Читать полностью</a>`;
+  const message = `<b>🔥🔥🔥${item.title}🔥🔥🔥</b>\n${description}\n${content}\n<a href="${item.url}">➡️Читать полностью</a>`;
 
   const data = {
     chat_id: activeChannelId.value,
