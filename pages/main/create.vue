@@ -1,9 +1,9 @@
 <template>
   <div class="container">
     <!-- Кнопка "КриптоНовости" -->
-    <!-- <button class="btn btn-danger2 mb-3" @click="fetchCryptoNews">
+    <button class="btn btn-danger2 mb-3" @click="fetchCryptoNews">
       Крипто Новости
-    </button> -->
+    </button>
 
     <div v-if="news.length > 0" class="news-list">
       <div class="row row-cols-1 row-cols-md-3 g-3 mt-3">
