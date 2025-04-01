@@ -373,6 +373,40 @@ export default {
     };
 
 
+// const sendToTelegram = async (item) => {
+//   if (!activeChannelId.value) {
+//     alert("Выберите канал для отправки новостей!");
+//     return;
+//   }
+
+//   const messageText = `<b>🔊🔊🔊 ${item.title}</b>\n\n${item.content || ""}\n\n ➡️➡️➡️<a href="${item.url}"><b>Читать на сайте</b></a>`;
+
+//   try {
+//     // 1️⃣ Отправляем основное сообщение (чтобы можно было комментировать)
+//     await axios.post(`https://api.telegram.org/bot${botToken.value}/sendMessage`, {
+//       chat_id: activeChannelId.value,
+//       text: messageText,
+//       parse_mode: "HTML"
+//     });
+
+//     // 2️⃣ Отправляем сообщение ТОЛЬКО С КНОПКОЙ (невидимый текст)
+//     // await axios.post(`https://api.telegram.org/bot${botToken.value}/sendMessage`, {
+//     //   chat_id: activeChannelId.value,
+//     //   text: "", // Zero Width Space (невидимый символ)
+//     //   parse_mode: "HTML",
+//     //   reply_markup: {
+//     //     inline_keyboard: [
+//     //       [{ text: "📖 Читать на сайте", url: item.url }]
+//     //     ]
+//     //   }
+//     // });
+
+//     alert("Новость успешно отправлена в Telegram!");
+//   } catch (error) {
+//     console.error("Ошибка отправки в Telegram:", error);
+//     alert(`Ошибка: ${error.response?.data?.description || error.message}`);
+//   }
+// };
 const sendToTelegram = async (item) => {
   if (!activeChannelId.value) {
     alert("Выберите канал для отправки новостей!");
@@ -382,32 +416,21 @@ const sendToTelegram = async (item) => {
   const messageText = `<b>🔊🔊🔊 ${item.title}</b>\n\n${item.content || ""}\n\n ➡️➡️➡️<a href="${item.url}"><b>Читать на сайте</b></a>`;
 
   try {
-    // 1️⃣ Отправляем основное сообщение (чтобы можно было комментировать)
-    await axios.post(`https://api.telegram.org/bot${botToken.value}/sendMessage`, {
-      chat_id: activeChannelId.value,
-      text: messageText,
-      parse_mode: "HTML"
-    });
-
-    // 2️⃣ Отправляем сообщение ТОЛЬКО С КНОПКОЙ (невидимый текст)
-    // await axios.post(`https://api.telegram.org/bot${botToken.value}/sendMessage`, {
-    //   chat_id: activeChannelId.value,
-    //   text: "", // Zero Width Space (невидимый символ)
-    //   parse_mode: "HTML",
-    //   reply_markup: {
-    //     inline_keyboard: [
-    //       [{ text: "📖 Читать на сайте", url: item.url }]
-    //     ]
-    //   }
-    // });
-
+    await $fetch('/api/telegram', {
+      method: 'POST',
+      body: {
+        chatId: activeChannelId.value,
+        botToken: botToken.value,
+        text: messageText
+      }
+    })
+    
     alert("Новость успешно отправлена в Telegram!");
   } catch (error) {
     console.error("Ошибка отправки в Telegram:", error);
-    alert(`Ошибка: ${error.response?.data?.description || error.message}`);
+    alert(`Ошибка: ${error.data?.message || error.message}`);
   }
 };
-
 
 
 
