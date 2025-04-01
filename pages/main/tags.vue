@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <!-- <label for="categorySelect" class="form-label">Category</label> -->
     <select v-model="selectedCategoryId" class="form-control w-100 mb-3">
       <option :value="null">All categories</option>
       <option
@@ -11,18 +10,24 @@
         {{ category.name }}
       </option>
     </select>
-    <!-- <label for="languageSelect" class="form-label ">Language</label> -->
-    <select v-model="selectedLanguageId" @change="filterTagsByLanguage" class="form-control w-100 mb-3">
+
+    <select
+      v-model="selectedLanguageId"
+      @change="filterTagsByLanguage"
+      class="form-control w-100 mb-3"
+    >
       <option :value="null">All languages</option>
-      <option v-for="language in languages" :key="language.id" :value="language.id">
+      <option
+        v-for="language in languages"
+        :key="language.id"
+        :value="language.id"
+      >
         {{ language.name }}
       </option>
     </select>
 
-
     <!-- Поле поиска с иконкой -->
     <div class="d-flex align-items-center w-100">
-     
       <input
         type="text"
         v-model="query"
@@ -208,25 +213,7 @@
     <div v-if="news.length > 0" class="news-list">
       <div style="position: relative">
         <h5 class="fw-bold mt-1">{{ currentTag }}: {{ news.length }}</h5>
-        <!-- Сохранённые теги -->
-        <!-- <button  @click="toggleSavedTags" v-if="savedTags.length > 0"   class="pl-4 btn-danger1">
-        <i class="bi bi-floppy2-fill pointer "> Saved tags</i> 
-        </button>
-         <div class="saved-tags mb-1">
-          
-  <span
-    v-for="tag in savedTags"
-    :key="tag"
-    class="badge bg-success saved-tag pointer "
-    @click="() => { selectTag(tag); fetchNews(tag); }"
-  >
-    {{ tag }}
-    <i
-      @click.stop="removeSavedTag(tag)"
-      class="bi bi-x-circle pointer text-white"
-    ></i>
-  </span>
-</div> -->
+
         <button
           class="btn-danger1"
           :class="{ 'btn-danger': isTagSaved }"
@@ -242,6 +229,13 @@
         >
           <i class="bi bi-floppy2-fill pointer"> Saved tags</i>
         </button>
+        <button
+    @click="startAutoPosting"
+    class="pl-4 btn-danger1"
+    :disabled="!currentTag || !activeChannelId"
+  >
+    <i class="bi bi-send-fill pointer"> Auto-posting</i>
+  </button>
 
         <!-- Блок с сохранёнными тегами -->
         <div v-if="showSavedTags" class="saved-tags mb-1">
@@ -264,28 +258,7 @@
           </span>
         </div>
 
-        <!-- <button
-    class="btn-danger1 "
-    :class="{ 'btn-danger': isTagSaved }"
-    @click="toggleSaveTag(currentTag)"
-  >
-    {{ isTagSaved ? "Delete" : "Save" }}
-  </button> -->
-
-        <button
-          @click="toggleAutopilot"
-          :class="['btn-danger1 fw-bold ', { 'btn-primary': autopilotActive }]"
-        >
-          {{ autopilotActive ? "Stop Autopilot" : "Start Autopilot" }}
-        </button>
-        <!-- <button
-          type="button"
-          class="btn-danger1"
-          data-bs-toggle="modal"
-          data-bs-target="#staticBackdrop"
-        >
-          Setting
-        </button> -->
+        
 
         <!-- Modal -->
         <div
@@ -299,10 +272,6 @@
         >
           <div class="modal-dialog">
             <div class="modal-content">
-              <!-- <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div> -->
               <div class="modal-body">
                 <setting />
               </div>
@@ -483,10 +452,6 @@
               <button @click="openEditModal(item)" class="btn-danger1 mt-2">
                 Editing and sending
               </button>
-              <!-- <button @click="sendToTelegram(item)" class="btn-danger1 mt-2">
-                Send to Telegram
-                <i style="color: cornflowerblue" class="bi bi-telegram"></i>
-              </button> -->
             </div>
           </div>
         </div>
@@ -532,27 +497,13 @@
                   alt="Preview"
                 />
               </div>
-              <!-- <div class="mb-3">
-                  <label for="editImageFile" class="form-label"
-                    >Upload Image</label
-                  >
-                  <input
-                    id="editImageFile"
-                    type="file"
-                    @change="uploadImage"
-                    class="form-control"
-                  />
-                </div>
-                <div class="mb-3">
-                  <label for="editImage" class="form-label">Image URL</label>
-                  <input
-                    id="editImage"
-                    type="text"
-                    v-model="editableItem.tempImageUrl"
-                    class="form-control"
-                  />
-                </div> -->
-              <label style="color:cornflowerblue" for="editTitle" class="form-label fw-bold">Title</label>
+
+              <label
+                style="color: cornflowerblue"
+                for="editTitle"
+                class="form-label fw-bold"
+                >Title</label
+              >
               <textarea
                 id="editTitle"
                 type="text"
@@ -561,7 +512,10 @@
               ></textarea>
             </div>
             <div class="mb-3">
-              <label style="color:cornflowerblue" for="editDescription" class="form-label fw-bold"
+              <label
+                style="color: cornflowerblue"
+                for="editDescription"
+                class="form-label fw-bold"
                 >Description</label
               >
               <textarea
@@ -571,18 +525,18 @@
               ></textarea>
             </div>
             <div class="mb-3">
-              <label style="color:cornflowerblue" for="editContent" class="form-label fw-bold">Content</label>
-              <!-- <textarea
-                  id="editContent"
-                  v-model="editableItem.content"
-                  class="form-control"
-                ></textarea> -->
+              <label
+                style="color: cornflowerblue"
+                for="editContent"
+                class="form-label fw-bold"
+                >Content</label
+              >
+
               <textarea
                 id="editContent"
                 v-model="editableItem.content"
                 class="form-control"
               ></textarea>
-              <!-- <p v-html="editableItem.content || 'Контент отсутствует'"></p> -->
             </div>
           </div>
 
@@ -598,7 +552,6 @@
         </div>
       </div>
     </div>
-    
   </div>
 </template>
 
@@ -626,20 +579,86 @@ export default {
       showSetting.value = !showSetting.value;
     };
 
-    // const autopilotInterval = ref(null);
-    // const autopilotActive = ref(false);
+
+
+    const startAutoPosting = async () => {
+  if (!currentTag.value || !activeChannelId.value) {
+    alert("Выберите тег и Telegram-канал перед запуском авто-постинга!");
+    return;
+  }
+
+  try {
+    const apiUrl = "https://4v-news-api.azurewebsites.net/AutoPosting";
+    
+    // 1. Получаем числовой ID тега
+    let tagId;
+    
+    // Если currentTag - строка (название), ищем соответствующий объект тега
+    if (typeof currentTag.value === 'string') {
+      const foundTag = store.tags.find(tag => tag.name === currentTag.value);
+      if (!foundTag) {
+        throw new Error(`Тег "${currentTag.value}" не найден в хранилище`);
+      }
+      tagId = foundTag.id;
+    } 
+    // Если currentTag - объект {id, name}
+    else if (currentTag.value.id) {
+      tagId = currentTag.value.id;
+    } else {
+      throw new Error("Невозможно определить ID тега");
+    }
+
+    // 2. Формируем запрос
+    const params = new URLSearchParams();
+    params.append("TelegramChatId", activeChannelId.value);
+    params.append("TagIds", tagId.toString());
+
+    console.log("Отправка запроса:", {
+      url: apiUrl,
+      params: {
+        TelegramChatId: activeChannelId.value,
+        TagIds: tagId
+      }
+    });
+
+    // 3. Отправляем запрос
+    const response = await axios.post(apiUrl, null, { 
+      params,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    });
+
+    if (response.status === 200) {
+      alert(`Авто-постинг для тега ID ${tagId} успешно запущен!`);
+    } else {
+      throw new Error(`Сервер вернул статус ${response.status}`);
+    }
+  } catch (error) {
+    console.error("Полная информация об ошибке:", {
+      error,
+      currentTag: currentTag.value,
+      allTags: store.tags,
+      activeChannelId: activeChannelId.value
+    });
+    alert(`Ошибка: ${error.message}\nПодробности в консоли.`);
+  }
+};
+
+
+
+
+
+
+
     const loadingTags = ref(false); // Состояние загрузки тегов
     const loadingNews = ref(false);
     //getters
 
     const sortedTags = computed(() => store.sortedTags);
     const savedTags = computed(() => storePop.savedTags);
-    //const currentTag = computed(() => storePop.currentTag);
+
     const currentTag = ref(""); // Текущий выбранный тег
-    //     const selectTag = (tagName) => {
-    //   currentTag.value = tagName;
-    //   console.log("Текущий тег установлен:", tagName);
-    // };
 
     const clearTags = () => {
       store.tags = []; // Очистка массива тегов в сторе
@@ -762,16 +781,7 @@ export default {
       }
     };
 
-    //const fetchNews = (tagName) => store.fetchNews(tagName);
     const clearNews = () => store.clearNews();
-
-    // const sendToTelegram = (item) => {
-    //   if (!activeChannelId.value) {
-    //     alert("Please select a Telegram channel first.");
-    //     return;
-    //   }
-    //   store.sendToTelegram(item, activeChannelId.value);
-    // };
 
     const openEditModal = (item) => {
       editableItem.value = { ...item };
@@ -812,38 +822,7 @@ export default {
         });
     };
 
-    // const sendToTelegram = (item) => {
-    //   if (!activeChannelId.value) {
-    //     alert("Выберите канал для отправки новостей!");
-    //     return;
-    //   }
-
-    //   // Логируем данные перед отправкой
-    //   console.log("Отправка данных:", item);
-
-    //   const message = `<b>${item.title}</b>\n${item.description}\n${item.content}\n<a href="${item.url}">Читать полностью</a>`;
-    //   const data = {
-    //     chat_id: activeChannelId.value,
-    //     text: message,
-    //     parse_mode: "HTML",
-    //   };
-
-    //   axios
-    //     .post(`https://api.telegram.org/bot${store.botToken}/sendMessage`, data)
-    //     .then((response) => {
-    //       console.log("Сообщение успешно отправлено в Telegram:", response.data);
-    //       alert("Сообщение отправлено!");
-    //     })
-    //     .catch((error) => {
-    //       console.error("Ошибка отправки сообщения:", error);
-    //       alert(`Ошибка отправки: ${error.message}`);
-    //     });
-    // };
-
     const scrollToTop = () => store.scrollToTop(tagsList.value);
-    // const sendChatIdAndTagId = () => {
-    //   // Реализуйте логику автоматической отправки данных
-    // };
 
     onMounted(() => {
       store.fetchLanguages();
@@ -855,6 +834,8 @@ export default {
     });
 
     return {
+      startAutoPosting,
+
       languages: computed(() => store.languages),
       selectedLanguageId: computed({
         get: () => store.selectedLanguageId,
@@ -871,7 +852,7 @@ export default {
       loadingTags,
       showSetting,
       toggleSetting,
-      // savedTags: computed(() => storePop.savedTags),
+
       selectTag,
       currentTag,
       savedTags,
@@ -879,8 +860,7 @@ export default {
       removeSavedTag,
       isTagSaved,
       toggleSaveTag,
-      // autopilotActive,
-      // toggleAutopilot,
+
       query: computed({
         get: () => store.query,
         set: (value) => (store.query = value),
@@ -905,7 +885,7 @@ export default {
 
       scrollToTop,
       tagsList,
-      // sendChatIdAndTagId,
+
       formatDateTime: store.formatDateTime,
       activeChannelId,
       editableItem,
@@ -922,14 +902,7 @@ export default {
   overflow-y: auto;
   height: 250px;
 }
-/* .c{
-  height: 200px;
-}
-@media screen and (max-width: 350px) {
-  .c{
-  height: 180px;
-}
-} */
+
 .over {
   overflow-x: hidden;
   overflow-y: auto;
@@ -950,10 +923,6 @@ a {
   justify-content: center;
   margin-bottom: 20px;
 }
-
-/* .search-input {
-  width: 250px;
-} */
 
 .loading {
   text-align: center;

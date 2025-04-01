@@ -174,7 +174,300 @@ onMounted(fetchVideos);
   cursor: not-allowed;
 }
 </style> -->
-<template lang="">
+<!-- <template>
+  <div>
+ 
+    <button class="btn-danger2" @click="fetchNews">fetchNews</button>
+    
+
+    <div v-if="news.length > 0">
+      <div v-for="item in news" :key="item.id">
+        <div class="card">
+          <h2>{{ item.title }}</h2>
+          <p>{{ item.content }}</p>
+          <img v-if="item.urlToImage" :src="item.urlToImage" alt="News Image">
+
+
+          <button class="btn-danger2" @click="sendTelegram(item)">sendTelegram</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { ref, computed } from 'vue';
+import axios from 'axios';
+
+export default {
+  setup() {
+    const news = ref([]);
+    const activeChannelId = ref('-1002273327727'); // ID Телеграм-канала
+    const botToken = ref('7278946722:AAFImxEmuP9zuitDYktDJMJkIu99ut1y--k'); // Токен бота
+
+    // Метод для загрузки новостей
+    const fetchNews = async () => {
+      try {
+        const url = 'https://4v-news-api.azurewebsites.net/News';
+        const language = 'ru';
+        const category = 16;
+        const pageSize = 10;
+
+        const response = await axios.get(`${url}?SiteId=1&LanguageCode=${language}&CategoryId=${category}&Page=1&PageSize=${pageSize}`);
+        
+        if (response.data && response.data.items) {
+          news.value = response.data.items;
+        } else {
+          console.error("Ошибка: API не вернул данные");
+        }
+        
+        console.log(news.value);
+      } catch (error) {
+        console.error("Ошибка при загрузке новостей:", error);
+      }
+    };
+
+    // Метод для отправки новости в Telegram
+    const sendTelegram = async (item) => {
+      if (!activeChannelId.value) {
+        alert("Выберите канал для отправки новостей!");
+        return;
+      }
+
+      const message = `<b>🔊🔊🔊${item.title}</b>\n${item.content || ""}\n<a href="${item.url}">➡️➡️➡️<b>Читать полностью</b></a>`;
+      const data = {
+        chat_id: activeChannelId.value,
+        text: message,
+        parse_mode: "HTML",
+      };
+
+      try {
+        await axios.post(`https://api.telegram.org/bot${botToken.value}/sendMessage`, data);
+        alert("Новость успешно отправлена в Telegram!");
+      } catch (error) {
+        console.error("Ошибка отправки в Telegram:", error);
+        alert(`Ошибка: ${error.message}`);
+      }
+    };
+
+    return {
+      news,
+      fetchNews,
+      sendTelegram
+    };
+  }
+};
+</script>
+
+<style>
+</style> -->
+
+<!-- <template>
+  <div>
+   
+    <button class="btn-danger2" @click="fetchNews">fetchNews</button>
+    
+   
+    <div v-if="news.length > 0">
+      <div v-for="item in news" :key="item.id">
+        <div class="card">
+          <h2>{{ item.title }}</h2>
+          <p>{{ item.content }}</p>
+          <img v-if="item.urlToImage" :src="item.urlToImage" alt="News Image">
+
+         
+          <button class="btn-danger2" @click="sendTelegram(item)">sendTelegram</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { ref } from 'vue';
+import axios from 'axios';
+import { useChannelStore } from "@/stores/channelStore";
+export default {
+  setup() {
+    const channelStore = useChannelStore();
+    const news = ref([]);
+    const activeChannelId = computed(() => channelStore.activeChannelId);
+    const botToken = computed(() => channelStore.botToken);
+
+    // Метод для загрузки новостей
+    const fetchNews = async () => {
+      try {
+        const url = 'https://4v-news-api.azurewebsites.net/News';
+        const language = 'ru';
+        const category = 16;
+        const pageSize = 10;
+
+        const response = await axios.get(`${url}?SiteId=1&LanguageCode=${language}&CategoryId=${category}&Page=1&PageSize=${pageSize}`);
+        
+        if (response.data && response.data.items) {
+          news.value = response.data.items;
+        } else {
+          console.error("Ошибка: API не вернул данные");
+        }
+        
+        console.log(news.value);
+      } catch (error) {
+        console.error("Ошибка при загрузке новостей:", error);
+      }
+    };
+
+    // Метод для отправки новости в Telegram с reply_markup
+    const sendTelegram = async (item) => {
+      if (!activeChannelId.value) {
+        alert("Выберите канал для отправки новостей!");
+        return;
+      }
+
+      const message = `<b>🔊🔊🔊${item.title}</b>\n🔊🔊🔊${item.content || ""}\n<a href="${item.url}">➡️➡️➡️</a>`;
+
+      const data = {
+        chat_id: activeChannelId.value,
+        text: message,
+        parse_mode: "HTML",
+        reply_markup: {
+          inline_keyboard: [[
+            { text: "📖 Читать полностью", url: item.url }
+          ]]
+        }
+      };
+
+      try {
+        await axios.post(`https://api.telegram.org/bot${botToken.value}/sendMessage`, data);
+        alert("Новость успешно отправлена в Telegram!");
+      } catch (error) {
+        console.error("Ошибка отправки в Telegram:", error);
+        alert(`Ошибка: ${error.message}`);
+      }
+    };
+//     const sendTelegram = async (item) => {
+//   if (!activeChannelId.value) {
+//     alert("Выберите канал для отправки новостей!");
+//     return;
+//   }
+
+//   // Функция экранирования спецсимволов для MarkdownV2
+//   const escapeMarkdownV2 = (text) => {
+//     return text
+//       .replace(/_/g, "\\_")
+//       .replace(/\*/g, "\\*")
+//       .replace(/\[/g, "\\[")
+//       .replace(/\]/g, "\\]")
+//       .replace(/\(/g, "\\(")
+//       .replace(/\)/g, "\\)")
+//       .replace(/~/g, "\\~")
+//       .replace(/`/g, "\\`")
+//       .replace(/>/g, "\\>")
+//       .replace(/#/g, "\\#")
+//       .replace(/\+/g, "\\+")
+//       .replace(/-/g, "\\-")
+//       .replace(/=/g, "\\=")
+//       .replace(/\|/g, "\\|")
+//       .replace(/\{/g, "\\{")
+//       .replace(/\}/g, "\\}")
+//       .replace(/\./g, "\\.")
+//       .replace(/!/g, "\\!");
+//   };
+
+//   // Заголовок и скрытый текст (спойлер)
+//   const title = escapeMarkdownV2(item.title);
+//   const hiddenContent = `||${escapeMarkdownV2(item.content || "")}||`;
+  
+//   const message = `🔊🔊🔊 *${title}*\n\n${hiddenContent}\n[➡️➡️➡️ Читать полностью](${item.url})`;
+
+//   const data = {
+//     chat_id: activeChannelId.value,
+//     text: message,
+//     parse_mode: "MarkdownV2",
+//     reply_markup: {
+//       inline_keyboard: [[
+//         { text: "📖 Читать полностью", url: item.url }
+//       ]]
+//     }
+//   };
+
+//   try {
+//     await axios.post(`https://api.telegram.org/bot${botToken.value}/sendMessage`, data);
+//     alert("Новость успешно отправлена в Telegram!");
+//   } catch (error) {
+//     console.error("Ошибка отправки в Telegram:", error);
+//     alert(`Ошибка: ${error.message}`);
+//   }
+// };
+
+
+
+
+    return {
+      news,
+      fetchNews,
+      sendTelegram
+    };
+  }
+};
+</script>
+
+<style>
+</style> -->
+
+
+ <!-- <template >
+  <div class="row">
+    <div class="col-md-4 card" v-for="item in news" :key="item.id">
+      
+      <img class  :src="item.urlToImage">
+   <div class="over"> 
+    <h4 class="fw-bold">  
+      {{item.title}}</h4>
+      {{item.content}}
+    </div>
+    </div>
+  </div>
+</template>
+<script>
+import axios from "axios";
+import { ref, onMounted} from 'vue';
+export default {
+  setup(){
+      const news = ref([]);
+      const fetchNews = async () => {
+      const category = 16;
+      const page = 1;
+      const pageSize = 10;
+      const siteId = 1;
+      const baseUrl = "https://4v-news-api.azurewebsites.net/News";
+      const url = `${baseUrl}?SiteId=${siteId}&CategoryId=${category}&Page=${page}&PageSize=${pageSize}`
+     
+     
+      try {
+      const response = await axios.get(url)
+      news.value = response.data.items
+      console.log(news.value)  
+      } catch (error) {
+         console.log(error)
+      }
+    }
+   onMounted(() =>{
+     fetchNews()
+    })
+   return{
+    news
+   }
+  }
+}
+</script>
+<style scoped >
+  .over{
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 200px;
+  }
+</style> -->
+ <template lang="">
   <div>
     
   </div>
@@ -183,7 +476,4 @@ onMounted(fetchVideos);
 export default {
   
 }
-</script>
-<style lang="">
-  
-</style>
+</script> 

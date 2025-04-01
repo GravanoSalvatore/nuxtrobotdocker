@@ -1,6 +1,15 @@
 <template>
   <div class="media-editor-container">
     <div class="editor-wrapper">
+      <span class="fw-bold" style="font-size: 12px; white-space: nowrap;">
+     
+      {{ activeChannelName }}
+     
+   
+    </span>
+    <!-- <div :class="{ 'active-channel': activeChannelId === channel.id }" v-for="channel of channels" :key="channel">
+        <span style="font-size: 10px;">{{ channel.name }}</span>
+      </div> -->
       <textarea
         v-model="message"
         class="form-control message-textarea mt-2"
@@ -342,7 +351,8 @@ export default {
     const channelStore = useChannelStore();
     const botToken = channelStore.botToken;
     const showEmojiPicker = ref(false);
-
+    const activeChannelName = computed(() => channelStore.activeChannelName);
+    const channels = computed(() => channelStore.channels);
     const mediaPerPage = 14;
     const selectedMedia = ref(null);
     const currentPage = ref(1);
@@ -515,11 +525,11 @@ const sendTop10ToTelegram = async () => {
       // const trendIcon = coin.change24h >= 0 ? "📈" : "📉"; 
 
       messageText += `*${coin.rank}. ${coin.name} (${coin.symbol})*\n`;
-      messageText += `💰 Price: ${coin.price}\n`;
-      messageText += `📊 Volume 24h: ${coin.volume24h}\n`; // ✅ Добавлен объём торгов
-      messageText += `🏦 Market Cap: ${coin.marketCap}\n`;
+      messageText += ` Price: ${coin.price}\n`;
+      messageText += ` Volume 24h: ${coin.volume24h}\n`; // ✅ Добавлен объём торгов
+      messageText += ` Market Cap: ${coin.marketCap}\n`;
       
-      messageText += `📈 Change 24h:  ${changeColor} ${coin.change24h}%\n\n`;
+      messageText += ` Change 24h:  ${changeColor} ${coin.change24h}%\n\n`;
     });
 
     await axios.post(
@@ -577,6 +587,11 @@ const sendTop10ToTelegram = async () => {
         let payload = {
           chat_id: chatId.value,
           parse_mode: "HTML",
+        //   reply_markup: {
+        //   inline_keyboard: [[
+        //     { text: "📖 Читать полностью", url: '#' }
+        //   ]]
+        // }
         };
 
         if (selectedMedia.value.type === "video") {
@@ -1100,7 +1115,8 @@ const sendTop10ToTelegram = async () => {
     };
 
     return {
-     
+      channels,
+      activeChannelName,
       showPreviewModal, // Добавляем флаг отображения модального окна
   top10Preview, // Добавляем список криптовалют
   openPreviewModal, // Метод открытия модального окна
@@ -1178,6 +1194,7 @@ const sendTop10ToTelegram = async () => {
 </script>
 
 <style scoped>
+
 .crypto-change {
   font-weight: bold;
   margin-left: 10px;
@@ -1220,7 +1237,7 @@ const sendTop10ToTelegram = async () => {
 }
 
 .modal-content {
-  background-color: var(--bs-body-bg);
+  background-color:var(--bs-body-bg);
   /* background: white; */
   padding: 10px;
   border-radius: 10px;

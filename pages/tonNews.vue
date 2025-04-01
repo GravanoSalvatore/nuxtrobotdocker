@@ -71,7 +71,7 @@
   </div>
 </template>
 
-<script>
+<!-- <script>
 import axios from "axios";
 
 export default {
@@ -115,6 +115,84 @@ export default {
       } catch (error) {
         console.error("Ошибка загрузки новостей:", error);
         this.error = true;
+      } finally {
+        this.loading = false;
+      }
+    },
+    loadMore() {
+      this.visibleCount += 9;
+    },
+    formatDate(timestamp) {
+      const date = new Date(timestamp * 1000);
+      return date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+    },
+    toggleText(index) {
+      this.showFullText[index] = !this.showFullText[index];
+    },
+    truncatedText(text) {
+      return text.length > 150 ? text.substring(0, 150) + "..." : text;
+    },
+  },
+  mounted() {
+    this.fetchNews();
+  },
+};
+</script> -->
+<script>
+import axios from "axios";
+
+export default {
+  data() {
+    return {
+      news: [],
+      loading: false,
+      error: false,
+      visibleCount: 9,
+      showFullText: [],
+    };
+  },
+  computed: {
+    paginatedNews() {
+      return this.news.slice(0, this.visibleCount);
+    },
+  },
+  methods: {
+    async fetchNews(retries = 3) {
+      this.loading = true;
+      this.error = false;
+
+      try {
+        const response = await axios.get(
+          "https://data-api.ccdata.io/news/v1/article/list?lang=EN&limit=100&categories=TON"
+        );
+        if (response.data && response.data.Data) {
+          this.news = response.data.Data.map((item) => ({
+            ID: item.ID,
+            TITLE: item.TITLE,
+            BODY: item.BODY,
+            URL: item.URL,
+            IMAGE_URL: item.IMAGE_URL,
+            PUBLISHED_ON: item.PUBLISHED_ON,
+            SOURCE_DATA: item.SOURCE_DATA || {},
+          }));
+          this.showFullText = new Array(this.news.length).fill(false);
+        } else {
+          this.error = true;
+        }
+      } catch (error) {
+        if (error.response?.status === 503 && retries > 0) {
+          console.warn(`503 ошибка сервера. Новая попытка через 30 секунд... Осталось попыток: ${retries - 1}`);
+          setTimeout(() => {
+            this.fetchNews(retries - 1);
+          }, 30000); // ждем 30 секунд и повторяем
+        } else {
+          console.error("Ошибка загрузки новостей:", error);
+          this.error = true;
+        }
       } finally {
         this.loading = false;
       }
