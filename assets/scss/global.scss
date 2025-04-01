@@ -52,7 +52,7 @@ a{
     }
   /* Переопределение переменных для светлой темы */
   .light-theme {
-    --bs-body-bg: rgb(237, 243, 249);
+    --bs-body-bg: white;;
     --bs-body-color: #000;
     --bs-primary: #0d6efd;
     --bs-secondary: #6c757d;
@@ -68,7 +68,8 @@ a{
   /* Переопределение переменных для темной темы */
   .dark-theme {
     // --bs-body-bg: rgba(9, 21, 32, 1);
-    --bs-body-bg: #01263f;
+    // --bs-body-bg: #01263f;
+    --bs-body-bg: #191c1e;
     --bs-body-color: #ffffff;
     --bs-primary: #1f77d0;
     --bs-secondary: #404b56;
